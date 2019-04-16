@@ -94,7 +94,7 @@ int main()
 //        waitKey(0);
     }
     imshow("second_image",second_image);
-    imwrite("second_image.png",second_image);
+//    imwrite("second_image.png",second_image);
     waitKey(0);
 
 //     */
