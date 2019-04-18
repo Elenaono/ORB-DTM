@@ -16,6 +16,7 @@
 using namespace std;
 using namespace cv;
 
+// update from clion,local branch delaunay
 int main()
 {
     string file1 = "./data/desk1.png";
