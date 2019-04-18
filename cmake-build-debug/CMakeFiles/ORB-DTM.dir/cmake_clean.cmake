@@ -1,5 +1,6 @@
 file(REMOVE_RECURSE
   "CMakeFiles/ORB-DTM.dir/src/ORBextractor.cpp.o"
+  "CMakeFiles/ORB-DTM.dir/src/computeSM.cpp.o"
   "../lib/libORB-DTM.pdb"
   "../lib/libORB-DTM.so"
 )

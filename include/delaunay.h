@@ -144,14 +144,15 @@ public:
         _vertices.insert(_vertices.end(),vertices.begin(),vertices.end());
 //        triangles.assign(triangulation.triangulate(points).begin(),triangulation.triangulate(points).end());
 
-        std::cout << "new size:" << _vertices.size() << std::endl;
+//        std::cout << "new size:" << _vertices.size() << std::endl;
 
         ///开始依次遍历每个点
         for(auto p = begin(vertices); p != end(vertices); p++)
         {
             //std::cout << "Traitement du point " << *p << std::endl;
             //std::cout << "_triangles contains " << _triangles.size() << " elements" << std::endl;
-            std::cout << "into insertNewPoints!" << std:: endl;
+
+//            std::cout << "into insertNewPoints!" << std:: endl;
             //构造变量用来存储临时新产生的边
             std::vector<EdgeType> polygon;
 
@@ -163,7 +164,7 @@ public:
                 if(t.circumCircleContains(*p))  //如果包含点 p，那么就要产生新的3条边
                 {
 //                    std::cout << "Pushing bad triangle " << *t << std::endl;
-                    std::cout << "Pushing bad triangle " << std::endl;
+//                    std::cout << "Pushing bad triangle " << std::endl;
                     t.isBad = true;  //flag 发生改变，准备接下来在 _triangles  中将其剔除
                     polygon.push_back(t.e1);
                     polygon.push_back(t.e2);
@@ -201,19 +202,25 @@ public:
         }
 
         _edges.clear();
-        std::cerr << "before insert " << _edges.size() << std::endl;
+//        std::cerr << "before insert " << _edges.size() << std::endl;
         for(const auto t : _triangles)
         {
             _edges.push_back(t.e1);
             _edges.push_back(t.e2);
             _edges.push_back(t.e3);
         }
-        std::cerr << "after insert " << _edges.size() << std::endl;
+//        std::cerr << "after insert " << _edges.size() << std::endl;
 
         return _triangles;
 
 //         */
     }
+
+//    void _sf_similarityMatrix(const _c_triangleNet net1, const _c_triangleNet net2, double *similarityMatrix);
+//    void similarityMatrix(std::vector<TriangleType>& net1, std::vector<TriangleType>& net2, double *simiMatrix)
+//    {
+//
+//    }
 
     const std::vector<TriangleType>& getTriangles() const { return _triangles; }
     const std::vector<EdgeType>& getEdges() const { return _edges; }

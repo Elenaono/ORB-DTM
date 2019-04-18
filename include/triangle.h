@@ -4,6 +4,7 @@
 #include "vector2.h"
 #include "edge.h"
 #include "numeric.h"
+#include <math.h>
 
 template <class T>
 class Triangle
@@ -41,12 +42,36 @@ public:
         return dist <= circum_radius;
     }
 
+    // todo: 计算角度  计算相似度
+    inline double computeAngle()
+    {
+        e1.computesideLength();
+        e2.computesideLength();
+        e3.computesideLength();
+
+        double cosA = (e2.sideLength*e2.sideLength + e3.sideLength*e3.sideLength - e1.sideLength*e1.sideLength)/(2*e2.sideLength*e3.sideLength);
+        double cosB = (e1.sideLength*e1.sideLength + e3.sideLength*e3.sideLength - e2.sideLength*e2.sideLength)/(2*e1.sideLength*e3.sideLength);
+        double cosC = (e1.sideLength*e1.sideLength + e2.sideLength*e2.sideLength - e3.sideLength*e3.sideLength)/(2*e1.sideLength*e2.sideLength);
+
+//        std::cout << "COSA :"<< cosA << std::endl;
+
+        angle[0] = acos(cosA);
+        angle[1] = acos(cosB);
+        angle[2] = acos(cosC);
+
+//        std::cout << "angle[0] :"<< angle[0] << std::endl;
+//        std::cout << "angle[1] :"<< angle[1] << std::endl;
+//        std::cout << "angle[2] :"<< angle[2] << std::endl;
+
+    }
+
     VertexType p1;
     VertexType p2;
     VertexType p3;
     EdgeType e1;
     EdgeType e2;
     EdgeType e3;
+    double angle[3];
     bool isBad;
 };
 

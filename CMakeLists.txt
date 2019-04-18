@@ -26,7 +26,7 @@ set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR}/lib)
 
 add_library(${PROJECT_NAME} SHARED
         src/ORBextractor.cpp
-        )
+        src/computeSM.cpp)
 
 target_link_libraries(${PROJECT_NAME}
         ${OpenCV_LIBS}
@@ -36,8 +36,6 @@ target_link_libraries(${PROJECT_NAME}
         g2o_core g2o_stuff g2o_types_sba g2o_csparse_extension
         )
 
-add_executable(detect example/detector.cpp)
-target_link_libraries(detect ${PROJECT_NAME})
 
 add_executable(orbextract example/orbextract.cpp)
 target_link_libraries(orbextract ${PROJECT_NAME})

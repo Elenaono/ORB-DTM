@@ -48,24 +48,13 @@ RM = /home/lu/software/clion-2018.3.2/bin/cmake/linux/bin/cmake -E remove -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/lu/code/ORB-DTM
+CMAKE_SOURCE_DIR = /home/lu/code/CLionProjects/ORB-DTM
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/lu/code/ORB-DTM/cmake-build-debug
+CMAKE_BINARY_DIR = /home/lu/code/CLionProjects/ORB-DTM/cmake-build-debug
 
 #=============================================================================
 # Targets provided globally by CMake.
-
-# Special rule for the target edit_cache
-edit_cache:
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "No interactive CMake dialog available..."
-	/home/lu/software/clion-2018.3.2/bin/cmake/linux/bin/cmake -E echo No\ interactive\ CMake\ dialog\ available.
-.PHONY : edit_cache
-
-# Special rule for the target edit_cache
-edit_cache/fast: edit_cache
-
-.PHONY : edit_cache/fast
 
 # Special rule for the target rebuild_cache
 rebuild_cache:
@@ -78,11 +67,22 @@ rebuild_cache/fast: rebuild_cache
 
 .PHONY : rebuild_cache/fast
 
+# Special rule for the target edit_cache
+edit_cache:
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "No interactive CMake dialog available..."
+	/home/lu/software/clion-2018.3.2/bin/cmake/linux/bin/cmake -E echo No\ interactive\ CMake\ dialog\ available.
+.PHONY : edit_cache
+
+# Special rule for the target edit_cache
+edit_cache/fast: edit_cache
+
+.PHONY : edit_cache/fast
+
 # The main all target
 all: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/lu/code/ORB-DTM/cmake-build-debug/CMakeFiles /home/lu/code/ORB-DTM/cmake-build-debug/CMakeFiles/progress.marks
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/lu/code/CLionProjects/ORB-DTM/cmake-build-debug/CMakeFiles /home/lu/code/CLionProjects/ORB-DTM/cmake-build-debug/CMakeFiles/progress.marks
 	$(MAKE) -f CMakeFiles/Makefile2 all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/lu/code/ORB-DTM/cmake-build-debug/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/lu/code/CLionProjects/ORB-DTM/cmake-build-debug/CMakeFiles 0
 .PHONY : all
 
 # The main clean target
@@ -124,19 +124,6 @@ creatDelaunay/fast:
 .PHONY : creatDelaunay/fast
 
 #=============================================================================
-# Target rules for targets named orbextract
-
-# Build rule for target.
-orbextract: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 orbextract
-.PHONY : orbextract
-
-# fast build rule for target.
-orbextract/fast:
-	$(MAKE) -f CMakeFiles/orbextract.dir/build.make CMakeFiles/orbextract.dir/build
-.PHONY : orbextract/fast
-
-#=============================================================================
 # Target rules for targets named ORB-DTM
 
 # Build rule for target.
@@ -150,17 +137,17 @@ ORB-DTM/fast:
 .PHONY : ORB-DTM/fast
 
 #=============================================================================
-# Target rules for targets named detect
+# Target rules for targets named orbextract
 
 # Build rule for target.
-detect: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 detect
-.PHONY : detect
+orbextract: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 orbextract
+.PHONY : orbextract
 
 # fast build rule for target.
-detect/fast:
-	$(MAKE) -f CMakeFiles/detect.dir/build.make CMakeFiles/detect.dir/build
-.PHONY : detect/fast
+orbextract/fast:
+	$(MAKE) -f CMakeFiles/orbextract.dir/build.make CMakeFiles/orbextract.dir/build
+.PHONY : orbextract/fast
 
 example/creatDelaunay.o: example/creatDelaunay.cpp.o
 
@@ -188,33 +175,6 @@ example/creatDelaunay.s: example/creatDelaunay.cpp.s
 example/creatDelaunay.cpp.s:
 	$(MAKE) -f CMakeFiles/creatDelaunay.dir/build.make CMakeFiles/creatDelaunay.dir/example/creatDelaunay.cpp.s
 .PHONY : example/creatDelaunay.cpp.s
-
-example/detector.o: example/detector.cpp.o
-
-.PHONY : example/detector.o
-
-# target to build an object file
-example/detector.cpp.o:
-	$(MAKE) -f CMakeFiles/detect.dir/build.make CMakeFiles/detect.dir/example/detector.cpp.o
-.PHONY : example/detector.cpp.o
-
-example/detector.i: example/detector.cpp.i
-
-.PHONY : example/detector.i
-
-# target to preprocess a source file
-example/detector.cpp.i:
-	$(MAKE) -f CMakeFiles/detect.dir/build.make CMakeFiles/detect.dir/example/detector.cpp.i
-.PHONY : example/detector.cpp.i
-
-example/detector.s: example/detector.cpp.s
-
-.PHONY : example/detector.s
-
-# target to generate assembly for a file
-example/detector.cpp.s:
-	$(MAKE) -f CMakeFiles/detect.dir/build.make CMakeFiles/detect.dir/example/detector.cpp.s
-.PHONY : example/detector.cpp.s
 
 example/orbextract.o: example/orbextract.cpp.o
 
@@ -270,6 +230,33 @@ src/ORBextractor.cpp.s:
 	$(MAKE) -f CMakeFiles/ORB-DTM.dir/build.make CMakeFiles/ORB-DTM.dir/src/ORBextractor.cpp.s
 .PHONY : src/ORBextractor.cpp.s
 
+src/computeSM.o: src/computeSM.cpp.o
+
+.PHONY : src/computeSM.o
+
+# target to build an object file
+src/computeSM.cpp.o:
+	$(MAKE) -f CMakeFiles/ORB-DTM.dir/build.make CMakeFiles/ORB-DTM.dir/src/computeSM.cpp.o
+.PHONY : src/computeSM.cpp.o
+
+src/computeSM.i: src/computeSM.cpp.i
+
+.PHONY : src/computeSM.i
+
+# target to preprocess a source file
+src/computeSM.cpp.i:
+	$(MAKE) -f CMakeFiles/ORB-DTM.dir/build.make CMakeFiles/ORB-DTM.dir/src/computeSM.cpp.i
+.PHONY : src/computeSM.cpp.i
+
+src/computeSM.s: src/computeSM.cpp.s
+
+.PHONY : src/computeSM.s
+
+# target to generate assembly for a file
+src/computeSM.cpp.s:
+	$(MAKE) -f CMakeFiles/ORB-DTM.dir/build.make CMakeFiles/ORB-DTM.dir/src/computeSM.cpp.s
+.PHONY : src/computeSM.cpp.s
+
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -277,23 +264,22 @@ help:
 	@echo "... clean"
 	@echo "... depend"
 	@echo "... creatDelaunay"
-	@echo "... edit_cache"
-	@echo "... orbextract"
 	@echo "... rebuild_cache"
 	@echo "... ORB-DTM"
-	@echo "... detect"
+	@echo "... edit_cache"
+	@echo "... orbextract"
 	@echo "... example/creatDelaunay.o"
 	@echo "... example/creatDelaunay.i"
 	@echo "... example/creatDelaunay.s"
-	@echo "... example/detector.o"
-	@echo "... example/detector.i"
-	@echo "... example/detector.s"
 	@echo "... example/orbextract.o"
 	@echo "... example/orbextract.i"
 	@echo "... example/orbextract.s"
 	@echo "... src/ORBextractor.o"
 	@echo "... src/ORBextractor.i"
 	@echo "... src/ORBextractor.s"
+	@echo "... src/computeSM.o"
+	@echo "... src/computeSM.i"
+	@echo "... src/computeSM.s"
 .PHONY : help
 
 

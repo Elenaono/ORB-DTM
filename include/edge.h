@@ -2,6 +2,7 @@
 #define H_EDGE
 
 #include "vector2.h"
+#include <math.h>
 
 template <class T>
 class Edge
@@ -14,9 +15,15 @@ public:
     Edge(const VertexType &p1, const VertexType &p2) : p1(p1), p2(p2), isBad(false) {}
     Edge(const Edge &e) : p1(e.p1), p2(e.p2), isBad(false) {}
 
+    inline double computesideLength()
+    {
+        sideLength = sqrt(  (p2.x-p1.x)*(p2.x-p1.x) + (p2.y-p1.y)*(p2.y-p1.y)  );
+        return sideLength;
+    }
+
     VertexType p1;
     VertexType p2;
-
+    double sideLength;
     bool isBad;
 };
 

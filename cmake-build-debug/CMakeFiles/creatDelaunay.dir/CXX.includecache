@@ -6,6 +6,36 @@
 
 #IncludeRegexTransform: 
 
+..//include/calculator.h
+vector2.h
+../include/vector2.h
+edge.h
+../include/edge.h
+triangle.h
+../include/triangle.h
+delaunay.h
+../include/delaunay.h
+vector
+-
+algorithm
+-
+
+..//include/computeSM.h
+iostream
+-
+vector2.h
+../include/vector2.h
+edge.h
+../include/edge.h
+triangle.h
+../include/triangle.h
+delaunay.h
+../include/delaunay.h
+vector
+-
+algorithm
+-
+
 ..//include/delaunay.h
 vector2.h
 ../include/vector2.h
@@ -25,6 +55,8 @@ edge.h
 ../include/edge.h
 numeric.h
 ../include/numeric.h
+math.h
+-
 
 ..//include/vector2.h
 numeric.h
@@ -34,9 +66,23 @@ iostream
 cmath
 -
 
+../include/delaunay.h
+vector2.h
+../include/vector2.h
+edge.h
+../include/edge.h
+triangle.h
+../include/triangle.h
+vector
+-
+algorithm
+-
+
 ../include/edge.h
 vector2.h
 ../include/vector2.h
+math.h
+-
 
 ../include/numeric.h
 cmath
@@ -51,6 +97,8 @@ edge.h
 ../include/edge.h
 numeric.h
 ../include/numeric.h
+math.h
+-
 
 ../include/vector2.h
 numeric.h
@@ -60,7 +108,7 @@ iostream
 cmath
 -
 
-/home/lu/code/ORB-DTM/example/creatDelaunay.cpp
+/home/lu/code/CLionProjects/ORB-DTM/example/creatDelaunay.cpp
 iostream
 -
 vector
@@ -80,11 +128,15 @@ opencv2/features2d.hpp
 opencv2/highgui.hpp
 -
 include/vector2.h
-/home/lu/code/ORB-DTM/example/include/vector2.h
+/home/lu/code/CLionProjects/ORB-DTM/example/include/vector2.h
 include/triangle.h
-/home/lu/code/ORB-DTM/example/include/triangle.h
+/home/lu/code/CLionProjects/ORB-DTM/example/include/triangle.h
 include/delaunay.h
-/home/lu/code/ORB-DTM/example/include/delaunay.h
+/home/lu/code/CLionProjects/ORB-DTM/example/include/delaunay.h
+include/calculator.h
+/home/lu/code/CLionProjects/ORB-DTM/example/include/calculator.h
+include/computeSM.h
+/home/lu/code/CLionProjects/ORB-DTM/example/include/computeSM.h
 
 /opt/ros/kinetic/include/opencv-3.3.1-dev/opencv/cxcore.h
 opencv2/core/core_c.h

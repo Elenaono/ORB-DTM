@@ -4,7 +4,7 @@ set(CMAKE_DEPENDS_LANGUAGES
   )
 # The set of files for implicit dependencies of each language:
 set(CMAKE_DEPENDS_CHECK_CXX
-  "/home/lu/code/ORB-DTM/example/orbextract.cpp" "/home/lu/code/ORB-DTM/cmake-build-debug/CMakeFiles/orbextract.dir/example/orbextract.cpp.o"
+  "/home/lu/code/CLionProjects/ORB-DTM/example/orbextract.cpp" "/home/lu/code/CLionProjects/ORB-DTM/cmake-build-debug/CMakeFiles/orbextract.dir/example/orbextract.cpp.o"
   )
 set(CMAKE_CXX_COMPILER_ID "GNU")
 
@@ -19,7 +19,7 @@ set(CMAKE_CXX_TARGET_INCLUDE_PATH
 
 # Targets to which this target links.
 set(CMAKE_TARGET_LINKED_INFO_FILES
-  "/home/lu/code/ORB-DTM/cmake-build-debug/CMakeFiles/ORB-DTM.dir/DependInfo.cmake"
+  "/home/lu/code/CLionProjects/ORB-DTM/cmake-build-debug/CMakeFiles/ORB-DTM.dir/DependInfo.cmake"
   )
 
 # Fortran module output directory.
