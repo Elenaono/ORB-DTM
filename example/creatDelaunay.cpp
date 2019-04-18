@@ -30,6 +30,10 @@ int main()
     points_one.emplace_back(Vector2<float>(200,100));
     points_one.emplace_back(Vector2<float>(200,300));
     points_one.emplace_back(Vector2<float>(100,220));
+    points_one.emplace_back(Vector2<float>(300,200));
+    points_one.emplace_back(Vector2<float>(80,80));
+    points_one.emplace_back(Vector2<float>(330,330));
+    points_one.emplace_back(Vector2<float>(280,120));
 
     /// Delaunay 三角生成 net1
     Delaunay<float> triangulation_one;
@@ -47,7 +51,7 @@ int main()
         line(first_image, Point2f(e.p1.x, e.p1.y), Point2f(e.p2.x, e.p2.y), Scalar(0, 0, 255), 1);
     }
     imshow("first",first_image);
-//    waitKey(0);
+    waitKey(0);
 
     /************************** create delaunay triangulation one **********************************/
     cout << "\n构建第二个Delaunay网络:" << endl;
@@ -55,7 +59,11 @@ int main()
     std::vector<Vector2<float> > points_two;
     points_two.emplace_back(Vector2<float>(200,100));
     points_two.emplace_back(Vector2<float>(200,300));
-    points_two.emplace_back(Vector2<float>(0,0));
+    points_two.emplace_back(Vector2<float>(100,220));
+    points_two.emplace_back(Vector2<float>(300,200));
+    points_two.emplace_back(Vector2<float>(80,80));
+    points_two.emplace_back(Vector2<float>(330,330));
+    points_two.emplace_back(Vector2<float>(180,180));
 
     /// Delaunay 三角生成 net1
     Delaunay<float> triangulationnew_two;
@@ -74,7 +82,7 @@ int main()
         line(second_image, Point2f(e.p1.x, e.p1.y), Point2f(e.p2.x, e.p2.y), Scalar(0, 0, 255), 1);
     }
     imshow("second_image",second_image);
-//    waitKey(0);
+    waitKey(0);
 
     /************************** compute similarity matrix of DT nets **********************************/
     cout << "\n计算两个网络的相似度矩阵:" << endl;
@@ -92,7 +100,7 @@ int main()
     /*****************  test!  ********************/
 
     /*****************************************/
-
+    waitKey(0);
     cout << "\nfinish!" << endl;
     return 0;
 }

@@ -22,7 +22,7 @@ void computesimilarityMatrix(const Delaunay<float > & net1,const Delaunay<float>
         for (int j = 0; j < triangleList2.size(); j++)
         {
             double a = similarityValue(triangleList1[i],triangleList2[j]);
-            std::cout << "a="<< a <<std::endl;
+//            std::cout << "a="<< a <<std::endl;
             similarityMatrix(i,j) = (a < 0.75) ? 0 : a; //相似度阈值为0.75
         }
     }
