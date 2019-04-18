@@ -212,15 +212,8 @@ public:
 //        std::cerr << "after insert " << _edges.size() << std::endl;
 
         return _triangles;
-
-//         */
     }
 
-//    void _sf_similarityMatrix(const _c_triangleNet net1, const _c_triangleNet net2, double *similarityMatrix);
-//    void similarityMatrix(std::vector<TriangleType>& net1, std::vector<TriangleType>& net2, double *simiMatrix)
-//    {
-//
-//    }
 
     const std::vector<TriangleType>& getTriangles() const { return _triangles; }
     const std::vector<EdgeType>& getEdges() const { return _edges; }
