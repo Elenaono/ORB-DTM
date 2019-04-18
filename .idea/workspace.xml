@@ -13,16 +13,8 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a4ea8d15-dc0f-400f-80e1-a9475942da02" name="Default Changelist" comment="update from clion.&#10;增加了使用Eigen定义相似度矩阵">
+    <list default="true" id="a4ea8d15-dc0f-400f-80e1-a9475942da02" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/creatDelaunay.dir/example/creatDelaunay.cpp.o" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/creatDelaunay" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/example/creatDelaunay.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/example/creatDelaunay.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/include/computeSM.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/computeSM.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/include/delaunay.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/delaunay.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/include/triangle.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/triangle.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/libORB-DTM.so" beforeDir="false" afterPath="$PROJECT_DIR$/lib/libORB-DTM.so" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/computeSM.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/computeSM.cpp" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/cmake-build-debug/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -37,8 +29,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/example/creatDelaunay.cpp">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="508">
-              <caret line="82" column="60" lean-forward="true" selection-start-line="82" selection-start-column="60" selection-end-line="82" selection-end-column="60" />
+            <state relative-caret-position="215">
+              <caret line="30" column="53" lean-forward="true" selection-start-line="30" selection-start-column="53" selection-end-line="30" selection-end-column="53" />
               <folding>
                 <element signature="e#0#19#0" expanded="true" />
               </folding>
@@ -49,9 +41,10 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/computeSM.cpp">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="130">
-              <caret line="5" column="15" selection-start-line="5" selection-start-column="15" selection-end-line="5" selection-end-column="15" />
+            <state relative-caret-position="215">
+              <caret line="25" column="25" selection-start-line="25" selection-start-column="25" selection-end-line="25" selection-end-column="25" />
               <folding>
+                <element signature="e#36#58#0" expanded="true" />
                 <element signature="e#1389#2588#0" />
               </folding>
             </state>
@@ -107,9 +100,9 @@
         <option value="$PROJECT_DIR$/include/edge.h" />
         <option value="$PROJECT_DIR$/include/delaunay.h" />
         <option value="$PROJECT_DIR$/include/computeSM.h" />
-        <option value="$PROJECT_DIR$/example/creatDelaunay.cpp" />
-        <option value="$PROJECT_DIR$/src/computeSM.cpp" />
         <option value="$PROJECT_DIR$/include/triangle.h" />
+        <option value="$PROJECT_DIR$/src/computeSM.cpp" />
+        <option value="$PROJECT_DIR$/example/creatDelaunay.cpp" />
       </list>
     </option>
   </component>
@@ -152,6 +145,7 @@
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
+    <property name="restartRequiresConfirmation" value="false" />
     <property name="settings.editor.selected.configurable" value="configurable.group.appearance" />
   </component>
   <component name="RunDashboard">
@@ -202,21 +196,35 @@
       <workItem from="1555417560682" duration="40000" />
       <workItem from="1555420958669" duration="20232000" />
     </task>
+    <task id="LOCAL-00001" summary="update from clion.&#10;增加了使用Eigen定义相似度矩阵">
+      <created>1555587305387</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1555587305387</updated>
+    </task>
+    <task id="LOCAL-00002" summary="update from clion.&#10;增加了使用Eigen定义相似度矩阵">
+      <created>1555588605982</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1555588605982</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="32898000" />
+    <option name="totallyTimeSpent" value="34750000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="1920" y="-4" width="1920" height="1084" extended-state="6" />
-    <editor active="true" />
     <layout>
       <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.13995726" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" weight="0.3294979" />
-      <window_info anchor="bottom" id="Run" order="2" weight="0.3671548" />
+      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.3671548" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -319,16 +327,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/computeSM.cpp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="130">
-          <caret line="5" column="15" selection-start-line="5" selection-start-column="15" selection-end-line="5" selection-end-column="15" />
-          <folding>
-            <element signature="e#1389#2588#0" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/include/triangle.h">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="196">
@@ -339,10 +337,21 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/computeSM.cpp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="215">
+          <caret line="25" column="25" selection-start-line="25" selection-start-column="25" selection-end-line="25" selection-end-column="25" />
+          <folding>
+            <element signature="e#36#58#0" expanded="true" />
+            <element signature="e#1389#2588#0" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/example/creatDelaunay.cpp">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="508">
-          <caret line="82" column="60" lean-forward="true" selection-start-line="82" selection-start-column="60" selection-end-line="82" selection-end-column="60" />
+        <state relative-caret-position="215">
+          <caret line="30" column="53" lean-forward="true" selection-start-line="30" selection-start-column="53" selection-end-line="30" selection-end-column="53" />
           <folding>
             <element signature="e#0#19#0" expanded="true" />
           </folding>
