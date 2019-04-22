@@ -30,7 +30,7 @@ public:
 template <class T>
 inline std::ostream &operator << (std::ostream &str, Edge<T> const &e)
 {
-    return str << "Edge " << e.p1 << ", " << e.p2;
+    return str << "Edge " << e.p1 << "\t\t,\t " << e.p2;
 }
 
 template <class T>

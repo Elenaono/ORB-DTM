@@ -37,7 +37,7 @@ public:
         const T circum_y = (ab * (p3.x - p2.x) + cd * (p1.x - p3.x) + ef * (p2.x - p1.x)) / (p1.y * (p3.x - p2.x) + p2.y * (p1.x - p3.x) + p3.y * (p2.x - p1.x));
 
         const VertexType circum(half(circum_x), half(circum_y));
-        const T circum_radius = p1.dist2(circum);
+        const T circum_radius = p1.dist2(circum);   // 得到当前三角形外接圆的半径
         const T dist = v.dist2(circum);
         return dist <= circum_radius;
     }

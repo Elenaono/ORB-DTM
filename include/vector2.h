@@ -14,7 +14,9 @@ public:
     // Constructors  构造函数
     Vector2():x(0), y(0){}
     Vector2(T _x, T _y): x(_x), y(_y){}
-    Vector2(const Vector2 &v): x(v.x), y(v.y){}
+    Vector2(const Vector2 &v): x(v.x), y(v.y),index(v.index){}     // 拷贝构造
+
+    Vector2(T _x, T _y, T _index): x(_x), y(_y),index(_index){}
 
     // Operations
     // 计算距离
@@ -38,6 +40,7 @@ public:
 
     T x;
     T y;
+    T index;
 };
 
 //全特化
@@ -50,7 +53,7 @@ double Vector2<double>::dist(const Vector2<double> &v) const { return hypotf(x -
 template<typename T>
 std::ostream &operator << (std::ostream &str, Vector2<T> const &point)
 {
-    return str << "Point x: " << point.x << " y: " << point.y;
+    return str << "Point x: " << point.x << " y: " << point.y << " index: " << point.index;
 }
 
 template<typename T>

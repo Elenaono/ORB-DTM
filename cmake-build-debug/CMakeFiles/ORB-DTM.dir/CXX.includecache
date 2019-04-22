@@ -37,6 +37,10 @@ vector
 -
 algorithm
 -
+Eigen/Core
+-
+Eigen/Dense
+-
 
 ../include/edge.h
 vector2.h

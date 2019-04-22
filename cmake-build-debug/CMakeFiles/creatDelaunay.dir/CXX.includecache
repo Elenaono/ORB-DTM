@@ -51,6 +51,10 @@ vector
 -
 algorithm
 -
+Eigen/Core
+-
+Eigen/Dense
+-
 
 ..//include/triangle.h
 vector2.h
@@ -80,6 +84,10 @@ triangle.h
 vector
 -
 algorithm
+-
+Eigen/Core
+-
+Eigen/Dense
 -
 
 ../include/edge.h

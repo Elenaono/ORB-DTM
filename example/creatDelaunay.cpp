@@ -27,25 +27,28 @@ int main()
     cout << "构建第一个Delaunay网络:" << endl;
     /// 生成随机坐标point1
     std::vector<Vector2<float> > points_one;
-    points_one.emplace_back(Vector2<float>(200,100));
-    points_one.emplace_back(Vector2<float>(200,300));
-    points_one.emplace_back(Vector2<float>(100,220));
-    points_one.emplace_back(Vector2<float>(300,200));
-    points_one.emplace_back(Vector2<float>(80,80));
-    points_one.emplace_back(Vector2<float>(330,330));
-    points_one.emplace_back(Vector2<float>(280,120));
+    points_one.emplace_back(Vector2<float>(200,100,0));
+    points_one.emplace_back(Vector2<float>(200,300,1));
+    points_one.emplace_back(Vector2<float>(100,220,2));
+    points_one.emplace_back(Vector2<float>(300,200,3));
+    points_one.emplace_back(Vector2<float>(80,80,4));
+    points_one.emplace_back(Vector2<float>(330,330,5));
+
+//    points_one.emplace_back(Vector2<float>(280,120));
 
     /// Delaunay 三角生成 net1
     Delaunay<float> triangulation_one;
     std::vector<Triangle<float> > triangles_one = triangulation_one.triangulate(points_one);  //逐点插入法
     std::vector<Edge<float> > edges_one = triangulation_one.getEdges();
+    std::vector<Vector2<float> > point_store = triangulation_one.getVertices();
+    triangulation_one.computeEdgeMatrix();
     // 显示
     std::cout << "Points_one : \t\t" << points_one.size() << std::endl;
     std::cout << "Triangles_one : \t" << triangles_one.size() << std::endl;
     std::cout << "Edges_one : \t\t" << edges_one.size() << std::endl;
 
     /// opencv 显示 net1
-    cv::Mat first_image(480 , 620 , CV_8UC3);
+    cv::Mat first_image(480 , 620 , CV_8UC3);   //480  620
     for(const auto &e : edges_one)
     {
         line(first_image, Point2f(e.p1.x, e.p1.y), Point2f(e.p2.x, e.p2.y), Scalar(0, 0, 255), 1);
@@ -53,29 +56,32 @@ int main()
     imshow("first",first_image);
     waitKey(0);
 
-    /************************** create delaunay triangulation one **********************************/
+    /************************** create delaunay triangulation two **********************************/
+
     cout << "\n构建第二个Delaunay网络:" << endl;
     /// 生成随机坐标point2
     std::vector<Vector2<float> > points_two;
-    points_two.emplace_back(Vector2<float>(200,100));
-    points_two.emplace_back(Vector2<float>(200,300));
-    points_two.emplace_back(Vector2<float>(100,220));
-    points_two.emplace_back(Vector2<float>(300,200));
-    points_two.emplace_back(Vector2<float>(80,80));
-    points_two.emplace_back(Vector2<float>(330,330));
-    points_two.emplace_back(Vector2<float>(180,180));
+    points_two.emplace_back(Vector2<float>(200,100,0));
+    points_two.emplace_back(Vector2<float>(200,300,1));
+    points_two.emplace_back(Vector2<float>(100,220,2));
+    points_two.emplace_back(Vector2<float>(300,200,3));
+    points_two.emplace_back(Vector2<float>(80,80,4));
+    points_two.emplace_back(Vector2<float>(330,330,5));
+    points_two.emplace_back(Vector2<float>(180,180,6));
 
-    /// Delaunay 三角生成 net1
-    Delaunay<float> triangulationnew_two;
-    std::vector<Triangle<float> > triangles_two = triangulationnew_two.triangulate(points_two);  //逐点插入法
-    std::vector<Edge<float> > edges_two = triangulationnew_two.getEdges();
+
+
+    /// Delaunay 三角生成 net2
+    Delaunay<float> triangulation_two;
+    std::vector<Triangle<float> > triangles_two = triangulation_two.triangulate(points_two);  //逐点插入法
+    std::vector<Edge<float> > edges_two = triangulation_two.getEdges();
+    triangulation_two.computeEdgeMatrix();
     // 显示
     std::cout << "Points_two : \t\t" << points_two.size() << std::endl;
     std::cout << "Triangles_two : \t" << triangles_two.size() << std::endl;
     std::cout << "Edges_two : \t\t" << edges_two.size() << std::endl;
 
-
-    /// opencv 显示 net1
+    /// opencv 显示 net2
     cv::Mat second_image (480 , 620 , CV_8UC3);
     for(const auto &e : edges_two)
     {
@@ -84,23 +90,17 @@ int main()
     imshow("second_image",second_image);
     waitKey(0);
 
-    /************************** compute similarity matrix of DT nets **********************************/
-    cout << "\n计算两个网络的相似度矩阵:" << endl;
-
-    cout << "Size of net1:" << triangles_one.size() << endl;
-    cout << "Size of net2:" << triangles_two.size() << endl;
-
-    unsigned long m=triangles_one.size();
-    unsigned long n=triangles_two.size();
-    Eigen::MatrixXd similarityMatrix = Eigen::MatrixXd::Zero(m,n);
-    computesimilarityMatrix(triangulation_one,triangulationnew_two,similarityMatrix);   //相似度矩阵：使用引用作为函数参数
-
-    cout << "\nsimilarityMatrix:\t" << m << "*" << n << endl << similarityMatrix << endl;
+    /************************** compute edge matrix of DT nets **********************************/
+    Eigen::MatrixXd edgeMatrix = Eigen::MatrixXd::Zero(20,20);
+    edgeMatrix = triangulation_one.getEdgeMatrix() - triangulation_two.getEdgeMatrix();
+    double value =0;
+    value = edgeMatrix.norm();
+    cout << "\nvalue: " << value <<  endl;
 
     /*****************  test!  ********************/
 
     /*****************************************/
-    waitKey(0);
+//    waitKey(0);
     cout << "\nfinish!" << endl;
     return 0;
 }

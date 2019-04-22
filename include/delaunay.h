@@ -8,6 +8,9 @@
 #include <vector>
 #include <algorithm>
 
+#include <Eigen/Core>
+#include <Eigen/Dense>
+
 template <class T>
 class Delaunay
 {
@@ -51,18 +54,20 @@ public:
         const T midy = half(minY + maxY);
 
         //尽可能扩大超级三角形范围，可以取比20更大的数字
-        const VertexType p1(midx - 20 * deltaMax, midy - deltaMax);
-        const VertexType p2(midx, midy + 20 * deltaMax);
-        const VertexType p3(midx + 20 * deltaMax, midy - deltaMax);
+        const VertexType p1(midx - 20 * deltaMax, midy - deltaMax,0);
+        const VertexType p2(midx, midy + 20 * deltaMax,0);
+        const VertexType p3(midx + 20 * deltaMax, midy - deltaMax,0);
 
-//        std::cout << "Super triangle " << std::endl << Triangle(p1, p2, p3) << std::endl;
+//        std::cout << "Super triangle " << std::endl << Triangle<float>(p1, p2, p3) << std::endl;
 
         // Create a list of triangles, and add the supertriangle in it
-        //将超级三角形添加至 _triangles
+        // 将超级三角形添加至 _triangles
+        // push_back() 此处的参数其实是一个构造函数 Triangle()
+        // 使用p1,p2,p3构造三角形后，放进容器中
         _triangles.push_back(TriangleType(p1, p2, p3));
 
         ///开始依次遍历每个点
-//        long int count=0;
+//        unsigned long index=0;
         for(auto p = begin(vertices); p != end(vertices); p++)
         {
             //std::cout << "Traitement du point " << *p << std::endl;
@@ -81,8 +86,13 @@ public:
                     //std::cout << "Pushing bad triangle " << *t << std::endl;
                     t.isBad = true;  //flag 发生改变，准备接下来在 _triangles  中将其剔除
                     polygon.push_back(t.e1);
+//                    std::cout << t.e1 << std::endl;
                     polygon.push_back(t.e2);
-                    polygon.push_back(t.e3);
+//                    std::cout << t.e2 << std::endl;
+                    polygon.push_back(t.e3);    // 第一次迭代时，存储的是超级三角形
+//                    std::cout << t.e3 << std::endl;
+//                    std::cout << "\n\n" << std::endl;
+
                 }
                 else
                 {
@@ -91,9 +101,11 @@ public:
 //                count++;
             }
             ///更新 _triangles
-            //std::remove_if只移动不删除，erase将其删除，这里还用到了C++11的 lambda 表达式
-            //remove_if(beg, end, op)   //移除区间[beg,end)中每一个“令判断式:op(elem)获得true”的元素；
-            _triangles.erase(std::remove_if(begin(_triangles), end(_triangles), [](TriangleType &t){return t.isBad;})   ,   end(_triangles));
+            // std::remove_if只移动不删除，erase将其删除，这里还用到了C++11的 lambda 表达式
+            // remove_if(beg, end, op)   //移除区间[beg,end)中每一个“令判断式:op(elem)获得true”的元素；
+            // remove_if() 并不会实际移除容器中的元素，而是将需要移除的元素移动到容器尾部，从而得到一个分界容器(前：保留；后：待移除)
+            // 借助erase 函数才能真正的移除元素
+            _triangles.erase(std::remove_if(begin(_triangles), end(_triangles), [](TriangleType &t){return t.isBad;}), end(_triangles));
 
             ///这个用来删除重复的边
             for(auto e1 = begin(polygon); e1 != end(polygon); ++e1)
@@ -108,11 +120,18 @@ public:
                 }
             }
 
-            ///更新 polygon
+            ///更新 polygon   这些边围成了一个凸多边形
             polygon.erase(std::remove_if(begin(polygon), end(polygon), [](EdgeType &e){return e.isBad;})  ,    end(polygon));
 
+//            std::cout <<  "First:" <<std::endl;
             for(const auto e : polygon)
-                _triangles.push_back(TriangleType(e.p1, e.p2, *p));
+            {
+                _triangles.push_back(TriangleType(e.p1, e.p2, *p));     // 为每一条凸多边形的边，与凸多边形内的点，形成一个三角形
+
+//                std::cout <<  e <<std::endl;
+            }
+//            std::cout <<  "First:end\n" <<std::endl;
+
 
         }
 //        std::cerr << "count:" << count << std::endl;
@@ -137,7 +156,9 @@ public:
      * @param vertices
      * @return
      */
-     std::vector<TriangleType>& insertNewPointsInside(std::vector<VertexType> &vertices)
+
+    /*
+    std::vector<TriangleType>& insertNewPointsInside(std::vector<VertexType> &vertices)
     {
 //        _vertices.emplace_back(vertices);
 //        _vertices.push_back(vertices);
@@ -213,15 +234,32 @@ public:
 
         return _triangles;
     }
+    */
 
+    void computeEdgeMatrix()
+    {
+        unsigned long count=_edges.size();
+        edgeMatrix = Eigen::MatrixXd::Zero(20,20);
+        for(const auto &p:_edges)
+        {
+            unsigned long m=p.p1.index;
+            unsigned long n=p.p2.index;
+            edgeMatrix(m,n) = 1;
+            edgeMatrix(n,m) = 1;
+        }
+//        std::cout << "Sizes of EdgeMatrix: " << count << std::endl;
+        std::cout << edgeMatrix << std::endl;
+    }
 
     const std::vector<TriangleType>& getTriangles() const { return _triangles; }
     const std::vector<EdgeType>& getEdges() const { return _edges; }
     const std::vector<VertexType>& getVertices() const { return _vertices; }
+    const Eigen::MatrixXd& getEdgeMatrix() const { return edgeMatrix; }
 
 private:
     std::vector<TriangleType> _triangles;
     std::vector<EdgeType> _edges;
     std::vector<VertexType> _vertices;
+    Eigen::MatrixXd edgeMatrix;
 };
 #endif
