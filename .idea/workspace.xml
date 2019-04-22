@@ -2,9 +2,9 @@
 <project version="4">
   <component name="CMakeRunConfigurationManager" shouldGenerate="true" shouldDeleteObsolete="true">
     <generated>
-      <config projectName="ORB-DTM" targetName="orbextract" />
       <config projectName="ORB-DTM" targetName="ORB-DTM" />
       <config projectName="ORB-DTM" targetName="creatDelaunay" />
+      <config projectName="ORB-DTM" targetName="orbextract" />
     </generated>
   </component>
   <component name="CMakeSettings" AUTO_RELOAD="true">
@@ -13,17 +13,7 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a4ea8d15-dc0f-400f-80e1-a9475942da02" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/ORB-DTM.dir/CXX.includecache" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/ORB-DTM.dir/CXX.includecache" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/creatDelaunay.dir/CXX.includecache" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/creatDelaunay.dir/CXX.includecache" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/example/creatDelaunay.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/example/creatDelaunay.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/include/delaunay.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/delaunay.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/include/edge.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/edge.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/include/triangle.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/triangle.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/include/vector2.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/vector2.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/libORB-DTM.so" beforeDir="false" afterPath="$PROJECT_DIR$/lib/libORB-DTM.so" afterDir="false" />
-    </list>
+    <list default="true" id="a4ea8d15-dc0f-400f-80e1-a9475942da02" name="Default Changelist" comment="" />
     <ignored path="$PROJECT_DIR$/cmake-build-debug/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -37,8 +27,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/example/creatDelaunay.cpp">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="436">
-              <caret line="98" column="4" selection-start-line="98" selection-start-column="4" selection-end-line="98" selection-end-column="4" />
+            <state relative-caret-position="215">
+              <caret line="30" column="53" lean-forward="true" selection-start-line="30" selection-start-column="53" selection-end-line="30" selection-end-column="53" />
               <folding>
                 <element signature="e#0#19#0" expanded="true" />
               </folding>
@@ -47,14 +37,25 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/include/delaunay.h">
+        <entry file="file://$PROJECT_DIR$/src/computeSM.cpp">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="566">
-              <caret line="258" column="8" lean-forward="true" selection-start-line="258" selection-start-column="8" selection-end-line="258" selection-end-column="8" />
+            <state relative-caret-position="215">
+              <caret line="25" column="25" selection-start-line="25" selection-start-column="25" selection-end-line="25" selection-end-column="25" />
               <folding>
-                <element signature="e#39#59#0" expanded="true" />
-                <element signature="e#444#5133#0" />
-                <element signature="e#5237#8264#0" />
+                <element signature="e#36#58#0" expanded="true" />
+                <element signature="e#1389#2588#0" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/include/computeSM.h">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="417">
+              <caret line="24" column="105" selection-start-line="24" selection-start-column="105" selection-end-line="24" selection-end-column="105" />
+              <folding>
+                <element signature="e#93#112#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -63,39 +64,10 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/include/triangle.h">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-858">
-              <caret line="12" column="20" selection-start-line="12" selection-start-column="20" selection-end-line="12" selection-end-column="20" />
+            <state relative-caret-position="196">
+              <caret line="16" column="4" selection-start-line="16" selection-start-column="4" selection-end-line="16" selection-end-column="4" />
               <folding>
                 <element signature="e#39#59#0" expanded="true" />
-                <element signature="e#1374#2066#0" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/include/edge.h">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="572">
-              <caret line="22" selection-start-line="22" selection-end-line="22" />
-              <folding>
-                <element signature="e#31#51#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/include/vector2.h">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="78">
-              <caret line="12" selection-start-line="12" selection-end-line="12" />
-              <folding>
-                <element signature="e#37#57#0" expanded="true" />
-                <element signature="e#106#118#0" expanded="true" />
-                <element signature="e#668#670#0" expanded="true" />
-                <element signature="e#775#777#0" expanded="true" />
-                <element signature="e#962#974#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -106,15 +78,14 @@
   <component name="FindInProjectRecents">
     <findStrings>
       <find>triangles</find>
-      <find>isBad</find>
-      <find>operator</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
+    <option name="UPDATE_TYPE" value="MERGE" />
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$" value="similarityMatrix" />
+        <entry key="$PROJECT_DIR$" value="master" />
       </map>
     </option>
   </component>
@@ -125,22 +96,21 @@
         <option value="$PROJECT_DIR$/include/caculator.h" />
         <option value="$PROJECT_DIR$/CMakeLists.txt" />
         <option value="$PROJECT_DIR$/include/calculator.h" />
-        <option value="$PROJECT_DIR$/include/computeSM.h" />
-        <option value="$PROJECT_DIR$/src/computeSM.cpp" />
-        <option value="$PROJECT_DIR$/include/triangle.h" />
         <option value="$PROJECT_DIR$/include/edge.h" />
-        <option value="$PROJECT_DIR$/include/vector2.h" />
         <option value="$PROJECT_DIR$/include/delaunay.h" />
+        <option value="$PROJECT_DIR$/include/computeSM.h" />
+        <option value="$PROJECT_DIR$/include/triangle.h" />
+        <option value="$PROJECT_DIR$/src/computeSM.cpp" />
         <option value="$PROJECT_DIR$/example/creatDelaunay.cpp" />
       </list>
     </option>
   </component>
   <component name="OCFindUsagesOptions" text="true" ivars="false" properties="true" derivedClasses="false" />
   <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="1919" />
-    <option name="y" value="-11" />
-    <option name="width" value="1922" />
-    <option name="height" value="1092" />
+    <option name="x" value="1920" />
+    <option name="y" value="-4" />
+    <option name="width" value="1920" />
+    <option name="height" value="1084" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true">
     <ConfirmationsSetting value="2" id="Add" />
@@ -150,7 +120,6 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="ProjectPane" />
       <pane id="Scope">
         <subPane subId="Scope 'Project Files'; set:Project Files; class com.intellij.psi.search.scope.ProjectFilesScope">
           <expand>
@@ -161,17 +130,13 @@
             <path>
               <item name="ORB-DTM" type="3d21c010:ScopeViewTreeModel$ProjectNode" />
               <item name="" type="442cc68d:ScopeViewTreeModel$RootNode" />
-              <item name="include" type="9f88c78c:ScopeViewTreeModel$FileNode" />
-            </path>
-            <path>
-              <item name="ORB-DTM" type="3d21c010:ScopeViewTreeModel$ProjectNode" />
-              <item name="" type="442cc68d:ScopeViewTreeModel$RootNode" />
               <item name="src" type="9f88c78c:ScopeViewTreeModel$FileNode" />
             </path>
           </expand>
           <select />
         </subPane>
       </pane>
+      <pane id="ProjectPane" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -229,8 +194,6 @@
       <workItem from="1555413393624" duration="1662000" />
       <workItem from="1555417560682" duration="40000" />
       <workItem from="1555420958669" duration="20232000" />
-      <workItem from="1555914334346" duration="620000" />
-      <workItem from="1555915475373" duration="22994000" />
     </task>
     <task id="LOCAL-00001" summary="update from clion.&#10;增加了使用Eigen定义相似度矩阵">
       <created>1555587305387</created>
@@ -253,50 +216,21 @@
       <option name="project" value="LOCAL" />
       <updated>1555589102213</updated>
     </task>
-    <task id="LOCAL-00004" summary="update from clion.&#10;增加了使用Eigen定义相似度矩阵">
-      <created>1555589508151</created>
-      <option name="number" value="00004" />
-      <option name="presentableId" value="LOCAL-00004" />
-      <option name="project" value="LOCAL" />
-      <updated>1555589508151</updated>
-    </task>
-    <task id="LOCAL-00005" summary="update from clion.&#10;增加了使用Eigen定义相似度矩阵">
-      <created>1555589645864</created>
-      <option name="number" value="00005" />
-      <option name="presentableId" value="LOCAL-00005" />
-      <option name="project" value="LOCAL" />
-      <updated>1555589645864</updated>
-    </task>
-    <task id="LOCAL-00006" summary="update from clion.&#10;增加了使用Eigen定义相似度矩阵&#10;rename branch">
-      <created>1555589939700</created>
-      <option name="number" value="00006" />
-      <option name="presentableId" value="LOCAL-00006" />
-      <option name="project" value="LOCAL" />
-      <updated>1555589939700</updated>
-    </task>
-    <task id="LOCAL-00007" summary="update from clion.&#10;增加了使用Eigen定义相似度矩阵&#10;rename branch">
-      <created>1555590037204</created>
-      <option name="number" value="00007" />
-      <option name="presentableId" value="LOCAL-00007" />
-      <option name="project" value="LOCAL" />
-      <updated>1555590037204</updated>
-    </task>
-    <option name="localTasksCounter" value="8" />
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="65193000" />
+    <option name="totallyTimeSpent" value="34995000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="1919" y="-11" width="1922" height="1092" extended-state="6" />
-    <editor active="true" />
+    <frame x="1920" y="-4" width="1920" height="1084" extended-state="6" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.109508544" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.13995726" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" weight="0.3294979" />
-      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.3378661" />
+      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.3671548" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -304,36 +238,14 @@
       <window_info anchor="bottom" id="Version Control" order="7" />
       <window_info anchor="bottom" id="Database Changes" order="8" />
       <window_info anchor="bottom" id="CMake" order="9" weight="0.31799164" />
-      <window_info anchor="bottom" id="Terminal" order="10" weight="0.52615064" />
-      <window_info anchor="bottom" id="Event Log" order="11" side_tool="true" weight="0.3294979" />
-      <window_info anchor="bottom" id="Messages" order="12" weight="0.3294979" />
-      <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
-      <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
-      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
-      <window_info anchor="right" id="Database" order="3" />
-    </layout>
-    <layout-to-restore>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.13995726" />
-      <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
-      <window_info id="Favorites" order="2" side_tool="true" />
-      <window_info anchor="bottom" id="Message" order="0" />
-      <window_info anchor="bottom" id="Find" order="1" weight="0.3294979" />
-      <window_info anchor="bottom" id="Run" order="2" weight="0.3671548" />
-      <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
-      <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
-      <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
-      <window_info anchor="bottom" id="TODO" order="6" />
-      <window_info anchor="bottom" id="Version Control" order="7" />
-      <window_info anchor="bottom" id="Database Changes" order="8" />
-      <window_info anchor="bottom" id="CMake" order="9" weight="0.31799164" />
-      <window_info anchor="bottom" id="Terminal" order="10" weight="0.52615064" />
+      <window_info anchor="bottom" id="Terminal" order="10" />
       <window_info anchor="bottom" id="Event Log" order="11" side_tool="true" />
       <window_info anchor="bottom" id="Messages" order="12" weight="0.3294979" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
       <window_info anchor="right" id="Database" order="3" />
-    </layout-to-restore>
+    </layout>
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="1" />
@@ -341,8 +253,7 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="update from clion" />
     <MESSAGE value="update from clion.&#10;增加了使用Eigen定义相似度矩阵" />
-    <MESSAGE value="update from clion.&#10;增加了使用Eigen定义相似度矩阵&#10;rename branch" />
-    <option name="LAST_COMMIT_MESSAGE" value="update from clion.&#10;增加了使用Eigen定义相似度矩阵&#10;rename branch" />
+    <option name="LAST_COMMIT_MESSAGE" value="update from clion.&#10;增加了使用Eigen定义相似度矩阵" />
     <option name="GROUP_MULTIFILE_MERGE_BY_DIRECTORY" value="true" />
   </component>
   <component name="editorHistoryManager">
@@ -368,6 +279,36 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/include/edge.h">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-162">
+          <caret line="15" selection-start-line="15" selection-end-line="15" />
+          <folding>
+            <element signature="e#31#51#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/include/vector2.h">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="124">
+          <caret line="9" column="6" selection-start-line="9" selection-start-column="6" selection-end-line="9" selection-end-column="6" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/include/delaunay.h">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="702">
+          <caret line="134" column="7" selection-start-line="134" selection-start-column="7" selection-end-line="134" selection-end-column="7" />
+          <folding>
+            <element signature="e#39#59#0" expanded="true" />
+            <element signature="e#150#159#0" expanded="true" />
+            <element signature="e#398#4411#0" />
+            <element signature="e#4417#7543#0" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file:///usr/include/eigen3/Eigen/src/Core/util/StaticAssert.h">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="186">
@@ -382,14 +323,9 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/ORBextractor.cpp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-1248" />
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/include/computeSM.h">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="624">
+        <state relative-caret-position="417">
           <caret line="24" column="105" selection-start-line="24" selection-start-column="105" selection-end-line="24" selection-end-column="105" />
           <folding>
             <element signature="e#93#112#0" expanded="true" />
@@ -397,74 +333,31 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/computeSM.cpp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="286">
-          <caret line="14" column="5" selection-start-line="14" selection-start-column="5" selection-end-line="14" selection-end-column="5" />
-          <folding>
-            <element signature="e#36#58#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/include/triangle.h">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-858">
-          <caret line="12" column="20" selection-start-line="12" selection-start-column="20" selection-end-line="12" selection-end-column="20" />
+        <state relative-caret-position="196">
+          <caret line="16" column="4" selection-start-line="16" selection-start-column="4" selection-end-line="16" selection-end-column="4" />
           <folding>
             <element signature="e#39#59#0" expanded="true" />
-            <element signature="e#1374#2066#0" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/include/edge.h">
+    <entry file="file://$PROJECT_DIR$/src/computeSM.cpp">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="572">
-          <caret line="22" selection-start-line="22" selection-end-line="22" />
+        <state relative-caret-position="215">
+          <caret line="25" column="25" selection-start-line="25" selection-start-column="25" selection-end-line="25" selection-end-column="25" />
           <folding>
-            <element signature="e#31#51#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/include/vector2.h">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="78">
-          <caret line="12" selection-start-line="12" selection-end-line="12" />
-          <folding>
-            <element signature="e#37#57#0" expanded="true" />
-            <element signature="e#106#118#0" expanded="true" />
-            <element signature="e#668#670#0" expanded="true" />
-            <element signature="e#775#777#0" expanded="true" />
-            <element signature="e#962#974#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file:///usr/include/eigen3/Eigen/src/Core/DenseCoeffsBase.h">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="175">
-          <caret line="352" selection-start-line="352" selection-end-line="352" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/include/delaunay.h">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="566">
-          <caret line="258" column="8" lean-forward="true" selection-start-line="258" selection-start-column="8" selection-end-line="258" selection-end-column="8" />
-          <folding>
-            <element signature="e#39#59#0" expanded="true" />
-            <element signature="e#444#5133#0" />
-            <element signature="e#5237#8264#0" />
+            <element signature="e#36#58#0" expanded="true" />
+            <element signature="e#1389#2588#0" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/example/creatDelaunay.cpp">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="436">
-          <caret line="98" column="4" selection-start-line="98" selection-start-column="4" selection-end-line="98" selection-end-column="4" />
+        <state relative-caret-position="215">
+          <caret line="30" column="53" lean-forward="true" selection-start-line="30" selection-start-column="53" selection-end-line="30" selection-end-column="53" />
           <folding>
             <element signature="e#0#19#0" expanded="true" />
           </folding>
