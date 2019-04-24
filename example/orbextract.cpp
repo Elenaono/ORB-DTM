@@ -22,7 +22,7 @@ using namespace std;
 using namespace cv;
 using namespace ORB_SLAM2;
 
-#define d_max_vaule 60
+#define d_max_vaule 14
 
 int main()
 {
@@ -52,23 +52,32 @@ int main()
     orb1->myprint("picture1");
     mvImageShow1 = orb1->GetImagePyramid();   //获取图像金字塔
 
-    mDes1 = mDescriptors1.rowRange(0,216).clone();
+
 
     mnFeaturesPerLevel1 = orb1->GetmnFeaturesPerLevel();  //获取每层金字塔的特征点数量
 
-    int i=0;
+    int i=level;
     mvvKeypoints1 = orb1->GetmvvKeypoints();
     mvKeys1 = mvvKeypoints1[i];
+    mDes1 = mDescriptors1.rowRange(0,mnFeaturesPerLevel1[i]).clone();
 
     cout <<"KeyPoints:"<<mnFeaturesPerLevel1[i]<<endl;
     cv::drawKeypoints(mvImageShow1[i], mvKeys1, feature1, cv::Scalar::all(-1),
                       cv::DrawMatchesFlags::DEFAULT);//DEFAULT  DRAW_OVER_OUTIMG     DRAW_RICH_KEYPOINTS
     ///delaunay
     std::vector<Vector2<float> > points;
+    int index1=0;
     for(const auto &k :mvKeys1)
     {
-        points.emplace_back(Vector2<float>(k.pt.x,k.pt.y));
+//        if(index1==70)
+//            cout << index1  << " , " << k.pt.x <<" , "<< k.pt.y<< endl;
+
+        points.emplace_back(Vector2<float>(k.pt.x,k.pt.y,index1));
+        index1++;
+//        cout << k.class_id<< endl;
     }
+    cout << "Size of points1: " << points.size() << endl;
+
     Delaunay<float> triangulation;
     const std::vector<Triangle<float> > triangles = triangulation.triangulate(points);  //逐点插入法
     std::cout << triangles.size() << " triangles generated\n";
@@ -99,13 +108,14 @@ int main()
     orb2->myprint("picture2");
     mvImageShow2 = orb2->GetImagePyramid();   //获取图像金字塔
 
-    mDes2 = mDescriptors2.rowRange(0,216).clone();
+
 
     mnFeaturesPerLevel2 = orb2->GetmnFeaturesPerLevel();  //获取每层金字塔的特征点数量
 
-    int j=0;
+    int j=level;
     mvvKeypoints2 = orb2->GetmvvKeypoints();
     mvKeys2 = mvvKeypoints2[j];
+    mDes2 = mDescriptors2.rowRange(0,mnFeaturesPerLevel2[j]).clone();
 
     cout <<"KeyPoints:"<<mnFeaturesPerLevel2[j]<<endl;
     cv::drawKeypoints(mvImageShow2[j], mvKeys2, feature2, cv::Scalar::all(-1),
@@ -113,10 +123,17 @@ int main()
 
     ///delaunay
     std::vector<Vector2<float> > points2;
+    int index2=0;
     for(const auto &k2 :mvKeys2)
     {
-        points2.emplace_back(Vector2<float>(k2.pt.x,k2.pt.y));
+//        if(index2==76)
+//            cout << index2  << " , " << k2.pt.x <<" , "<< k2.pt.y<< endl;
+
+
+        points2.emplace_back(Vector2<float>(k2.pt.x,k2.pt.y,index2));
+        index2++;
     }
+//    cout << "Size of points2: " << points2.size() << endl;
     Delaunay<float> triangulation2;
     const std::vector<Triangle<float> > triangles2 = triangulation2.triangulate(points2);  //逐点插入法
     std::cout << triangles2.size() << " triangles generated\n";
@@ -150,11 +167,17 @@ int main()
 
     int d_max =d_max_vaule;
     //筛选匹配
-    for (int l = 0; l < mDes1.rows; l++) {
+    for (int l = 0; l < mDes1.rows; l++)
+    {
 //        if(matches[l].distance <= max(2*min_dist,30.0) )
         if(matches[l].distance <= d_max_vaule )
             good_matches.push_back(matches[l]);
     }
+
+//    for(const auto &m:matches)
+//    {
+//        cout << m.queryIdx << " , " << m.trainIdx << " , " << m.imgIdx << endl;
+//    }
     /**************** 显示 ******************/
     cout << "match:" << good_matches.size()<<endl;
 
