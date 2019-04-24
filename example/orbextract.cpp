@@ -22,7 +22,7 @@ using namespace std;
 using namespace cv;
 using namespace ORB_SLAM2;
 
-#define d_max_vaule 40
+#define d_max_vaule 60
 
 int main()
 {
@@ -52,9 +52,6 @@ int main()
     orb1->myprint("picture1");
     mvImageShow1 = orb1->GetImagePyramid();   //获取图像金字塔
 
-//    cout << "Size of mvKeys1:"<<mvKeys1.size()<<endl;
-//    cout << "Size of mDescriptors1:"<<mDescriptors1.size<<endl;
-
     mDes1 = mDescriptors1.rowRange(0,216).clone();
 
     mnFeaturesPerLevel1 = orb1->GetmnFeaturesPerLevel();  //获取每层金字塔的特征点数量
@@ -80,13 +77,12 @@ int main()
 
     for(const auto &e : edges)
     {
-//        cout << e.p1.x<<","<<e.p1.y << ";" << e.p2.x<<","<<e.p2.y << endl;
         line(feature1, Point(e.p1.x, e.p1.y), Point(e.p2.x, e.p2.y), Scalar(0, 0, 255), 1);
     }
 
     imwrite("feature1.png",feature1);
     imshow("feature1",feature1);
-//    waitKey(0);
+    waitKey(0);
     /**************** 图片二：初始化信息 *********************/
     cv::Mat second_image = cv::imread(file2, 0);    // load grayscale image 灰度图
     cv::Mat feature2;
@@ -102,9 +98,6 @@ int main()
 
     orb2->myprint("picture2");
     mvImageShow2 = orb2->GetImagePyramid();   //获取图像金字塔
-
-//    cout << "Size of mvKeys2:"<<mvKeys2.size()<<endl;
-//    cout << "Size of mDescriptors2:"<<mDescriptors2.size<<endl;
 
     mDes2 = mDescriptors2.rowRange(0,216).clone();
 
@@ -131,14 +124,13 @@ int main()
 
     for(const auto &e2 : edges2)
     {
-//        cout << e2.p1.x<<","<<e2.p1.y << ";" << e2.p2.x<<","<<e2.p2.y << endl;
         line(feature2, Point(e2.p1.x, e2.p1.y), Point(e2.p2.x, e2.p2.y), Scalar(0, 0, 255), 1);
     }
 
 
     imwrite("feature2.png",feature2);
     imshow("feature2",feature2);
-//    waitKey(0);
+    waitKey(0);
     /**************** 特征匹配 ******************/
     vector<DMatch> matches,good_matches;
     BFMatcher matcher (NORM_HAMMING);
@@ -164,7 +156,7 @@ int main()
             good_matches.push_back(matches[l]);
     }
     /**************** 显示 ******************/
-//    cout << "match:" << good_matches.size()<<endl;
+    cout << "match:" << good_matches.size()<<endl;
 
     Mat show;
     cv::drawMatches(mvImageShow1[j],mvKeys1,mvImageShow2[j],mvKeys2,good_matches,show);
