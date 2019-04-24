@@ -63,6 +63,7 @@ int main()
     cv::drawKeypoints(mvImageShow1[level], mvKeys1, feature1, cv::Scalar::all(-1),
                       cv::DrawMatchesFlags::DEFAULT);//DEFAULT  DRAW_OVER_OUTIMG     DRAW_RICH_KEYPOINTS
     ///delaunay
+    /*
 //    std::vector<Vector2<float> > points;
 //    temp = 0;
 //    for(const auto &k :mvKeys1)
@@ -88,6 +89,7 @@ int main()
 //    imwrite("feature1.png",feature1);
 //    imshow("feature1",feature1);
 //    waitKey(0);
+     */
     /**************** 图片二：初始化信息 *********************/
     cv::Mat second_image = cv::imread(file2, 0);    // load grayscale image 灰度图
     cv::Mat feature2;
@@ -115,6 +117,7 @@ int main()
                       cv::DrawMatchesFlags::DEFAULT);//DEFAULT  DRAW_OVER_OUTIMG     DRAW_RICH_KEYPOINTS
 
     ///delaunay
+    /*
 //    std::vector<Vector2<float> > points2;
 //    temp = 0;
 //    for(const auto &k2 :mvKeys2)
@@ -139,6 +142,7 @@ int main()
 //    imwrite("feature2.png",feature2);
 //    imshow("feature2",feature2);
 //    waitKey(0);
+     */
     /**************** 特征匹配 ******************/
     vector<DMatch> matches,good_matches;
     BFMatcher matcher (NORM_HAMMING);
@@ -161,7 +165,6 @@ int main()
     temp=0;
     for (int l = 0; l < mDes1.rows; l++)
     {
-//        if(matches[l].distance <= max(2*min_dist,30.0) )
         if(matches[l].distance <= d_max_vaule )
         {
             matches[l].imgIdx=temp;
@@ -176,10 +179,62 @@ int main()
 //    {
 //        cout << m.queryIdx << " , " << m.trainIdx << " , " << m.imgIdx << endl;
 //    }
+
+/****************************************************/
+    ///delaunay
+    std::vector<Vector2<float> > points;
+
+    for(const auto &g:good_matches)
+    {
+        points.emplace_back(Vector2<float>(mvKeys1[g.queryIdx].pt.x , mvKeys1[g.queryIdx].pt.y ,g.imgIdx ));
+    }
+
+    cout << "Size of points1: " << points.size() << endl;
+
+    Delaunay<float> triangulation;
+    const std::vector<Triangle<float> > triangles = triangulation.triangulate(points);  //逐点插入法
+    std::cout << triangles.size() << " triangles generated\n";
+    const std::vector<Edge<float> > edges = triangulation.getEdges();
+    std::cout << "Edges : " << edges.size() << std::endl;
+
+    for(const auto &e : edges)
+    {
+        line(feature1, Point(e.p1.x, e.p1.y), Point(e.p2.x, e.p2.y), Scalar(0, 0, 255), 1);
+    }
+
+//    imwrite("feature1.png",feature1);
+//    imshow("feature1",feature1);
+//    waitKey(0);
+
+    ///delaunay
+    std::vector<Vector2<float> > points2;
+
+    for(const auto &g:good_matches)
+    {
+        points2.emplace_back(Vector2<float>(mvKeys2[g.trainIdx].pt.x , mvKeys2[g.trainIdx].pt.y ,g.imgIdx ));
+    }
+
+    cout << "Size of points2: " << points2.size() << endl;
+    Delaunay<float> triangulation2;
+    const std::vector<Triangle<float> > triangles2 = triangulation2.triangulate(points2);  //逐点插入法
+    std::cout << triangles2.size() << " triangles generated\n";
+    const std::vector<Edge<float> > edges2 = triangulation2.getEdges();
+
+    for(const auto &e2 : edges2)
+    {
+        line(feature2, Point(e2.p1.x, e2.p1.y), Point(e2.p2.x, e2.p2.y), Scalar(0, 0, 255), 1);
+    }
+
+
+//    imwrite("feature2.png",feature2);
+//    imshow("feature2",feature2);
+//    waitKey(0);
+
     /**************** 显示 ******************/
     cout << "match:" << good_matches.size()<<endl;
     Mat show;
-    cv::drawMatches(mvImageShow1[level],mvKeys1,mvImageShow2[level],mvKeys2,good_matches,show);
+//    cv::drawMatches(mvImageShow1[level],mvKeys1,mvImageShow2[level],mvKeys2,good_matches,show);
+    cv::drawMatches(feature1,mvKeys1,feature2,mvKeys2,good_matches,show);
     imwrite("matches.png",show);
     imshow("matches",show);
     waitKey(0);
