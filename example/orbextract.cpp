@@ -22,7 +22,9 @@ using namespace std;
 using namespace cv;
 using namespace ORB_SLAM2;
 
-#define d_max_vaule 40
+#define d_max_vaule 35
+#define d_max_vaule_new 50
+
 
 int main()
 {
@@ -42,10 +44,13 @@ int main()
     cv::Mat feature1;
     std::vector<cv::Mat> mvImageShow1;   //图像金字塔
     vector<cv::KeyPoint> mvKeys1;        //一维特征点
+    vector<cv::KeyPoint> mvKeys1_new;
     cv::Mat mDescriptors1;               //描述子
+    cv::Mat mDescriptors1_new;
     vector<int> mnFeaturesPerLevel1;     //金字塔每层的特征点数量
     vector<vector<cv::KeyPoint>> mvvKeypoints1;  //每层的特征点
     cv::Mat mDes1;
+    cv::Mat mDes1_new;
     /**************** 图片一：提取特征点信息 ******************/
     ORBextractor *orb1 = new ORBextractor(nFeatures,fScaleFactor,nLevels,fIniThFAST,fMinThFAST);
     (*orb1)(first_image,cv::Mat(),mvKeys1,mDescriptors1);
@@ -57,6 +62,7 @@ int main()
 
     mvvKeypoints1 = orb1->GetmvvKeypoints();
     mvKeys1 = mvvKeypoints1[level];
+    cerr << "Size of : " <<mvKeys1.size()<< endl;
     mDes1 = mDescriptors1.rowRange(0,mnFeaturesPerLevel1[level]).clone();
 
     cout <<"KeyPoints:"<<mnFeaturesPerLevel1[level]<<endl;
@@ -68,10 +74,13 @@ int main()
     cv::Mat feature2;
     std::vector<cv::Mat> mvImageShow2;   //图像金字塔
     vector<cv::KeyPoint> mvKeys2;        //一维特征点
+    vector<cv::KeyPoint> mvKeys2_new;
     cv::Mat mDescriptors2;               //描述子
+    cv::Mat mDescriptors2_new;
     vector<int> mnFeaturesPerLevel2;     //金字塔每层的特征点数量
     vector<vector<cv::KeyPoint>> mvvKeypoints2;  //每层的特征点
     cv::Mat mDes2;
+    cv::Mat mDes2_new;
     /**************** 图片二：提取特征点信息 ******************/
     ORBextractor *orb2 = new ORBextractor(nFeatures,fScaleFactor,nLevels,fIniThFAST,fMinThFAST);
     (*orb2)(second_image,cv::Mat(),mvKeys2,mDescriptors2);
@@ -133,6 +142,7 @@ int main()
 
     Delaunay<float> triangulation;
     const std::vector<Triangle<float> > triangles = triangulation.triangulate(points);  //逐点插入法
+    triangulation.computeEdgeMatrix();
     std::cout << triangles.size() << " triangles generated\n";
     const std::vector<Edge<float> > edges = triangulation.getEdges();
     std::cout << "Edges : " << edges.size() << std::endl;
@@ -153,6 +163,7 @@ int main()
     cout << "Size of points2: " << points2.size() << endl;
     Delaunay<float> triangulation2;
     const std::vector<Triangle<float> > triangles2 = triangulation2.triangulate(points2);  //逐点插入法
+    triangulation2.computeEdgeMatrix();
     std::cout << triangles2.size() << " triangles generated\n";
     const std::vector<Edge<float> > edges2 = triangulation2.getEdges();
 
@@ -170,6 +181,123 @@ int main()
     imshow("matches",show);
     waitKey(0);
 
+    /****************************************/
+    Eigen::MatrixXd edgeMatrix = Eigen::MatrixXd::Zero(500,500);
+    edgeMatrix = triangulation.getEdgeMatrix() - triangulation2.getEdgeMatrix();
+    double value =0;
+    value = edgeMatrix.norm();
+    cout << "\nvalue: " << value <<  endl;
+
+
+    mvKeys1_new = mvKeys1;
+    mDes1_new = mDes1;
+    mvKeys2_new = mvKeys2;
+    mDes2_new = mDes2;
+
+    cout << "Size of goodmatchs:  " << good_matches.size() << endl;
+    for(const auto &g:good_matches)
+    {
+        mvKeys1_new.erase(mvKeys1_new.begin()+g.queryIdx);
+        mvKeys2_new.erase(mvKeys2_new.begin()+g.trainIdx);
+
+        // todo
+        //   cv::Mat中没有删除某一列或者行的函数
+        //   只能构造新的Mat，在删除某一列后，将后边的复制到新的Mat当中去
+        //   新的解决方案是：将Mat转换为vector，使用back() pop()等操作处理后，再转换成Mat
+        //   注意：由于删除的是列，而转换成vector后操作的是行，因此可以对Mat进行转置后，再进行转换操作，即Mat.t()
+//        if(g.queryIdx==216)
+//        {
+//            mDes1_new = mDes1_new.t();
+//            mDes1_new.pop_back();
+//            mDes1_new = mDes1_new.t();
+//        }
+//        else
+//        {
+//            cout << "g ID: " << g.queryIdx << endl;
+//            for (int i = g.queryIdx+1; i <216 ; i++)
+//            {
+//                mDes1_new.col(i-1) = mDes1_new.col(i) + Scalar(0,0,0,0);
+//            }
+//            mDes1_new = mDes1_new.t();
+//            mDes1_new.pop_back();
+//            mDes1_new = mDes1_new.t();
+//        }
+
+//        if(g.trainIdx==216)
+//        {
+//            mDes2_new = mDes2_new.t();
+//            mDes2_new.pop_back();
+//            mDes2_new = mDes2_new.t();
+//        }
+//        else
+//        {
+//            for (int i = g.trainIdx+1; i <216 ; i++)
+//            {
+//                mDes2_new.col(i-1) = mDes2_new.col(i) + Scalar(0,0,0,0);
+//            }
+//            mDes2_new = mDes2_new.t();
+//            mDes2_new.pop_back();
+//            mDes2_new = mDes2_new.t();
+//        }
+
+
+//        mvKeys1_new.emplace_back(mvKeys1[g.queryIdx]);
+//        mDescriptors1_new.push_back(mDescriptors1.row(g.queryIdx));
+//        mvKeys2_new.emplace_back(mvKeys2[g.trainIdx]);
+//        mDescriptors2_new.push_back(mDescriptors2.row(g.trainIdx));
+    }
+
+    cout << "Sizes of mvKeys1_new: \t" << mvKeys1_new.size() << endl;
+    cout << "Sizes of mDes1_new: " << mDes1_new.size() << endl;
+    cout << "Sizes of mvKeys2_new: \t" << mvKeys2_new.size() << endl;
+    cout << "Sizes of mDes2_new: " << mDes2_new.size() << endl;
+
+    // todo :
+    //  计算DT网络的边矩阵，并计算差的范数，提取外点
+    //  更新keypoints，进行第二次match
+
+    cout << "\n\n\n*****************************\n\n\n" << endl;
+
+    /**************** 特征匹配 ******************/
+//    vector<DMatch> matches_new,good_matches_new;
+//    BFMatcher matcher_new (NORM_HAMMING);
+//    matcher_new.match(mDes1_new,mDes2_new,matches_new);
+//    //计算最大与最小距离
+////    double min_dist = 10000,max_dist = 0;
+//    for (int k = 0; k < mDes1_new.rows; k++) {
+//        double dist = matches_new[k].distance;
+//        if(dist < min_dist)
+//            min_dist = dist;
+//        if(dist > max_dist)
+//            max_dist = dist;
+//    }
+//
+//    cerr << "min_dist:" << min_dist << endl;
+//    cerr << "max_dist:" << max_dist << endl;
+//
+//    //筛选匹配
+//    temp=0;
+//    for (int l = 0; l < mDes1_new.rows; l++)
+//    {
+//        if(matches_new[l].distance <= d_max_vaule_new )     //d_max_vaule
+//        {
+//            matches_new[l].imgIdx=temp;
+//            good_matches_new.emplace_back(matches_new[l]);
+//            temp++;
+//        }
+//    }
+//    temp=0;
+//
+//
+//    cout << "\nmatch:" << good_matches_new.size()<<endl;
+//    Mat show_new;
+////    cv::drawMatches(mvImageShow1[level],mvKeys1,mvImageShow2[level],mvKeys2,good_matches,show);
+//    cv::drawMatches(feature1,mvKeys1_new,feature2,mvKeys2_new,good_matches_new,show_new);
+//    imwrite("matches_new.png",show_new);
+//    imshow("matches_new",show_new);
+////    waitKey(0);
+    /****************************************/
     cout << "finish!" << endl;
+    waitKey(0);
     return 0;
 }

@@ -239,7 +239,7 @@ public:
     void computeEdgeMatrix()
     {
         unsigned long count=_edges.size();
-        edgeMatrix = Eigen::MatrixXd::Zero(20,20);
+        edgeMatrix = Eigen::MatrixXd::Zero(500,500);
         for(const auto &p:_edges)
         {
             unsigned long m=p.p1.index;
@@ -247,8 +247,8 @@ public:
             edgeMatrix(m,n) = 1;
             edgeMatrix(n,m) = 1;
         }
-//        std::cout << "Sizes of EdgeMatrix: " << count << std::endl;
-        std::cout << edgeMatrix << std::endl;
+        std::cout << "Sizes of EdgeMatrix: " << count << std::endl;
+//        std::cout << edgeMatrix << std::endl;
     }
 
     const std::vector<TriangleType>& getTriangles() const { return _triangles; }

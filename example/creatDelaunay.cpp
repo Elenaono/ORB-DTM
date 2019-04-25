@@ -91,7 +91,7 @@ int main()
     waitKey(0);
 
     /************************** compute edge matrix of DT nets **********************************/
-    Eigen::MatrixXd edgeMatrix = Eigen::MatrixXd::Zero(20,20);
+    Eigen::MatrixXd edgeMatrix = Eigen::MatrixXd::Zero(500,500);  //Zero(20,20);
     edgeMatrix = triangulation_one.getEdgeMatrix() - triangulation_two.getEdgeMatrix();
     double value =0;
     value = edgeMatrix.norm();

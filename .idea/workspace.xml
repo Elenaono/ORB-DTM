@@ -15,7 +15,10 @@
   <component name="ChangeListManager">
     <list default="true" id="a4ea8d15-dc0f-400f-80e1-a9475942da02" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/ORB-DTM.dir/CXX.includecache" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/ORB-DTM.dir/CXX.includecache" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/example/creatDelaunay.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/example/creatDelaunay.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/example/orbextract.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/example/orbextract.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/delaunay.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/delaunay.h" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/cmake-build-debug/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -30,8 +33,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/example/creatDelaunay.cpp">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="2311">
-              <caret line="98" lean-forward="true" selection-start-line="98" selection-end-line="98" />
+            <state relative-caret-position="-338">
+              <caret line="47" column="69" lean-forward="true" selection-start-line="47" selection-start-column="69" selection-end-line="47" selection-end-column="69" />
               <folding>
                 <element signature="e#0#19#0" expanded="true" />
               </folding>
@@ -42,8 +45,21 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/example/orbextract.cpp">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1063">
-              <caret line="162" lean-forward="true" selection-start-line="162" selection-end-line="162" />
+            <state relative-caret-position="382">
+              <caret line="210" column="35" lean-forward="true" selection-start-line="210" selection-start-column="35" selection-end-line="210" selection-end-column="35" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/include/delaunay.h">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="295">
+              <caret line="248" column="9" selection-start-line="248" selection-start-column="9" selection-end-line="248" selection-end-column="9" />
+              <folding>
+                <element signature="e#39#59#0" expanded="true" />
+                <element signature="e#5251#8278#0" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -113,12 +129,12 @@
         <option value="$PROJECT_DIR$/CMakeLists.txt" />
         <option value="$PROJECT_DIR$/include/calculator.h" />
         <option value="$PROJECT_DIR$/include/edge.h" />
-        <option value="$PROJECT_DIR$/include/delaunay.h" />
         <option value="$PROJECT_DIR$/include/computeSM.h" />
         <option value="$PROJECT_DIR$/include/triangle.h" />
         <option value="$PROJECT_DIR$/src/computeSM.cpp" />
-        <option value="$PROJECT_DIR$/example/creatDelaunay.cpp" />
         <option value="$PROJECT_DIR$/src/ORBextractor.cpp" />
+        <option value="$PROJECT_DIR$/example/creatDelaunay.cpp" />
+        <option value="$PROJECT_DIR$/include/delaunay.h" />
         <option value="$PROJECT_DIR$/example/orbextract.cpp" />
       </list>
     </option>
@@ -228,7 +244,7 @@
       <workItem from="1555417560682" duration="40000" />
       <workItem from="1555420958669" duration="20232000" />
       <workItem from="1555987644435" duration="1123000" />
-      <workItem from="1556019073456" duration="12432000" />
+      <workItem from="1556019073456" duration="22877000" />
     </task>
     <task id="LOCAL-00001" summary="update from clion.&#10;增加了使用Eigen定义相似度矩阵">
       <created>1555587305387</created>
@@ -279,11 +295,18 @@
       <option name="project" value="LOCAL" />
       <updated>1556094213816</updated>
     </task>
-    <option name="localTasksCounter" value="8" />
+    <task id="LOCAL-00008" summary="计算DT网络之间的边矩阵前的备份">
+      <created>1556095251393</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1556095251393</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="48550000" />
+    <option name="totallyTimeSpent" value="58995000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="41" y="-4" width="1879" height="1084" extended-state="6" />
@@ -295,7 +318,7 @@
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" weight="0.32846716" />
       <window_info anchor="bottom" id="Run" order="2" weight="0.42752868" />
-      <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
+      <window_info anchor="bottom" id="Debug" order="3" weight="0.39937434" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" />
@@ -321,7 +344,8 @@
     <MESSAGE value="尝试增加index前的备份" />
     <MESSAGE value="删除临时变量" />
     <MESSAGE value="能够构建good_matchs结果下对应的DT网络" />
-    <option name="LAST_COMMIT_MESSAGE" value="能够构建good_matchs结果下对应的DT网络" />
+    <MESSAGE value="计算DT网络之间的边矩阵前的备份" />
+    <option name="LAST_COMMIT_MESSAGE" value="计算DT网络之间的边矩阵前的备份" />
     <option name="GROUP_MULTIFILE_MERGE_BY_DIRECTORY" value="true" />
   </component>
   <component name="editorHistoryManager">
@@ -329,13 +353,6 @@
     <entry file="file://$PROJECT_DIR$/src/caculator.h" />
     <entry file="file://$PROJECT_DIR$/include/caculator.h" />
     <entry file="file://$PROJECT_DIR$/src/caculator.cpp" />
-    <entry file="file:///usr/include/c++/5/bits/stl_vector.h">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="301">
-          <caret line="317" column="6" selection-start-line="317" selection-start-column="6" selection-end-line="317" selection-end-column="6" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/include/calculator.h">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="650">
@@ -353,19 +370,6 @@
           <caret line="15" selection-start-line="15" selection-end-line="15" />
           <folding>
             <element signature="e#31#51#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/include/delaunay.h">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="702">
-          <caret line="134" column="7" selection-start-line="134" selection-start-column="7" selection-end-line="134" selection-end-column="7" />
-          <folding>
-            <element signature="e#39#59#0" expanded="true" />
-            <element signature="e#150#159#0" expanded="true" />
-            <element signature="e#398#4411#0" />
-            <element signature="e#4417#7543#0" />
           </folding>
         </state>
       </provider>
@@ -421,16 +425,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/example/creatDelaunay.cpp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2311">
-          <caret line="98" lean-forward="true" selection-start-line="98" selection-end-line="98" />
-          <folding>
-            <element signature="e#0#19#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/include/ORBextractor.h">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="302">
@@ -456,10 +450,51 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/include/delaunay.h">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="295">
+          <caret line="248" column="9" selection-start-line="248" selection-start-column="9" selection-end-line="248" selection-end-column="9" />
+          <folding>
+            <element signature="e#39#59#0" expanded="true" />
+            <element signature="e#5251#8278#0" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/matches.png">
+      <provider selected="true" editor-type-id="images" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/matches_new.png">
+      <provider selected="true" editor-type-id="images" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/example/creatDelaunay.cpp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-338">
+          <caret line="47" column="69" lean-forward="true" selection-start-line="47" selection-start-column="69" selection-end-line="47" selection-end-column="69" />
+          <folding>
+            <element signature="e#0#19#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file:///usr/include/c++/5/bits/stl_vector.h">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="284">
+          <caret line="1144" column="26" lean-forward="true" selection-start-line="1144" selection-start-column="26" selection-end-line="1144" selection-end-column="26" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file:///opt/ros/kinetic/include/opencv-3.3.1-dev/opencv2/core/mat.inl.hpp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="183">
+          <caret line="732" selection-start-line="732" selection-end-line="732" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/example/orbextract.cpp">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1063">
-          <caret line="162" lean-forward="true" selection-start-line="162" selection-end-line="162" />
+        <state relative-caret-position="382">
+          <caret line="210" column="35" lean-forward="true" selection-start-line="210" selection-start-column="35" selection-end-line="210" selection-end-column="35" />
         </state>
       </provider>
     </entry>
