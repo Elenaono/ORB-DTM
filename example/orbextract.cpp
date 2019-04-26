@@ -215,30 +215,39 @@ int main()
     sort(order1.begin(),order1.end());
     sort(order2.begin(),order2.end());
 
+    order1.erase(order1.begin()+8);
+    order2.erase(order2.begin()+8);
 
-//    cerr << "debug!" << endl;
-//    int dele_temp_1=0;
-//    int dele_temp_2=0;
-//    int dele_temp_count1=0;
-//    int dele_temp_count2=0;
-//    for (int i = 0; i < 217; ++i)
-//    {
-//        if(i == *(order1.begin()+dele_temp_count1))
-//            dele_temp_count1++;
-//        else
-//        {
-//            mDes1.row(i).copyTo(mDes1_new.row(dele_temp_1));
-//            dele_temp_1++;
-//        }
-//
-//        if(i == *(order2.begin()+dele_temp_count2))
-//            dele_temp_count2++;
-//        else
-//        {
-//            mDes1.row(i).copyTo(mDes2_new.row(dele_temp_2));
-//            dele_temp_2++;
-//        }
-//    }
+    cout << "\nSizes of order1: " << order1.size() << endl;
+    for(const auto &p:order1)
+        cout << p << endl;
+    cout << "\nSizes of order2: " << order2.size() << endl;
+    for(const auto &p:order2)
+        cout << p << endl;
+
+    cerr << "debug!" << endl;
+    int dele_temp_1=0;
+    int dele_temp_2=0;
+    int dele_temp_count1=0;
+    int dele_temp_count2=0;
+    for (int i = 0; i < 216; ++i)
+    {
+        if(i == *(order1.begin()+dele_temp_count1))
+            dele_temp_count1++;
+        else
+        {
+            mDes1.row(i).copyTo(mDes1_new.row(dele_temp_1));
+            dele_temp_1++;
+        }
+
+        if(i == *(order2.begin()+dele_temp_count2))
+            dele_temp_count2++;
+        else
+        {
+            mDes2.row(i).copyTo(mDes2_new.row(dele_temp_2));
+            dele_temp_2++;
+        }
+    }
 
     cout << "Sizes of mvKeys1_new: \t" << mvKeys1_new.size() << endl;
     cout << "Sizes of mDes1_new: " << mDes1_new.size() << endl;
@@ -249,7 +258,7 @@ int main()
     //  计算DT网络的边矩阵，并计算差的范数，提取外点
     //  更新keypoints，进行第二次match
 
-    cout << "\n\n\n*****************************\n\n\n" << endl;
+//    cout << "\n\n\n*****************************\n\n\n" << endl;
 
     /**************** 特征匹配 ******************/
 //    vector<DMatch> matches_new,good_matches_new;
