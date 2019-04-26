@@ -18,6 +18,7 @@
       <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/orbextract.dir/example/orbextract.cpp.o" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/orbextract.dir/example/orbextract.cpp.o" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cmake-build-debug/orbextract" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/orbextract" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/example/orbextract.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/example/orbextract.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/matches.png" beforeDir="false" afterPath="$PROJECT_DIR$/matches.png" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/cmake-build-debug/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -44,20 +45,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/example/orbextract.cpp">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="413">
-              <caret line="283" column="66" selection-start-line="283" selection-start-column="66" selection-end-line="283" selection-end-column="66" />
-              <folding>
-                <element signature="e#35#54#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file:///opt/ros/kinetic/include/opencv-3.3.1-dev/opencv2/core/mat.inl.hpp">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="165">
-              <caret line="726" selection-start-line="726" selection-end-line="726" />
+            <state relative-caret-position="375">
+              <caret line="287" lean-forward="true" selection-start-line="287" selection-end-line="287" />
             </state>
           </provider>
         </entry>
@@ -255,7 +244,7 @@
       <workItem from="1555417560682" duration="40000" />
       <workItem from="1555420958669" duration="20232000" />
       <workItem from="1555987644435" duration="1123000" />
-      <workItem from="1556019073456" duration="35221000" />
+      <workItem from="1556019073456" duration="39084000" />
     </task>
     <task id="LOCAL-00001" summary="update from clion.&#10;增加了使用Eigen定义相似度矩阵">
       <created>1555587305387</created>
@@ -324,7 +313,7 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="71339000" />
+    <option name="totallyTimeSpent" value="75202000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="41" y="-4" width="1879" height="1084" extended-state="6" />
@@ -335,7 +324,7 @@
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" weight="0.32846716" />
-      <window_info anchor="bottom" id="Run" order="2" weight="0.911366" />
+      <window_info anchor="bottom" id="Run" order="2" weight="0.31074035" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.39937434" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -468,13 +457,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file:///usr/include/c++/5/bits/stl_vector.h">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="310">
-          <caret line="653" column="6" selection-start-line="653" selection-start-column="6" selection-end-line="653" selection-end-column="6" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file:///opt/ros/kinetic/include/opencv-3.3.1-dev/opencv2/core/types.hpp">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="292">
@@ -510,13 +492,24 @@
         </state>
       </provider>
     </entry>
+    <entry file="file:///usr/include/c++/5/bits/stl_vector.h">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="310">
+          <caret line="252" column="6" selection-start-line="252" selection-start-column="6" selection-end-line="252" selection-end-column="6" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file:///opt/ros/kinetic/include/opencv-3.3.1-dev/opencv2/features2d.hpp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="84">
+          <caret line="1068" column="2" lean-forward="true" selection-start-line="1068" selection-start-column="2" selection-end-line="1068" selection-end-column="2" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/example/orbextract.cpp">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="413">
-          <caret line="283" column="66" selection-start-line="283" selection-start-column="66" selection-end-line="283" selection-end-column="66" />
-          <folding>
-            <element signature="e#35#54#0" expanded="true" />
-          </folding>
+        <state relative-caret-position="375">
+          <caret line="287" lean-forward="true" selection-start-line="287" selection-end-line="287" />
         </state>
       </provider>
     </entry>

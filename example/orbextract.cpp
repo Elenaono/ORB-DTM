@@ -100,8 +100,12 @@ int main()
     vector<DMatch> matches,good_matches;
     BFMatcher matcher (NORM_HAMMING);
     matcher.match(mDes1,mDes2,matches);
+
+//    cout << "Size of nDes1: " << mDes1.size << endl;
+
     //计算最大与最小距离
     double min_dist = 10000,max_dist = 0;
+
     for (int k = 0; k < mDes1.rows; k++) {
         double dist = matches[k].distance;
         if(dist < min_dist)
@@ -196,12 +200,23 @@ int main()
     //   注意：由于删除的是列，而转换成vector后操作的是行，因此可以对Mat进行转置后，再进行转换操作，即Mat.t()
     //   在循环外边完成Mat到vector的转换工作，进行循环操作并退出后，再进行转换回来
 
+
     mvKeys1_new = mvKeys1;
     mvKeys2_new = mvKeys2;
     temp = (int)(217-good_matches.size());
     cv::Mat mDes1_new(temp,32,CV_32F);
     cv::Mat mDes2_new(temp,32,CV_32F);
     temp = 0;
+
+
+//    cerr << "Size of mDes1_new: " << mDes1_new.size << endl;
+//    cerr << "rows of mDes1_new: " << mDes1_new.rows << endl;
+//    cerr << "cols of mDes1_new: " << mDes1_new.cols << endl;
+
+//    cerr << "Sizes of mDes1: " << mDes1.size() << endl;
+
+//    cerr << "Size of mDes1!!!!!!!: "  << mDes1.size << endl;
+
 
     vector<int> order1,order2;
     cout << "Size of goodmatchs:  " << good_matches.size() << endl;
@@ -218,14 +233,14 @@ int main()
     order1.erase(order1.begin()+8);
     order2.erase(order2.begin()+8);
 
-    cout << "\nSizes of order1: " << order1.size() << endl;
-    for(const auto &p:order1)
-        cout << p << endl;
-    cout << "\nSizes of order2: " << order2.size() << endl;
-    for(const auto &p:order2)
-        cout << p << endl;
+//    cout << "Sizes of order1: " << order1.size() << endl;
+//    for(const auto &p:order1)
+//        cout << p << endl;
+//    cout << "Sizes of order2: " << order2.size() << endl;
+//    for(const auto &p:order2)
+//        cout << p << endl;
 
-    cerr << "debug!" << endl;
+//    cerr << "debug!" << endl;
     int dele_temp_1=0;
     int dele_temp_2=0;
     int dele_temp_count1=0;
@@ -247,12 +262,18 @@ int main()
             mDes2.row(i).copyTo(mDes2_new.row(dele_temp_2));
             dele_temp_2++;
         }
+
     }
 
+//    mDes1_new = mDes1_new.t();
+//    mDes2_new = mDes2_new.t();
+
+    mvKeys1_new.pop_back();
+
     cout << "Sizes of mvKeys1_new: \t" << mvKeys1_new.size() << endl;
-    cout << "Sizes of mDes1_new: " << mDes1_new.size() << endl;
+    cout << "Sizes of mDes1_new:\t\t" << mDes1_new.size << endl;
     cout << "Sizes of mvKeys2_new: \t" << mvKeys2_new.size() << endl;
-    cout << "Sizes of mDes2_new: " << mDes2_new.size() << endl;
+    cout << "Sizes of mDes2_new:\t\t" << mDes2_new.size << endl;
 
     // todo :
     //  计算DT网络的边矩阵，并计算差的范数，提取外点
@@ -263,6 +284,12 @@ int main()
     /**************** 特征匹配 ******************/
 //    vector<DMatch> matches_new,good_matches_new;
 //    BFMatcher matcher_new (NORM_HAMMING);
+//    matcher.match(mDes1_new,mDes2_new,matches_new);
+
+
+//    vector<DMatch> matches,good_matches;
+//    BFMatcher matcher (NORM_HAMMING);
+//    matcher.match(mDes1,mDes2,matches);
 //    matcher_new.match(mDes1_new,mDes2_new,matches_new);
 //    //计算最大与最小距离
 ////    double min_dist = 10000,max_dist = 0;
