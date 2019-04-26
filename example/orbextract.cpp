@@ -46,11 +46,10 @@ int main()
     vector<cv::KeyPoint> mvKeys1;        //一维特征点
     vector<cv::KeyPoint> mvKeys1_new;
     cv::Mat mDescriptors1;               //描述子
-    cv::Mat mDescriptors1_new;
     vector<int> mnFeaturesPerLevel1;     //金字塔每层的特征点数量
     vector<vector<cv::KeyPoint>> mvvKeypoints1;  //每层的特征点
     cv::Mat mDes1;
-    cv::Mat mDes1_new;
+//    cv::Mat mDes1_new;
     /**************** 图片一：提取特征点信息 ******************/
     ORBextractor *orb1 = new ORBextractor(nFeatures,fScaleFactor,nLevels,fIniThFAST,fMinThFAST);
     (*orb1)(first_image,cv::Mat(),mvKeys1,mDescriptors1);
@@ -76,11 +75,10 @@ int main()
     vector<cv::KeyPoint> mvKeys2;        //一维特征点
     vector<cv::KeyPoint> mvKeys2_new;
     cv::Mat mDescriptors2;               //描述子
-    cv::Mat mDescriptors2_new;
     vector<int> mnFeaturesPerLevel2;     //金字塔每层的特征点数量
     vector<vector<cv::KeyPoint>> mvvKeypoints2;  //每层的特征点
     cv::Mat mDes2;
-    cv::Mat mDes2_new;
+//    cv::Mat mDes2_new;
     /**************** 图片二：提取特征点信息 ******************/
     ORBextractor *orb2 = new ORBextractor(nFeatures,fScaleFactor,nLevels,fIniThFAST,fMinThFAST);
     (*orb2)(second_image,cv::Mat(),mvKeys2,mDescriptors2);
@@ -179,7 +177,7 @@ int main()
     cv::drawMatches(feature1,mvKeys1,feature2,mvKeys2,good_matches,show);
     imwrite("matches.png",show);
     imshow("matches",show);
-    waitKey(0);
+//    waitKey(0);
 
     /****************************************/
     Eigen::MatrixXd edgeMatrix = Eigen::MatrixXd::Zero(500,500);
@@ -189,63 +187,58 @@ int main()
     cout << "\nvalue: " << value <<  endl;
 
 
-    mvKeys1_new = mvKeys1;
-    mDes1_new = mDes1;
-    mvKeys2_new = mvKeys2;
-    mDes2_new = mDes2;
 
+
+    // todo
+    //   cv::Mat中没有删除某一列或者行的函数
+    //   只能构造新的Mat，在删除某一列后，将后边的复制到新的Mat当中去
+    //   新的解决方案是：将Mat转换为vector，使用back() pop()等操作处理后，再转换成Mat
+    //   注意：由于删除的是列，而转换成vector后操作的是行，因此可以对Mat进行转置后，再进行转换操作，即Mat.t()
+    //   在循环外边完成Mat到vector的转换工作，进行循环操作并退出后，再进行转换回来
+
+    mvKeys1_new = mvKeys1;
+    mvKeys2_new = mvKeys2;
+    temp = (int)(217-good_matches.size());
+    cv::Mat mDes1_new(temp,32,CV_32F);
+    cv::Mat mDes2_new(temp,32,CV_32F);
+    temp = 0;
+
+    vector<int> order1,order2;
     cout << "Size of goodmatchs:  " << good_matches.size() << endl;
     for(const auto &g:good_matches)
     {
         mvKeys1_new.erase(mvKeys1_new.begin()+g.queryIdx);
         mvKeys2_new.erase(mvKeys2_new.begin()+g.trainIdx);
-
-        // todo
-        //   cv::Mat中没有删除某一列或者行的函数
-        //   只能构造新的Mat，在删除某一列后，将后边的复制到新的Mat当中去
-        //   新的解决方案是：将Mat转换为vector，使用back() pop()等操作处理后，再转换成Mat
-        //   注意：由于删除的是列，而转换成vector后操作的是行，因此可以对Mat进行转置后，再进行转换操作，即Mat.t()
-//        if(g.queryIdx==216)
-//        {
-//            mDes1_new = mDes1_new.t();
-//            mDes1_new.pop_back();
-//            mDes1_new = mDes1_new.t();
-//        }
-//        else
-//        {
-//            cout << "g ID: " << g.queryIdx << endl;
-//            for (int i = g.queryIdx+1; i <216 ; i++)
-//            {
-//                mDes1_new.col(i-1) = mDes1_new.col(i) + Scalar(0,0,0,0);
-//            }
-//            mDes1_new = mDes1_new.t();
-//            mDes1_new.pop_back();
-//            mDes1_new = mDes1_new.t();
-//        }
-
-//        if(g.trainIdx==216)
-//        {
-//            mDes2_new = mDes2_new.t();
-//            mDes2_new.pop_back();
-//            mDes2_new = mDes2_new.t();
-//        }
-//        else
-//        {
-//            for (int i = g.trainIdx+1; i <216 ; i++)
-//            {
-//                mDes2_new.col(i-1) = mDes2_new.col(i) + Scalar(0,0,0,0);
-//            }
-//            mDes2_new = mDes2_new.t();
-//            mDes2_new.pop_back();
-//            mDes2_new = mDes2_new.t();
-//        }
-
-
-//        mvKeys1_new.emplace_back(mvKeys1[g.queryIdx]);
-//        mDescriptors1_new.push_back(mDescriptors1.row(g.queryIdx));
-//        mvKeys2_new.emplace_back(mvKeys2[g.trainIdx]);
-//        mDescriptors2_new.push_back(mDescriptors2.row(g.trainIdx));
+        order1.emplace_back(g.queryIdx);
+        order2.emplace_back(g.trainIdx);
     }
+    sort(order1.begin(),order1.end());
+    sort(order2.begin(),order2.end());
+
+
+//    cerr << "debug!" << endl;
+//    int dele_temp_1=0;
+//    int dele_temp_2=0;
+//    int dele_temp_count1=0;
+//    int dele_temp_count2=0;
+//    for (int i = 0; i < 217; ++i)
+//    {
+//        if(i == *(order1.begin()+dele_temp_count1))
+//            dele_temp_count1++;
+//        else
+//        {
+//            mDes1.row(i).copyTo(mDes1_new.row(dele_temp_1));
+//            dele_temp_1++;
+//        }
+//
+//        if(i == *(order2.begin()+dele_temp_count2))
+//            dele_temp_count2++;
+//        else
+//        {
+//            mDes1.row(i).copyTo(mDes2_new.row(dele_temp_2));
+//            dele_temp_2++;
+//        }
+//    }
 
     cout << "Sizes of mvKeys1_new: \t" << mvKeys1_new.size() << endl;
     cout << "Sizes of mDes1_new: " << mDes1_new.size() << endl;
@@ -298,6 +291,6 @@ int main()
 ////    waitKey(0);
     /****************************************/
     cout << "finish!" << endl;
-    waitKey(0);
+//    waitKey(0);
     return 0;
 }
