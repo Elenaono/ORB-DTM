@@ -1,6 +1,3 @@
-//
-// Created by lu on 19-3-23.
-//
 #include <iostream>
 #include <string>
 #include <vector>
@@ -49,7 +46,6 @@ int main()
     vector<int> mnFeaturesPerLevel1;     //金字塔每层的特征点数量
     vector<vector<cv::KeyPoint>> mvvKeypoints1;  //每层的特征点
     cv::Mat mDes1;
-//    cv::Mat mDes1_new;
     /**************** 图片一：提取特征点信息 ******************/
     ORBextractor *orb1 = new ORBextractor(nFeatures,fScaleFactor,nLevels,fIniThFAST,fMinThFAST);
     (*orb1)(first_image,cv::Mat(),mvKeys1,mDescriptors1);
@@ -61,7 +57,6 @@ int main()
 
     mvvKeypoints1 = orb1->GetmvvKeypoints();
     mvKeys1 = mvvKeypoints1[level];
-    cerr << "Size of : " <<mvKeys1.size()<< endl;
     mDes1 = mDescriptors1.rowRange(0,mnFeaturesPerLevel1[level]).clone();
 
     cout <<"KeyPoints:"<<mnFeaturesPerLevel1[level]<<endl;
@@ -78,7 +73,6 @@ int main()
     vector<int> mnFeaturesPerLevel2;     //金字塔每层的特征点数量
     vector<vector<cv::KeyPoint>> mvvKeypoints2;  //每层的特征点
     cv::Mat mDes2;
-//    cv::Mat mDes2_new;
     /**************** 图片二：提取特征点信息 ******************/
     ORBextractor *orb2 = new ORBextractor(nFeatures,fScaleFactor,nLevels,fIniThFAST,fMinThFAST);
     (*orb2)(second_image,cv::Mat(),mvKeys2,mDescriptors2);
@@ -100,8 +94,6 @@ int main()
     vector<DMatch> matches,good_matches;
     BFMatcher matcher (NORM_HAMMING);
     matcher.match(mDes1,mDes2,matches);
-
-//    cout << "Size of nDes1: " << mDes1.size << endl;
 
     //计算最大与最小距离
     double min_dist = 10000,max_dist = 0;
@@ -139,8 +131,6 @@ int main()
     {
         points.emplace_back(Vector2<float>(mvKeys1[g.queryIdx].pt.x , mvKeys1[g.queryIdx].pt.y ,g.imgIdx ));
     }
-
-    cout << "Size of points1: " << points.size() << endl;
 
     Delaunay<float> triangulation;
     const std::vector<Triangle<float> > triangles = triangulation.triangulate(points);  //逐点插入法
@@ -181,7 +171,7 @@ int main()
     cv::drawMatches(feature1,mvKeys1,feature2,mvKeys2,good_matches,show);
     imwrite("matches.png",show);
     imshow("matches",show);
-//    waitKey(0);
+    waitKey(0);
 
     /****************************************/
     Eigen::MatrixXd edgeMatrix = Eigen::MatrixXd::Zero(500,500);
@@ -190,33 +180,19 @@ int main()
     value = edgeMatrix.norm();
     cout << "\nvalue: " << value <<  endl;
 
-
-
-
-    // todo
+    //
     //   cv::Mat中没有删除某一列或者行的函数
     //   只能构造新的Mat，在删除某一列后，将后边的复制到新的Mat当中去
     //   新的解决方案是：将Mat转换为vector，使用back() pop()等操作处理后，再转换成Mat
     //   注意：由于删除的是列，而转换成vector后操作的是行，因此可以对Mat进行转置后，再进行转换操作，即Mat.t()
     //   在循环外边完成Mat到vector的转换工作，进行循环操作并退出后，再进行转换回来
 
-
     mvKeys1_new = mvKeys1;
     mvKeys2_new = mvKeys2;
     temp = (int)(217-good_matches.size());
-    cv::Mat mDes1_new(temp,32,CV_32F);
-    cv::Mat mDes2_new(temp,32,CV_32F);
+    cv::Mat mDes1_new(temp,32,CV_8U);   /// 严格注意type  因为ORB对应的描述子是 8U，使用 32F时，会导致BFMatch出错 (吃了大亏。。。)
+    cv::Mat mDes2_new(temp,32,CV_8U);
     temp = 0;
-
-
-//    cerr << "Size of mDes1_new: " << mDes1_new.size << endl;
-//    cerr << "rows of mDes1_new: " << mDes1_new.rows << endl;
-//    cerr << "cols of mDes1_new: " << mDes1_new.cols << endl;
-
-//    cerr << "Sizes of mDes1: " << mDes1.size() << endl;
-
-//    cerr << "Size of mDes1!!!!!!!: "  << mDes1.size << endl;
-
 
     vector<int> order1,order2;
     cout << "Size of goodmatchs:  " << good_matches.size() << endl;
@@ -233,14 +209,6 @@ int main()
     order1.erase(order1.begin()+8);
     order2.erase(order2.begin()+8);
 
-//    cout << "Sizes of order1: " << order1.size() << endl;
-//    for(const auto &p:order1)
-//        cout << p << endl;
-//    cout << "Sizes of order2: " << order2.size() << endl;
-//    for(const auto &p:order2)
-//        cout << p << endl;
-
-//    cerr << "debug!" << endl;
     int dele_temp_1=0;
     int dele_temp_2=0;
     int dele_temp_count1=0;
@@ -265,9 +233,6 @@ int main()
 
     }
 
-//    mDes1_new = mDes1_new.t();
-//    mDes2_new = mDes2_new.t();
-
     mvKeys1_new.pop_back();
 
     cout << "Sizes of mvKeys1_new: \t" << mvKeys1_new.size() << endl;
@@ -275,56 +240,59 @@ int main()
     cout << "Sizes of mvKeys2_new: \t" << mvKeys2_new.size() << endl;
     cout << "Sizes of mDes2_new:\t\t" << mDes2_new.size << endl;
 
-    // todo :
+    cout << "Sizes of mDes1:\t\t" << mDes1.size << endl;
+    cout << "Sizes of mDes2:\t\t" << mDes2.size << endl;
+
+    //
     //  计算DT网络的边矩阵，并计算差的范数，提取外点
     //  更新keypoints，进行第二次match
 
-//    cout << "\n\n\n*****************************\n\n\n" << endl;
-
+    // todo
+    //      实现了二次匹配
+    //      但是第二次效果并不好
+    //      并且存在一些问题：
+    //          1.修改第一次的匹配阈值后，出错；
+    //          2.第二次效果太差了。。。
     /**************** 特征匹配 ******************/
-//    vector<DMatch> matches_new,good_matches_new;
-//    BFMatcher matcher_new (NORM_HAMMING);
-//    matcher.match(mDes1_new,mDes2_new,matches_new);
+    vector<DMatch> matches2,good_matches2;
+    BFMatcher matcher2 (NORM_HAMMING);
+    matcher2.match(mDes1_new,mDes2_new,matches2);
 
+    //计算最大与最小距离
+//    double min_dist = 10000,max_dist = 0;
 
-//    vector<DMatch> matches,good_matches;
-//    BFMatcher matcher (NORM_HAMMING);
-//    matcher.match(mDes1,mDes2,matches);
-//    matcher_new.match(mDes1_new,mDes2_new,matches_new);
-//    //计算最大与最小距离
-////    double min_dist = 10000,max_dist = 0;
-//    for (int k = 0; k < mDes1_new.rows; k++) {
-//        double dist = matches_new[k].distance;
-//        if(dist < min_dist)
-//            min_dist = dist;
-//        if(dist > max_dist)
-//            max_dist = dist;
-//    }
-//
-//    cerr << "min_dist:" << min_dist << endl;
-//    cerr << "max_dist:" << max_dist << endl;
-//
-//    //筛选匹配
-//    temp=0;
-//    for (int l = 0; l < mDes1_new.rows; l++)
-//    {
-//        if(matches_new[l].distance <= d_max_vaule_new )     //d_max_vaule
-//        {
-//            matches_new[l].imgIdx=temp;
-//            good_matches_new.emplace_back(matches_new[l]);
-//            temp++;
-//        }
-//    }
-//    temp=0;
-//
-//
-//    cout << "\nmatch:" << good_matches_new.size()<<endl;
-//    Mat show_new;
-////    cv::drawMatches(mvImageShow1[level],mvKeys1,mvImageShow2[level],mvKeys2,good_matches,show);
-//    cv::drawMatches(feature1,mvKeys1_new,feature2,mvKeys2_new,good_matches_new,show_new);
-//    imwrite("matches_new.png",show_new);
-//    imshow("matches_new",show_new);
-////    waitKey(0);
+    for (int k = 0; k < mDes1_new.rows; k++) {
+        double dist = matches2[k].distance;
+        if(dist < min_dist)
+            min_dist = dist;
+        if(dist > max_dist)
+            max_dist = dist;
+    }
+
+    cerr << "min_dist:" << min_dist << endl;
+    cerr << "max_dist:" << max_dist << endl;
+
+//    int d_max =d_max_vaule;
+    //筛选匹配
+    temp=0;
+    for (int l = 0; l < mDes1_new.rows; l++)
+    {
+        if(matches2[l].distance <= d_max_vaule_new )
+        {
+            matches2[l].imgIdx=temp;
+            good_matches2.emplace_back(matches2[l]);
+            temp++;
+        }
+    }
+    temp=0;
+
+    cout << "match:" << good_matches2.size()<<endl;
+    Mat show2;
+//    cv::drawMatches(mvImageShow1[level],mvKeys1,mvImageShow2[level],mvKeys2,good_matches,show);
+    cv::drawMatches(feature1,mvKeys1_new,feature2,mvKeys2_new,good_matches2,show2);
+    imwrite("matches2.png",show2);
+    imshow("matches2",show2);
+    waitKey(0);
     /****************************************/
     cout << "finish!" << endl;
 //    waitKey(0);
