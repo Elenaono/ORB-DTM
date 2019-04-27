@@ -42,7 +42,7 @@ public:
         return dist <= circum_radius;
     }
 
-    // todo: 计算角度  计算相似度
+    // 计算角度  计算相似度
     inline double computeAngle()
     {
         e1.computesideLength();

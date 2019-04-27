@@ -861,7 +861,7 @@ namespace ORB_SLAM2
     void ORBextractor::ComputeKeyPointsOctTree(vector<vector<KeyPoint> >& allKeypoints)
     {
         allKeypoints.resize(nlevels);   //这是容器中的resize,与图像的不同
-        mvvKeypoints.resize(nlevels);   //todo me
+        mvvKeypoints.resize(nlevels);   // me ???
 
         const float W = 30;     //对每一层图像划分30*30的栅格
 
@@ -1177,7 +1177,7 @@ namespace ORB_SLAM2
         // 计算每层图像的兴趣点
         // 计算关键点并生成四叉树
         vector < vector<KeyPoint> > allKeypoints;
-        ComputeKeyPointsOctTree(allKeypoints);      //todo
+        ComputeKeyPointsOctTree(allKeypoints);      //???
         //ComputeKeyPointsOld(allKeypoints);
 
         /*******************  计算描述子  **************************/
@@ -1214,7 +1214,7 @@ namespace ORB_SLAM2
             // Compute the descriptors
             Mat desc = descriptors.rowRange(offset, offset + nkeypointsLevel);  //offset 是偏移量，此处取出的是该层的描述子
             // 计算描述子
-            computeDescriptors(workingMat, keypoints, desc, pattern);   //todo
+            computeDescriptors(workingMat, keypoints, desc, pattern);   //???
 
             offset += nkeypointsLevel;  //更新偏移量
 
