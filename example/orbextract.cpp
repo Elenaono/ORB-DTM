@@ -19,21 +19,29 @@ using namespace std;
 using namespace cv;
 using namespace ORB_SLAM2;
 
-#define d_max_vaule 35
-#define d_max_vaule_new 45
+#define d_max_vaule 40
+#define d_max_vaule_new 30
 
-// todo: 筛选good_match 时，删除重复的点
+// todo
+//   第二次匹配效果太差
+//   怀疑原因为描述子出错，因为两次的匹配距离区间反而增大了
 
-bool cmp(const DMatch first,const DMatch second)
+// sort()时，自定义的排序条件
+// 用于对vector对象内的指定成员进行排序
+
+bool cmp1(const DMatch first, const DMatch second)
 {
     return first.trainIdx < second.trainIdx;
 }
 
+// unique()时，自定义的去重条件
+// 用于对vector对象内的指定成员进行去重
 bool cmp2(const DMatch first,const DMatch second)
 {
     return first.trainIdx == second.trainIdx;
 }
 
+// 主函数
 int main()
 {
     string file1 = "./data/desk1.png";
@@ -112,7 +120,6 @@ int main()
     for (int k = 0; k < mDes1.rows; k++)
     {
         double dist = matches[k].distance;
-//        cout << "dist: " << dist << endl;
         if(dist < min_dist)
             min_dist = dist;
         if(dist > max_dist)
@@ -131,24 +138,13 @@ int main()
         {
             matches[l].imgIdx=temp;
             good_matches.emplace_back(matches[l]);
-//            cout << matches[l].queryIdx << " , " << matches[l].trainIdx << " , " << matches[l].distance  << endl;
             temp++;
         }
     }
     temp=0;
 
-    sort(good_matches.begin(),good_matches.end(),cmp);
+    sort(good_matches.begin(), good_matches.end(), cmp1);
     good_matches.erase(unique(good_matches.begin(),good_matches.end(),cmp2),good_matches.end());
-//    for(const auto &p:good_matches)
-//    {
-//        cout <<p.queryIdx << "\t, " << p.trainIdx << "\t, " << p.distance  << endl;
-//        cout << p.queryIdx << endl;
-//        if(p.trainIdx==5 || p.trainIdx == 88)
-//        {
-//            new_matches.emplace_back(p);
-//            cout << "one" << endl;
-//        }
-//    }
 
     /**********************  构建第一组 DT 网络  ******************************/
     ///delaunay one
@@ -200,14 +196,13 @@ int main()
     imshow("matches",show);
     waitKey(0);
 
-    /****************************************/
+    /*******************  构建边矩阵，并计算相似度(范数)  *********************/
     Eigen::MatrixXd edgeMatrix = Eigen::MatrixXd::Zero(500,500);
     edgeMatrix = triangulation.getEdgeMatrix() - triangulation2.getEdgeMatrix();
     double value =0;
     value = edgeMatrix.norm();
     cout << "\nvalue: " << value <<  endl;
 
-    //
     //   cv::Mat中没有删除某一列或者行的函数
     //   只能构造新的Mat，在删除某一列后，将后边的复制到新的Mat当中去
     //   新的解决方案是：将Mat转换为vector，使用back() pop()等操作处理后，再转换成Mat
@@ -216,7 +211,7 @@ int main()
 
     mvKeys1_new = mvKeys1;
     mvKeys2_new = mvKeys2;
-    temp = (int)(217-good_matches.size());
+    temp = (int)(mnFeaturesPerLevel1[level]-good_matches.size());
     cv::Mat mDes1_new(temp,32,CV_8U);   /// 严格注意type  因为ORB对应的描述子是 8U，使用 32F时，会导致BFMatch出错 (吃了大亏。。。)
     cv::Mat mDes2_new(temp,32,CV_8U);
     temp = 0;
@@ -233,14 +228,11 @@ int main()
     sort(order1.begin(),order1.end());
     sort(order2.begin(),order2.end());
 
-    order1.erase(order1.begin()+8);
-    order2.erase(order2.begin()+8);
-
     int dele_temp_1=0;
     int dele_temp_2=0;
     int dele_temp_count1=0;
     int dele_temp_count2=0;
-    for (int i = 0; i < 216; ++i)
+    for (int i = 0; i < mnFeaturesPerLevel1[level]-1; ++i)
     {
         if(i == *(order1.begin()+dele_temp_count1))
             dele_temp_count1++;
@@ -267,14 +259,9 @@ int main()
     cout << "Sizes of mvKeys2_new: \t" << mvKeys2_new.size() << endl;
     cout << "Sizes of mDes2_new:\t\t" << mDes2_new.size << endl;
 
-    cout << "Sizes of mDes1:\t\t" << mDes1.size << endl;
-    cout << "Sizes of mDes2:\t\t" << mDes2.size << endl << endl;
-
-    //
     //  计算DT网络的边矩阵，并计算差的范数，提取外点
     //  更新keypoints，进行第二次match
 
-    //
     //      实现了二次匹配
     //      但是第二次效果并不好
     //      并且存在一些问题：
@@ -286,11 +273,8 @@ int main()
     matcher2.match(mDes1_new,mDes2_new,matches2);
 
     //计算最大与最小距离
-//    double min_dist = 10000,max_dist = 0;
-
     for (int k = 0; k < mDes1_new.rows; k++) {
         double dist = matches2[k].distance;
-//        cout << "dist: " << dist << endl;
         if(dist < min_dist)
             min_dist = dist;
         if(dist > max_dist)
@@ -300,7 +284,6 @@ int main()
     cout << "\nmin_dist:" << min_dist << endl;
     cout << "max_dist:" << max_dist << endl;
 
-//    int d_max =d_max_vaule;
     //筛选匹配
     temp=0;
     for (int l = 0; l < mDes1_new.rows; l++)
@@ -316,13 +299,11 @@ int main()
 
     cout << "match:" << good_matches2.size()<<endl;
     Mat show2;
-//    cv::drawMatches(mvImageShow1[level],mvKeys1,mvImageShow2[level],mvKeys2,good_matches,show);
     cv::drawMatches(feature1,mvKeys1_new,feature2,mvKeys2_new,good_matches2,show2);
     imwrite("matches2.png",show2);
     imshow("matches2",show2);
     waitKey(0);
     /****************************************/
     cout << "finish!" << endl;
-//    waitKey(0);
     return 0;
 }
