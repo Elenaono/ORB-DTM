@@ -325,11 +325,11 @@ int main()
     temp=0;
 
     cout << "match:" << good_matches2.size()<<endl;
-    Mat show2;
-    cv::drawMatches(feature1,mvKeys1_new,feature2,mvKeys2_new,good_matches2,show2);
-    imwrite("matches2.png",show2);
-    imshow("matches2",show2);
-    waitKey(0);
+//    Mat show2;
+//    cv::drawMatches(feature1,mvKeys1_new,feature2,mvKeys2_new,good_matches2,show2);
+//    imwrite("matches2.png",show2);
+//    imshow("matches2",show2);
+//    waitKey(0);
     /****************************************/
     cout << "finish!" << endl;
     return 0;
