@@ -20,7 +20,7 @@ using namespace cv;
 using namespace ORB_SLAM2;
 
 #define d_max_vaule 45
-#define d_max_vaule_new 55
+#define d_max_vaule_new 20
 
 
 //   第二次匹配效果太差
@@ -238,6 +238,18 @@ int main()
     sort(order1.begin(),order1.end());
     sort(order2.begin(),order2.end());
 
+//    cout << "\nsize of order1: " << order1.size() << endl;
+//    for(const auto &p:order1)
+//    {
+//        cout << p << endl;
+//    }
+//
+//    cout << "\nsize of order2: " << order2.size() << endl;
+//    for(const auto &p:order2)
+//    {
+//        cout << p << endl;
+//    }
+
 //    copy(mvKeys1.begin(),mvKeys1.begin(),mvKeys1_new.begin());
 //    cout << "Sizes of mvKeys1_new: \t" << mvKeys1_new.size() << endl;
     // 更新描述子
@@ -245,14 +257,13 @@ int main()
     int dele_temp_2=0;
     int dele_temp_count1=0;
     int dele_temp_count2=0;
-    for (int i = 0; i < mnFeaturesPerLevel1[level]-1; ++i)
+    for (int i = 0; i < mnFeaturesPerLevel1[level]; ++i)
     {
         if(i == *(order1.begin()+dele_temp_count1))
             dele_temp_count1++;
         else
         {
             mvKeys1_new.insert(mvKeys1_new.end(),mvKeys1.begin()+i,mvKeys1.begin()+i+1);
-//            copy(mvKeys1.begin()+i,mvKeys1.begin()+i,mvKeys1_new.begin()+dele_temp_1);
             mDes1.row(i).copyTo(mDes1_new.row(dele_temp_1));
             dele_temp_1++;
         }
@@ -267,10 +278,6 @@ int main()
         }
 
     }
-//    cout << "筛选后的特征点数量： " << dele_temp_1 << "\t尺寸： " << mvKeys1_new.size() << endl;
-//    mvKeys1_new.insert(mvKeys1_new.end(),mvKeys1.begin(),mvKeys1.begin()+1);
-//    cout << "筛选后的特征点数量： " << dele_temp_1 << "\t尺寸： " << mvKeys1_new.size() << endl;
-
     cout << "Sizes of mvKeys1_new: \t" << mvKeys1_new.size() << endl;
     cout << "Sizes of mDes1_new:\t\t" << mDes1_new.size << endl;
     cout << "Sizes of mvKeys2_new: \t" << mvKeys2_new.size() << endl;
@@ -292,6 +299,7 @@ int main()
     matcher2.match(mDes1_new,mDes2_new,matches2);
 
     //计算最大与最小距离
+    min_dist = 10000,max_dist = 0;
     for (int k = 0; k < mDes1_new.rows; k++) {
         double dist = matches2[k].distance;
         if(dist < min_dist)

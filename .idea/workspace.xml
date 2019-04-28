@@ -18,7 +18,6 @@
       <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/orbextract.dir/example/orbextract.cpp.o" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/orbextract.dir/example/orbextract.cpp.o" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cmake-build-debug/orbextract" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/orbextract" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/example/orbextract.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/example/orbextract.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/matches.png" beforeDir="false" afterPath="$PROJECT_DIR$/matches.png" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/matches2.png" beforeDir="false" afterPath="$PROJECT_DIR$/matches2.png" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/cmake-build-debug/" />
@@ -34,8 +33,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/example/orbextract.cpp">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-1752">
-              <caret line="232" column="69" lean-forward="true" selection-start-line="232" selection-start-column="69" selection-end-line="232" selection-end-column="69" />
+            <state relative-caret-position="572">
+              <caret line="301" column="20" lean-forward="true" selection-start-line="301" selection-start-column="20" selection-end-line="301" selection-end-column="21" />
             </state>
           </provider>
         </entry>
@@ -93,6 +92,7 @@
     <findStrings>
       <find>triangles</find>
       <find>mDes1</find>
+      <find>mvKeys1_new</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -229,7 +229,7 @@
       <workItem from="1555420958669" duration="20232000" />
       <workItem from="1555987644435" duration="1123000" />
       <workItem from="1556019073456" duration="45329000" />
-      <workItem from="1556328309487" duration="20656000" />
+      <workItem from="1556328309487" duration="22396000" />
     </task>
     <task id="LOCAL-00001" summary="update from clion.&#10;增加了使用Eigen定义相似度矩阵">
       <created>1555587305387</created>
@@ -298,7 +298,7 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="102103000" />
+    <option name="totallyTimeSpent" value="103843000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -318,7 +318,7 @@
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" weight="0.32845187" />
-      <window_info anchor="bottom" id="Run" order="2" weight="0.58054394" />
+      <window_info anchor="bottom" id="Run" order="2" weight="0.5972803" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.39853558" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -523,8 +523,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/example/orbextract.cpp">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-1752">
-          <caret line="232" column="69" lean-forward="true" selection-start-line="232" selection-start-column="69" selection-end-line="232" selection-end-column="69" />
+        <state relative-caret-position="572">
+          <caret line="301" column="20" lean-forward="true" selection-start-line="301" selection-start-column="20" selection-end-line="301" selection-end-column="21" />
         </state>
       </provider>
     </entry>
