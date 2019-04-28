@@ -19,12 +19,13 @@ using namespace std;
 using namespace cv;
 using namespace ORB_SLAM2;
 
-#define d_max_vaule 40
-#define d_max_vaule_new 30
+#define d_max_vaule 45
+#define d_max_vaule_new 55
 
-// todo
+
 //   第二次匹配效果太差
 //   怀疑原因为描述子出错，因为两次的匹配距离区间反而增大了
+//   原因：keypoints的order变了，导致了描述子不匹配!!!
 
 // sort()时，自定义的排序条件
 // 用于对vector对象内的指定成员进行排序
@@ -196,6 +197,14 @@ int main()
     imshow("matches",show);
     waitKey(0);
 
+//    cout << "\n原始特征点：\n" << endl;
+//    for(const auto &p:mvKeys1)
+//    {
+//        cout << p.pt << endl;
+//    }
+//    cout << "\n原始描述子：\n" << endl;
+//    cout << mDes1 << endl;
+
     /*******************  构建边矩阵，并计算相似度(范数)  *********************/
     Eigen::MatrixXd edgeMatrix = Eigen::MatrixXd::Zero(500,500);
     edgeMatrix = triangulation.getEdgeMatrix() - triangulation2.getEdgeMatrix();
@@ -209,8 +218,8 @@ int main()
     //   注意：由于删除的是列，而转换成vector后操作的是行，因此可以对Mat进行转置后，再进行转换操作，即Mat.t()
     //   在循环外边完成Mat到vector的转换工作，进行循环操作并退出后，再进行转换回来
 
-    mvKeys1_new = mvKeys1;
-    mvKeys2_new = mvKeys2;
+//    mvKeys1_new = mvKeys1;
+//    mvKeys2_new = mvKeys2;
     temp = (int)(mnFeaturesPerLevel1[level]-good_matches.size());
     cv::Mat mDes1_new(temp,32,CV_8U);   /// 严格注意type  因为ORB对应的描述子是 8U，使用 32F时，会导致BFMatch出错 (吃了大亏。。。)
     cv::Mat mDes2_new(temp,32,CV_8U);
@@ -218,16 +227,20 @@ int main()
 
     vector<int> order1,order2;
     cout << "Size of goodmatchs:  " << good_matches.size() << endl;
+    // 更新特征点
     for(const auto &g:good_matches)
     {
-        mvKeys1_new.erase(mvKeys1_new.begin()+g.queryIdx);
-        mvKeys2_new.erase(mvKeys2_new.begin()+g.trainIdx);
+//        mvKeys1_new.erase(mvKeys1_new.begin()+g.queryIdx);      //  删错了 因为
+//        mvKeys2_new.erase(mvKeys2_new.begin()+g.trainIdx);
         order1.emplace_back(g.queryIdx);
         order2.emplace_back(g.trainIdx);
     }
     sort(order1.begin(),order1.end());
     sort(order2.begin(),order2.end());
 
+//    copy(mvKeys1.begin(),mvKeys1.begin(),mvKeys1_new.begin());
+//    cout << "Sizes of mvKeys1_new: \t" << mvKeys1_new.size() << endl;
+    // 更新描述子
     int dele_temp_1=0;
     int dele_temp_2=0;
     int dele_temp_count1=0;
@@ -238,6 +251,8 @@ int main()
             dele_temp_count1++;
         else
         {
+            mvKeys1_new.insert(mvKeys1_new.end(),mvKeys1.begin()+i,mvKeys1.begin()+i+1);
+//            copy(mvKeys1.begin()+i,mvKeys1.begin()+i,mvKeys1_new.begin()+dele_temp_1);
             mDes1.row(i).copyTo(mDes1_new.row(dele_temp_1));
             dele_temp_1++;
         }
@@ -246,13 +261,15 @@ int main()
             dele_temp_count2++;
         else
         {
+            mvKeys2_new.insert(mvKeys2_new.begin()+dele_temp_2,mvKeys2.begin()+i,mvKeys2.begin()+i+1);
             mDes2.row(i).copyTo(mDes2_new.row(dele_temp_2));
             dele_temp_2++;
         }
 
     }
-
-    mvKeys1_new.pop_back();
+//    cout << "筛选后的特征点数量： " << dele_temp_1 << "\t尺寸： " << mvKeys1_new.size() << endl;
+//    mvKeys1_new.insert(mvKeys1_new.end(),mvKeys1.begin(),mvKeys1.begin()+1);
+//    cout << "筛选后的特征点数量： " << dele_temp_1 << "\t尺寸： " << mvKeys1_new.size() << endl;
 
     cout << "Sizes of mvKeys1_new: \t" << mvKeys1_new.size() << endl;
     cout << "Sizes of mDes1_new:\t\t" << mDes1_new.size << endl;
@@ -262,11 +279,13 @@ int main()
     //  计算DT网络的边矩阵，并计算差的范数，提取外点
     //  更新keypoints，进行第二次match
 
-    //      实现了二次匹配
-    //      但是第二次效果并不好
-    //      并且存在一些问题：
-    //          1.修改第一次的匹配阈值后，出错；
-    //          2.第二次效果太差了。。。
+//    cout << "\n筛选后的特征点：\n" << endl;
+//    for(const auto &p:mvKeys1_new)
+//    {
+//        cout << p.pt << endl;
+//    }
+//    cout << "\n筛选后的描述子：\n" << endl;
+//    cout << mDes1_new << endl;
     /**************** 特征匹配 ******************/
     vector<DMatch> matches2,good_matches2;
     BFMatcher matcher2 (NORM_HAMMING);
