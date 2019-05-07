@@ -210,7 +210,7 @@ int main()
     cv::drawMatches(feature1,mvKeys1,feature2,mvKeys2,good_matches,show);
     imwrite("matches.png",show);
     imshow("matches",show);
-    waitKey(0);
+//    waitKey(0);
 
     /*******************  构建边矩阵，并计算相似度(范数)  *********************/
     cout << "\n计算DTM的相关信息：" << endl;
@@ -222,6 +222,16 @@ int main()
 
     /****************************************/
     cout << "\nfinish!" << endl;
+
+    Eigen::MatrixXd::Index maxRow,maxCol;
+    Eigen::Matrix<double, 3, 3> A;
+    A << 1, 2, 3,
+            4, 5, 6,
+            7, 8, 9;
+    cout << "显示矩阵元素：\n" << A << endl;
+    cout << "测试：\n" << A.colwise().sum().maxCoeff(&maxRow,&maxCol) << endl;
+    cout << maxRow << "," << maxCol << endl;
+
     return 0;
 
     /*******************  剔除 good_matchs 中的点，对剩余点集进行二次匹配   *********************/
