@@ -19,7 +19,7 @@ using namespace std;
 using namespace cv;
 using namespace ORB_SLAM2;
 
-#define d_max_vaule 30
+#define d_max_vaule 35
 #define d_max_vaule_new 40
 
 /**
@@ -42,7 +42,6 @@ using namespace ORB_SLAM2;
 
 // sort()时，自定义的排序条件
 // 用于对vector对象内的指定成员进行排序
-
 bool cmp1(const DMatch first, const DMatch second)
 {
     return first.trainIdx < second.trainIdx;
@@ -69,6 +68,8 @@ int main()
 
     int level = 0;
     int temp=0;
+
+    cout << "显示特征提取的基本信息：" << endl;
     /**************** 图片一：初始化信息 *********************/
     cv::Mat first_image = cv::imread(file1, 0);    // load grayscale image 灰度图
     cv::Mat feature1;
@@ -83,7 +84,7 @@ int main()
     ORBextractor *orb1 = new ORBextractor(nFeatures,fScaleFactor,nLevels,fIniThFAST,fMinThFAST);
     (*orb1)(first_image,cv::Mat(),mvKeys1,mDescriptors1);
 
-    orb1->myprint("picture1");
+    orb1->myprint("\tpicture1");
     mvImageShow1 = orb1->GetImagePyramid();   //获取图像金字塔
 
     mnFeaturesPerLevel1 = orb1->GetmnFeaturesPerLevel();  //获取每层金字塔的特征点数量
@@ -92,7 +93,7 @@ int main()
     mvKeys1 = mvvKeypoints1[level];
     mDes1 = mDescriptors1.rowRange(0,mnFeaturesPerLevel1[level]).clone();
 
-    cout <<"KeyPoints:"<<mnFeaturesPerLevel1[level]<<endl;
+    cout <<"\t\tKeyPoints:"<<mnFeaturesPerLevel1[level]<<endl;
     cv::drawKeypoints(mvImageShow1[level], mvKeys1, feature1, cv::Scalar::all(-1),
                       cv::DrawMatchesFlags::DEFAULT);//DEFAULT  DRAW_OVER_OUTIMG     DRAW_RICH_KEYPOINTS
 
@@ -110,7 +111,7 @@ int main()
     ORBextractor *orb2 = new ORBextractor(nFeatures,fScaleFactor,nLevels,fIniThFAST,fMinThFAST);
     (*orb2)(second_image,cv::Mat(),mvKeys2,mDescriptors2);
 
-    orb2->myprint("picture2");
+    orb2->myprint("\tpicture2");
     mvImageShow2 = orb2->GetImagePyramid();   //获取图像金字塔
 
     mnFeaturesPerLevel2 = orb2->GetmnFeaturesPerLevel();  //获取每层金字塔的特征点数量
@@ -119,11 +120,12 @@ int main()
     mvKeys2 = mvvKeypoints2[level];
     mDes2 = mDescriptors2.rowRange(0,mnFeaturesPerLevel2[level]).clone();
 
-    cout <<"KeyPoints:"<<mnFeaturesPerLevel2[level]<<endl;
+    cout <<"\t\tKeyPoints:"<<mnFeaturesPerLevel2[level]<<endl;
     cv::drawKeypoints(mvImageShow2[level], mvKeys2, feature2, cv::Scalar::all(-1),
                       cv::DrawMatchesFlags::DEFAULT);//DEFAULT  DRAW_OVER_OUTIMG     DRAW_RICH_KEYPOINTS
 
     /**************** 特征匹配 ******************/
+    cout << "\n显示第一次特征匹配的基本信息：" << endl;
     vector<DMatch> matches,good_matches,new_matches;
     BFMatcher matcher (NORM_HAMMING);
     matcher.match(mDes1,mDes2,matches);
@@ -140,8 +142,8 @@ int main()
             max_dist = dist;
     }
 
-    cout << "min_dist:" << min_dist << endl;
-    cout << "max_dist:" << max_dist << endl;
+    cout << "\tmin_dist:" << min_dist << endl;
+    cout << "\tmax_dist:" << max_dist << endl;
 
     int d_max =d_max_vaule;
     //筛选匹配
@@ -161,9 +163,10 @@ int main()
     good_matches.erase(unique(good_matches.begin(),good_matches.end(),cmp2),good_matches.end());
 
     /**********************  构建第一组 DT 网络  ******************************/
+    cout << "\n构建DT网络：" << endl;
     ///delaunay one
+    cout << "\tDT one:" << endl;
     std::vector<Vector2<float> > points;
-
     for(const auto &g:good_matches)
     {
         points.emplace_back(Vector2<float>(mvKeys1[g.queryIdx].pt.x , mvKeys1[g.queryIdx].pt.y ,g.imgIdx ));
@@ -172,9 +175,8 @@ int main()
     Delaunay<float> triangulation;
     const std::vector<Triangle<float> > triangles = triangulation.triangulate(points);  //逐点插入法
     triangulation.computeEdgeMatrix();
-    std::cout << triangles.size() << " triangles generated\n";
+    std::cout << "\t\t" <<triangles.size() << " triangles generated"<<endl;
     const std::vector<Edge<float> > edges = triangulation.getEdges();
-    std::cout << "Edges : " << edges.size() << std::endl;
 
     for(const auto &e : edges)
     {
@@ -182,18 +184,17 @@ int main()
     }
 
     ///delaunay two
+    cout << "\tDT two:" << endl;
     std::vector<Vector2<float> > points2;
-
     for(const auto &g:good_matches)
     {
         points2.emplace_back(Vector2<float>(mvKeys2[g.trainIdx].pt.x , mvKeys2[g.trainIdx].pt.y ,g.imgIdx ));
     }
 
-    cout << "Size of points2: " << points2.size() << endl;
     Delaunay<float> triangulation2;
     const std::vector<Triangle<float> > triangles2 = triangulation2.triangulate(points2);  //逐点插入法
     triangulation2.computeEdgeMatrix();
-    std::cout << triangles2.size() << " triangles generated\n";
+    std::cout << "\t\t" << triangles2.size() << " triangles generated"<<endl;
     const std::vector<Edge<float> > edges2 = triangulation2.getEdges();
 
     for(const auto &e2 : edges2)
@@ -202,7 +203,8 @@ int main()
     }
 
     /**************** 显示 ******************/
-    cout << "\nmatch:" << good_matches.size()<<endl;
+    cout << "\t匹配:" << endl;
+    cout << "\t\tmatch:" << good_matches.size()<<endl;
     Mat show;
     cv::drawMatches(mvImageShow1[level],mvKeys1,mvImageShow2[level],mvKeys2,good_matches,show);
     cv::drawMatches(feature1,mvKeys1,feature2,mvKeys2,good_matches,show);
@@ -210,29 +212,33 @@ int main()
     imshow("matches",show);
     waitKey(0);
 
-//    cout << "\n原始特征点：\n" << endl;
-//    for(const auto &p:mvKeys1)
-//    {
-//        cout << p.pt << endl;
-//    }
-//    cout << "\n原始描述子：\n" << endl;
-//    cout << mDes1 << endl;
-
     /*******************  构建边矩阵，并计算相似度(范数)  *********************/
+    cout << "\n计算DTM的相关信息：" << endl;
     Eigen::MatrixXd edgeMatrix = Eigen::MatrixXd::Zero(500,500);
     edgeMatrix = triangulation.getEdgeMatrix() - triangulation2.getEdgeMatrix();
     double value =0;
     value = edgeMatrix.norm();
-    cout << "\nvalue: " << value <<  endl;
+    cout << "\tvalue: " << value <<  endl;
 
+    /****************************************/
+    cout << "\nfinish!" << endl;
+    return 0;
+
+    /*******************  剔除 good_matchs 中的点，对剩余点集进行二次匹配   *********************/
     //   cv::Mat中没有删除某一列或者行的函数
     //   只能构造新的Mat，在删除某一列后，将后边的复制到新的Mat当中去
     //   新的解决方案是：将Mat转换为vector，使用back() pop()等操作处理后，再转换成Mat
     //   注意：由于删除的是列，而转换成vector后操作的是行，因此可以对Mat进行转置后，再进行转换操作，即Mat.t()
     //   在循环外边完成Mat到vector的转换工作，进行循环操作并退出后，再进行转换回来
 
-//    mvKeys1_new = mvKeys1;
-//    mvKeys2_new = mvKeys2;
+    //    cout << "\n原始特征点：\n" << endl;
+    //    for(const auto &p:mvKeys1)
+    //    {
+    //        cout << p.pt << endl;
+    //    }
+    //    cout << "\n原始描述子：\n" << endl;
+    //    cout << mDes1 << endl;
+
     temp = (int)(mnFeaturesPerLevel1[level]-good_matches.size());
     cv::Mat mDes1_new(temp,32,CV_8U);   /// 严格注意type  因为ORB对应的描述子是 8U，使用 32F时，会导致BFMatch出错 (吃了大亏。。。)
     cv::Mat mDes2_new(temp,32,CV_8U);
@@ -243,8 +249,6 @@ int main()
     // 更新特征点
     for(const auto &g:good_matches)
     {
-//        mvKeys1_new.erase(mvKeys1_new.begin()+g.queryIdx);      //  删错了 因为
-//        mvKeys2_new.erase(mvKeys2_new.begin()+g.trainIdx);
         order1.emplace_back(g.queryIdx);
         order2.emplace_back(g.trainIdx);
     }
