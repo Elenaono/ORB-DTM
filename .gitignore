@@ -3,6 +3,5 @@
 ### Example user template
 
 # IntelliJ project files
-.idea
-cmake-build-debug
-
+/.idea/
+/cmake-build-debug/
