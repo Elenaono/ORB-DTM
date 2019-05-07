@@ -220,37 +220,35 @@ int main()
     double value =0;
     value = edgeMatrix.norm();
     cout << "\tvalue: " << value <<  endl;
-//    edgeMatrix.colwise().sum().maxCoeff(&maxRow,&maxCol);
-    cout << "提取外点：\n\t" << edgeMatrix.cwiseAbs().colwise().sum().maxCoeff(&maxRow,&maxCol) << endl;
-    cout << maxRow << ","  << maxCol << endl;
-//    cout << "显示边矩阵:\n" << edgeMatrix.cwiseAbs() << endl;
+    edgeMatrix.cwiseAbs().colwise().sum().maxCoeff(&maxRow,&maxCol);    // 边矩阵.绝对值.列.和.最大值(行序号,列序号)
+    cout <<  "提取候选外点：\t"  << maxCol << endl;
 
-    cout << " outlier:\n " << good_matches[4].queryIdx << "," << good_matches[4].trainIdx << endl;
+//    cout << edgeMatrix.cwiseAbs().col(maxCol).transpose() << endl;
+//    cout << "old size:\t" << good_matches.size()<<endl;
+//    good_matches.erase(good_matches.begin()+maxCol);
+//    cout << "new size:\t" << good_matches.size()<<endl;
 
-    cout << "old size:\t" << good_matches.size()<<endl;
-    good_matches.erase(good_matches.begin()+maxCol);
-    cout << "new size:\t" << good_matches.size()<<endl;
+
     ///delaunay three
-//    cv::Mat feature3;
-    cout << "\tDT three:" << endl;
-    std::vector<Vector2<float> > points3;
-    for(const auto &g:good_matches)
-    {
-        points3.emplace_back(Vector2<float>(mvKeys2[g.trainIdx].pt.x , mvKeys2[g.trainIdx].pt.y ,g.imgIdx ));
-    }
-
-    Delaunay<float> triangulation3;
-    const std::vector<Triangle<float> > triangles3 = triangulation3.triangulate(points3);  //逐点插入法
-    triangulation3.computeEdgeMatrix();
-    std::cout << "\t\t" << triangles3.size() << " triangles generated"<<endl;
-    const std::vector<Edge<float> > edges3 = triangulation3.getEdges();
-
-    for(const auto &e3 : edges3)
-    {
-        line(first_image, Point(e3.p1.x, e3.p1.y), Point(e3.p2.x, e3.p2.y), Scalar(0, 0, 255), 1);
-    }
-    imshow("new DT",first_image);
-    waitKey(0);
+//    cout << "\tDT three:" << endl;
+//    std::vector<Vector2<float> > points3;
+//    for(const auto &g:good_matches)
+//    {
+//        points3.emplace_back(Vector2<float>(mvKeys2[g.trainIdx].pt.x , mvKeys2[g.trainIdx].pt.y ,g.imgIdx ));
+//    }
+//
+//    Delaunay<float> triangulation3;
+//    const std::vector<Triangle<float> > triangles3 = triangulation3.triangulate(points3);  //逐点插入法
+//    triangulation3.computeEdgeMatrix();
+//    std::cout << "\t\t" << triangles3.size() << " triangles generated"<<endl;
+//    const std::vector<Edge<float> > edges3 = triangulation3.getEdges();
+//
+//    for(const auto &e3 : edges3)
+//    {
+//        line(second_image, Point(e3.p1.x, e3.p1.y), Point(e3.p2.x, e3.p2.y), Scalar(0, 0, 255), 1);
+//    }
+//    imshow("new DT",second_image);
+//    waitKey(0);
 
     /****************************************/
     cout << "\nfinish!" << endl;
