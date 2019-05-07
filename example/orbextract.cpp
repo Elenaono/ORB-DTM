@@ -19,8 +19,21 @@ using namespace std;
 using namespace cv;
 using namespace ORB_SLAM2;
 
-#define d_max_vaule 45
-#define d_max_vaule_new 20
+#define d_max_vaule 30
+#define d_max_vaule_new 40
+
+/**
+ * @brief DTM
+ * 1.分别对两幅图像进行特征提取；
+ * 2.进行第一次特征匹配；
+ * 3.对第一次匹配的good_matches进行构建DT网络；
+ * 4.对剩余的KeyPoints进行第二次特征匹配（更高阈值）；
+ *
+ * 在3.-4.之间，应进行DTM的优化，可能包括：（待完成）
+ *      1.计算边矩阵，进行外点筛选，不断剔除外点、计算新的边矩阵，迭代；
+ *      2.根据三角形相似函数，计算相似度，来剔除三角形/保留最优三角形；
+ *
+ */
 
 
 //   第二次匹配效果太差
@@ -325,11 +338,11 @@ int main()
     temp=0;
 
     cout << "match:" << good_matches2.size()<<endl;
-//    Mat show2;
-//    cv::drawMatches(feature1,mvKeys1_new,feature2,mvKeys2_new,good_matches2,show2);
-//    imwrite("matches2.png",show2);
-//    imshow("matches2",show2);
-//    waitKey(0);
+    Mat show2;
+    cv::drawMatches(feature1,mvKeys1_new,feature2,mvKeys2_new,good_matches2,show2);
+    imwrite("matches2.png",show2);
+    imshow("matches2",show2);
+    waitKey(0);
     /****************************************/
     cout << "finish!" << endl;
     return 0;
