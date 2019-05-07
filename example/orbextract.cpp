@@ -19,7 +19,7 @@ using namespace std;
 using namespace cv;
 using namespace ORB_SLAM2;
 
-#define d_max_vaule 35
+#define d_max_vaule 35  //35
 #define d_max_vaule_new 40
 
 /**
@@ -210,29 +210,62 @@ int main()
     cv::drawMatches(feature1,mvKeys1,feature2,mvKeys2,good_matches,show);
     imwrite("matches.png",show);
     imshow("matches",show);
-//    waitKey(0);
+    waitKey(0);
 
     /*******************  构建边矩阵，并计算相似度(范数)  *********************/
     cout << "\n计算DTM的相关信息：" << endl;
-    Eigen::MatrixXd edgeMatrix = Eigen::MatrixXd::Zero(500,500);
+    Eigen::MatrixXd::Index maxRow,maxCol;
+    Eigen::MatrixXd edgeMatrix = Eigen::MatrixXd::Zero(20,20);  //computeEdgeMatrix() 在此处也修改了 20,20 ，需要同步修改，后期改进此处
     edgeMatrix = triangulation.getEdgeMatrix() - triangulation2.getEdgeMatrix();
     double value =0;
     value = edgeMatrix.norm();
     cout << "\tvalue: " << value <<  endl;
+//    edgeMatrix.colwise().sum().maxCoeff(&maxRow,&maxCol);
+    cout << "提取外点：\n\t" << edgeMatrix.cwiseAbs().colwise().sum().maxCoeff(&maxRow,&maxCol) << endl;
+    cout << maxRow << ","  << maxCol << endl;
+//    cout << "显示边矩阵:\n" << edgeMatrix.cwiseAbs() << endl;
+
+    cout << " outlier:\n " << good_matches[4].queryIdx << "," << good_matches[4].trainIdx << endl;
+
+    cout << "old size:\t" << good_matches.size()<<endl;
+    good_matches.erase(good_matches.begin()+maxCol);
+    cout << "new size:\t" << good_matches.size()<<endl;
+    ///delaunay three
+//    cv::Mat feature3;
+    cout << "\tDT three:" << endl;
+    std::vector<Vector2<float> > points3;
+    for(const auto &g:good_matches)
+    {
+        points3.emplace_back(Vector2<float>(mvKeys2[g.trainIdx].pt.x , mvKeys2[g.trainIdx].pt.y ,g.imgIdx ));
+    }
+
+    Delaunay<float> triangulation3;
+    const std::vector<Triangle<float> > triangles3 = triangulation3.triangulate(points3);  //逐点插入法
+    triangulation3.computeEdgeMatrix();
+    std::cout << "\t\t" << triangles3.size() << " triangles generated"<<endl;
+    const std::vector<Edge<float> > edges3 = triangulation3.getEdges();
+
+    for(const auto &e3 : edges3)
+    {
+        line(first_image, Point(e3.p1.x, e3.p1.y), Point(e3.p2.x, e3.p2.y), Scalar(0, 0, 255), 1);
+    }
+    imshow("new DT",first_image);
+    waitKey(0);
 
     /****************************************/
     cout << "\nfinish!" << endl;
-
-    Eigen::MatrixXd::Index maxRow,maxCol;
-    Eigen::Matrix<double, 3, 3> A;
-    A << 1, 2, 3,
-            4, 5, 6,
-            7, 8, 9;
-    cout << "显示矩阵元素：\n" << A << endl;
-    cout << "测试：\n" << A.colwise().sum().maxCoeff(&maxRow,&maxCol) << endl;
-    cout << maxRow << "," << maxCol << endl;
-
     return 0;
+
+//    Eigen::MatrixXd::Index maxRow,maxCol;
+//    Eigen::Matrix<double, 3, 3> A;
+//    A << 1, 2, 3,
+//            4, 5, 6,
+//            7, 8, 9;
+//    cout << "显示矩阵元素：\n" << A << endl;
+//    cout << "测试：\n" << A.colwise().sum().maxCoeff(&maxRow,&maxCol) << endl;
+//    cout << maxRow << "," << maxCol << endl;
+
+
 
     /*******************  剔除 good_matchs 中的点，对剩余点集进行二次匹配   *********************/
     //   cv::Mat中没有删除某一列或者行的函数
