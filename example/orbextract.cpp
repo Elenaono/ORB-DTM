@@ -126,7 +126,7 @@ int main()
 
     /**************** 特征匹配 ******************/
     cout << "\n显示第一次特征匹配的基本信息：" << endl;
-    vector<DMatch> matches,good_matches,new_matches;
+    vector<DMatch> matches,matches_temp,good_matches,new_matches;
     BFMatcher matcher (NORM_HAMMING);
     matcher.match(mDes1,mDes2,matches);
 
@@ -159,9 +159,32 @@ int main()
     }
     temp=0;
 
-    sort(good_matches.begin(), good_matches.end(), cmp1);
-    good_matches.erase(unique(good_matches.begin(),good_matches.end(),cmp2),good_matches.end());
 
+//    cout << "排序筛选前" << endl;
+//    for(const auto &p:good_matches)
+//    {
+//        cout << p.queryIdx << "\t,\t" << p.trainIdx << "\t,\t" << p.imgIdx << endl;
+//    }
+
+    sort(good_matches.begin(), good_matches.end(), cmp1);   //排序
+    good_matches.erase(unique(good_matches.begin(),good_matches.end(),cmp2),good_matches.end());    //去重
+
+//    cout << "排序筛选后" << endl;
+//    for(const auto &p:good_matches)
+//    {
+//        cout << p.queryIdx << "\t,\t" << p.trainIdx << "\t,\t" << p.imgIdx << endl;
+//    }
+
+    for(int i =0 ;i < good_matches.size();i++)
+    {
+        good_matches[i].imgIdx = i;
+    }
+
+//    cout << "排序纠正后" << endl;
+//    for(const auto &p:good_matches)
+//    {
+//        cout << p.queryIdx << "\t,\t" << p.trainIdx << "\t,\t" << p.imgIdx << endl;
+//    }
     /**********************  构建第一组 DT 网络  ******************************/
     cout << "\n构建DT网络：" << endl;
     ///delaunay one
@@ -180,7 +203,10 @@ int main()
 
     for(const auto &e : edges)
     {
+//        cout << e.p2.index << "," << e.p1.index << endl;
         line(feature1, Point(e.p1.x, e.p1.y), Point(e.p2.x, e.p2.y), Scalar(0, 0, 255), 1);
+//        imshow("feature1",feature1);
+//        waitKey(0);
     }
 
     ///delaunay two
@@ -202,52 +228,109 @@ int main()
         line(feature2, Point(e2.p1.x, e2.p1.y), Point(e2.p2.x, e2.p2.y), Scalar(0, 0, 255), 1);
     }
 
+    cout << "\nSize of points2:\t" << points2.size() << endl;
+    for(const auto &p:points2)     //  显示点
+    {
+//        cout << p << endl;
+    }
+
+    cout << "\nSize of edges2:\t" << edges2.size() << endl;
+    for(const auto &p:edges2)     //  显示边
+    {
+//        cout << p << endl;
+    }
     /**************** 显示 ******************/
     cout << "\t匹配:" << endl;
     cout << "\t\tmatch:" << good_matches.size()<<endl;
     Mat show;
     cv::drawMatches(mvImageShow1[level],mvKeys1,mvImageShow2[level],mvKeys2,good_matches,show);
     cv::drawMatches(feature1,mvKeys1,feature2,mvKeys2,good_matches,show);
-    imwrite("matches.png",show);
-    imshow("matches",show);
-    waitKey(0);
+//    imwrite("matches.png",show);
+//    imshow("matches",show);
+//    waitKey(0);
 
     /*******************  构建边矩阵，并计算相似度(范数)  *********************/
     cout << "\n计算DTM的相关信息：" << endl;
     Eigen::MatrixXd::Index maxRow,maxCol;
     Eigen::MatrixXd edgeMatrix = Eigen::MatrixXd::Zero(20,20);  //computeEdgeMatrix() 在此处也修改了 20,20 ，需要同步修改，后期改进此处
     edgeMatrix = triangulation.getEdgeMatrix() - triangulation2.getEdgeMatrix();
+//    cout <<  "DT1的边矩阵：\n"  << triangulation.getEdgeMatrix().row(4)  << endl;
+//    cout <<  "DT2的边矩阵：\n"  << triangulation2.getEdgeMatrix() << endl; //.row(4)
     double value =0;
     value = edgeMatrix.norm();
     cout << "\tvalue: " << value <<  endl;
     edgeMatrix.cwiseAbs().colwise().sum().maxCoeff(&maxRow,&maxCol);    // 边矩阵.绝对值.列.和.最大值(行序号,列序号)
+
     cout <<  "提取候选外点：\t"  << maxCol << endl;
 
+    cout << "计算列和：\n" << edgeMatrix.cwiseAbs().colwise().sum()<< endl;
+
+    cout <<"显示边矩阵之差：\n"<< edgeMatrix.cwiseAbs().col(maxCol).transpose() << endl;
+
+    cout << "二者之差：\n" << edgeMatrix.cwiseAbs().colwise().sum() - edgeMatrix.cwiseAbs().col(maxCol).transpose()<< endl;
+
+    cout << "候选外点：" << mvKeys2[good_matches[maxCol].trainIdx].pt << endl;
+
+//    temp =1;
+//    for(const auto &p:good_matches)
+//    {
+//        cout << temp << ":\t" << mvKeys2[p.trainIdx].pt << endl;
+//        temp++;
+//    }
+//    temp =0;
+
 //    cout << edgeMatrix.cwiseAbs().col(maxCol).transpose() << endl;
-//    cout << "old size:\t" << good_matches.size()<<endl;
+//    cout << "\nold size:\t" << good_matches.size()<<endl;
 //    good_matches.erase(good_matches.begin()+maxCol);
 //    cout << "new size:\t" << good_matches.size()<<endl;
 
 
     ///delaunay three
-//    cout << "\tDT three:" << endl;
-//    std::vector<Vector2<float> > points3;
-//    for(const auto &g:good_matches)
-//    {
-//        points3.emplace_back(Vector2<float>(mvKeys2[g.trainIdx].pt.x , mvKeys2[g.trainIdx].pt.y ,g.imgIdx ));
-//    }
-//
-//    Delaunay<float> triangulation3;
-//    const std::vector<Triangle<float> > triangles3 = triangulation3.triangulate(points3);  //逐点插入法
-//    triangulation3.computeEdgeMatrix();
-//    std::cout << "\t\t" << triangles3.size() << " triangles generated"<<endl;
-//    const std::vector<Edge<float> > edges3 = triangulation3.getEdges();
-//
-//    for(const auto &e3 : edges3)
-//    {
-//        line(second_image, Point(e3.p1.x, e3.p1.y), Point(e3.p2.x, e3.p2.y), Scalar(0, 0, 255), 1);
-//    }
-//    imshow("new DT",second_image);
+    cout << "\tDT three:" << endl;
+    std::vector<Vector2<float> > points3;
+    for(const auto &g:good_matches)
+    {
+        points3.emplace_back(Vector2<float>(mvKeys2[g.trainIdx].pt.x , mvKeys2[g.trainIdx].pt.y ,g.imgIdx ));
+    }
+
+    Delaunay<float> triangulation3;
+    const std::vector<Triangle<float> > triangles3 = triangulation3.triangulate(points3);  //逐点插入法
+    triangulation3.computeEdgeMatrix();
+    std::cout << "\t\t" << triangles3.size() << " triangles generated"<<endl;
+    const std::vector<Edge<float> > edges3 = triangulation3.getEdges();
+
+    Mat _resultImg = second_image.clone();
+    Mat resultImg = Mat(_resultImg.rows,_resultImg.cols,CV_8UC3);
+    cvtColor(_resultImg,resultImg,CV_GRAY2BGR);
+
+    for(const auto &e3 : edges3)
+    {
+        line(resultImg, Point(e3.p1.x, e3.p1.y), Point(e3.p2.x, e3.p2.y), Scalar(0, 0, 255), 1);
+    }
+
+    temp = 1;
+    cout <<  "边矩阵：\n"  << triangulation2.getEdgeMatrix().row(temp) << endl;
+    circle(resultImg, mvKeys2[good_matches[temp].trainIdx].pt, 10, Scalar(255, 0, 0));
+    for(int i=0;i< triangulation2.getEdgeMatrix().rows();i++)
+    {
+        if((triangulation2.getEdgeMatrix())(temp,i) == 1)
+        {
+            cout << "连接的顶点: " << i << endl;
+            circle(resultImg, mvKeys2[good_matches[i].trainIdx].pt, 5, Scalar(0, 255, 0));
+            imshow("new DT",resultImg);
+            waitKey(0);
+        }
+
+//        circle(resultImg, mvKeys2[good_matches[i].trainIdx].pt, 10, Scalar(0, 255, 0));
+//        imshow("new DT",resultImg);
+//        waitKey(0);
+    }
+
+    cout << "coordinate：\t" << mvKeys2[good_matches[0].trainIdx].pt.x <<","<<mvKeys2[good_matches[0].trainIdx].pt.y << endl;
+
+
+//    imshow("new DT",resultImg);
+//    imwrite("new_DT2.png",resultImg);
 //    waitKey(0);
 
     /****************************************/
