@@ -245,9 +245,9 @@ int main()
     Mat show;
     cv::drawMatches(mvImageShow1[level],mvKeys1,mvImageShow2[level],mvKeys2,good_matches,show);
     cv::drawMatches(feature1,mvKeys1,feature2,mvKeys2,good_matches,show);
-//    imwrite("matches.png",show);
-//    imshow("matches",show);
-//    waitKey(0);
+    imwrite("matches.png",show);
+    imshow("matches",show);
+    waitKey(0);
 
     /*******************  构建边矩阵，并计算相似度(范数)  *********************/
     cout << "\n计算DTM的相关信息：" << endl;
@@ -279,10 +279,11 @@ int main()
 //    }
 //    temp =0;
 
-//    cout << edgeMatrix.cwiseAbs().col(maxCol).transpose() << endl;
-//    cout << "\nold size:\t" << good_matches.size()<<endl;
-//    good_matches.erase(good_matches.begin()+maxCol);
-//    cout << "new size:\t" << good_matches.size()<<endl;
+
+    cout << "\nold size:\t" << good_matches.size()<<endl;
+    cout << mvKeys2[good_matches[maxCol].trainIdx].pt << endl;
+    good_matches.erase(good_matches.begin()+maxCol);
+    cout << "new size:\t" << good_matches.size()<<endl;
 
 
     ///delaunay three
@@ -308,30 +309,25 @@ int main()
         line(resultImg, Point(e3.p1.x, e3.p1.y), Point(e3.p2.x, e3.p2.y), Scalar(0, 0, 255), 1);
     }
 
-    temp = 1;
-    cout <<  "边矩阵：\n"  << triangulation2.getEdgeMatrix().row(temp) << endl;
-    circle(resultImg, mvKeys2[good_matches[temp].trainIdx].pt, 10, Scalar(255, 0, 0));
-    for(int i=0;i< triangulation2.getEdgeMatrix().rows();i++)
-    {
-        if((triangulation2.getEdgeMatrix())(temp,i) == 1)
-        {
-            cout << "连接的顶点: " << i << endl;
-            circle(resultImg, mvKeys2[good_matches[i].trainIdx].pt, 5, Scalar(0, 255, 0));
-            imshow("new DT",resultImg);
-            waitKey(0);
-        }
+//    temp = 1;
+//    cout <<  "边矩阵：\n"  << triangulation2.getEdgeMatrix().row(temp) << endl;
+//    circle(resultImg, mvKeys2[good_matches[temp].trainIdx].pt, 10, Scalar(255, 0, 0));
+//    for(int i=0;i< triangulation2.getEdgeMatrix().rows();i++)
+//    {
+//        if((triangulation2.getEdgeMatrix())(temp,i) == 1)
+//        {
+//            cout << "连接的顶点: " << i << endl;
+//            circle(resultImg, mvKeys2[good_matches[i].trainIdx].pt, 5, Scalar(0, 255, 0));
+//            imshow("new DT",resultImg);
+//            waitKey(0);
+//        }
+//    }
 
-//        circle(resultImg, mvKeys2[good_matches[i].trainIdx].pt, 10, Scalar(0, 255, 0));
-//        imshow("new DT",resultImg);
-//        waitKey(0);
-    }
+//    cout << "coordinate：\t" << mvKeys2[good_matches[0].trainIdx].pt.x <<","<<mvKeys2[good_matches[0].trainIdx].pt.y << endl;
 
-    cout << "coordinate：\t" << mvKeys2[good_matches[0].trainIdx].pt.x <<","<<mvKeys2[good_matches[0].trainIdx].pt.y << endl;
-
-
-//    imshow("new DT",resultImg);
-//    imwrite("new_DT2.png",resultImg);
-//    waitKey(0);
+    imshow("new DT",resultImg);
+    imwrite("new_DT2.png",resultImg);
+    waitKey(0);
 
     /****************************************/
     cout << "\nfinish!" << endl;
