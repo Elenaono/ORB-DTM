@@ -20,7 +20,7 @@
 
 using namespace std;
 using namespace cv;
-// rename
+
 int main()
 {
     /************************** create delaunay triangulation one **********************************/
