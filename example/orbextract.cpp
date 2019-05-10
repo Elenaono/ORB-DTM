@@ -20,7 +20,9 @@ using namespace cv;
 using namespace ORB_SLAM2;
 
 #define d_max_vaule 35  //35
-#define d_max_vaule_new 40
+#define d_max_vaule_new 50
+
+#define m_max_value 5
 
 /**
  * @brief DTM
@@ -188,6 +190,10 @@ int main()
 
     Mat feature3 = feature1.clone();
     Mat feature4 = feature2.clone();
+    Mat feature5 = feature1.clone();
+    Mat feature6 = feature2.clone();
+    Mat feature7 = feature1.clone();
+    Mat feature8 = feature2.clone();
     /**********************  构建第一组 DT 网络  ******************************/
     cout << "\n构建DT网络：" << endl;
     ///delaunay one
@@ -255,7 +261,7 @@ int main()
     /*******************  构建边矩阵，并计算相似度(范数)  *********************/
     cout << "\n计算DTM的相关信息：" << endl;
     Eigen::MatrixXd::Index maxRow,maxCol;
-    Eigen::MatrixXd edgeMatrix = Eigen::MatrixXd::Zero(20,20);  //computeEdgeMatrix() 在此处也修改了 20,20 ，需要同步修改，后期改进此处
+    Eigen::MatrixXd edgeMatrix = Eigen::MatrixXd::Zero(50,50);  //computeEdgeMatrix() 在此处也修改了 20,20 ，需要同步修改，后期改进此处
     edgeMatrix = triangulation.getEdgeMatrix() - triangulation2.getEdgeMatrix();
 //    cout <<  "DT1的边矩阵：\n"  << triangulation.getEdgeMatrix().row(4)  << endl;
 //    cout <<  "DT2的边矩阵：\n"  << triangulation2.getEdgeMatrix() << endl; //.row(4)
@@ -277,48 +283,14 @@ int main()
 
     cout << "候选外点：" << mvKeys2[good_matches[maxCol].trainIdx].pt << endl;
 
-//    temp =1;
-//    for(const auto &p:good_matches)
-//    {
-//        cout << temp << ":\t" << mvKeys2[p.trainIdx].pt << endl;
-//        temp++;
-//    }
-//    temp =0;
-
-
-//    Mat _resultImg = second_image.clone();
-//    Mat resultImg = Mat(_resultImg.rows,_resultImg.cols,CV_8UC3);
-//    cvtColor(_resultImg,resultImg,CV_GRAY2BGR);
-
-    //    circle(resultImg, Point(185,292), 5, Scalar(0, 255, 0));
-//    circle(resultImg, Point(182,298), 5, Scalar(0, 255, 0));
 
     cout << "\nold size:\t" << good_matches.size()<<endl;
-//    cout << mvKeys2[good_matches[15].trainIdx].pt << endl;
-//    good_matches.erase(good_matches.begin()+15);
-//    good_matches.erase(good_matches.begin()+maxCol);
-//    good_matches.erase(good_matches.begin()+1);
 
-//    circle(resultImg, mvKeys2[good_matches[15].trainIdx].pt , 5, Scalar(0, 255, 0));
-//    good_matches.erase(good_matches.begin()+15);
-//    circle(resultImg, mvKeys2[good_matches[maxCol].trainIdx].pt , 2 , Scalar(0, 255, 0));
-//    good_matches.erase(good_matches.begin()+8);
-//    circle(resultImg, mvKeys2[good_matches[1].trainIdx].pt , 5, Scalar(0, 255, 0));
-
-//    good_matches.erase(good_matches.begin()+15);
-//    good_matches.erase(good_matches.begin()+11);
-//    good_matches.erase(good_matches.begin()+8);
-//    good_matches.erase(good_matches.begin()+2);
-//    good_matches.erase(good_matches.begin()+1);
-//    good_matches.erase(good_matches.begin());
-
-//    cout << (edgeMatrix.cwiseAbs().colwise().sum())(0,19) << endl;
-    for(int i = 20;i != 0 ;i--)
+    for(int i = 50;i != 0 ;i--)
     {
-//        cout << (edgeMatrix.cwiseAbs().colwise().sum())(0,i-1) << endl;
-        if((edgeMatrix.cwiseAbs().colwise().sum())(0,i-1) >= 4 )
+        if((edgeMatrix.cwiseAbs().colwise().sum())(0,i-1) >= m_max_value )
         {
-            cout << (edgeMatrix.cwiseAbs().colwise().sum())(0,i-1) << endl;
+            cout << (edgeMatrix.cwiseAbs().colwise().sum())(0,i-1) << "\t,\t" << mvKeys1[good_matches[i-1].queryIdx].pt <<"\t,\t" << mvKeys2[good_matches[i-1].trainIdx].pt << endl;
             good_matches.erase(good_matches.begin()+i-1);
         }
     }
@@ -379,8 +351,8 @@ int main()
     waitKey(0);
 
     /****************************************/
-    cout << "\nfinish!" << endl;
-    return 0;
+//    cout << "\nfinish!" << endl;
+//    return 0;
 
 
 
@@ -530,7 +502,7 @@ int main()
 
     cout << "match:" << good_matches2.size()<<endl;
     Mat show2;
-    cv::drawMatches(feature1,mvKeys1_new,feature2,mvKeys2_new,good_matches2,show2);
+    cv::drawMatches(feature5,mvKeys1_new,feature6,mvKeys2_new,good_matches2,show2);
     imwrite("matches2.png",show2);
     imshow("matches2",show2);
     waitKey(0);

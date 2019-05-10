@@ -239,7 +239,7 @@ public:
     void computeEdgeMatrix()
     {
         unsigned long count=_edges.size();
-        edgeMatrix = Eigen::MatrixXd::Zero(20,20);
+        edgeMatrix = Eigen::MatrixXd::Zero(50,50);
         for(const auto &p:_edges)
         {
             unsigned long m=p.p1.index;
