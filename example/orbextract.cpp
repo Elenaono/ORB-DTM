@@ -19,8 +19,8 @@ using namespace std;
 using namespace cv;
 using namespace ORB_SLAM2;
 
-#define d_max_vaule 35  //35    55
-#define d_max_vaule_new 45
+#define d_max_vaule 50  //35    55
+#define d_max_vaule_new 60
 
 #define m_max_value 5   //5
 #define n_max_value 5
@@ -56,8 +56,10 @@ bool cmp2(const DMatch first,const DMatch second)
 // 主函数
 int main()
 {
-    string file1 = "./data/desk1.png";
-    string file2 = "./data/desk2.png";
+//    string file1 = "./data/desk1.png";
+//    string file2 = "./data/desk2.png";
+    string file1 = "./data/test5.png";
+    string file2 = "./data/test6.png";
     /**************** 配置信息 ******************/
     int nFeatures =1000;        // 1000
     float fScaleFactor =1.2;    // 1.2
