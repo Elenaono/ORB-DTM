@@ -24,9 +24,9 @@ template<class T>
 T half(T x){}
 
 template <>
-float half(float x){return 0.5f * x;}
+inline float half(float x){return 0.5f * x;}
 
 template <>
-double half(double x){return 0.5 * x;}
+inline double half(double x){return 0.5 * x;}
 
 #endif

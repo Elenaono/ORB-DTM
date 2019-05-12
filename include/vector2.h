@@ -45,10 +45,10 @@ public:
 
 //全特化
 template <>
-float Vector2<float>::dist(const Vector2<float> &v) const { return hypotf(x - v.x, y - v.y);}
+inline float Vector2<float>::dist(const Vector2<float> &v) const { return hypotf(x - v.x, y - v.y);}
 
 template <>
-double Vector2<double>::dist(const Vector2<double> &v) const { return hypotf(x - v.x, y - v.y);}
+inline double Vector2<double>::dist(const Vector2<double> &v) const { return hypotf(x - v.x, y - v.y);}
 
 template<typename T>
 std::ostream &operator << (std::ostream &str, Vector2<T> const &point)
