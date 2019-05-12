@@ -12,7 +12,7 @@
  * @param feature2
  * @return newGood_matches
  */
-vector<DMatch> computeDTMunit(const vector<DMatch> &initGood_matches ,const vector<cv::KeyPoint> &mvKeys1,const vector<cv::KeyPoint> &mvKeys2, cv::Mat &feature1, cv::Mat &feature2 )
+vector<DMatch> computeDTMunit(const int threshold,const vector<DMatch> &initGood_matches, const vector<cv::KeyPoint> &mvKeys1, const vector<cv::KeyPoint> &mvKeys2, cv::Mat &feature1, cv::Mat &feature2 )
 {
     Mat feature3 = feature1.clone();
     Mat feature4 = feature2.clone();
@@ -85,7 +85,7 @@ vector<DMatch> computeDTMunit(const vector<DMatch> &initGood_matches ,const vect
     cout << "\nold size:\t" << newGood_matches.size()<<endl;
     for(int i = sizeofEdgeMatrix;i != 0 ;i--)
     {
-        if((edgeMatrix.cwiseAbs().colwise().sum())(0,i-1) >= m_max_value )
+        if((edgeMatrix.cwiseAbs().colwise().sum())(0,i-1) >= threshold )
         {
             cout << (edgeMatrix.cwiseAbs().colwise().sum())(0,i-1) << "\t,\t" << mvKeys1[newGood_matches[i-1].queryIdx].pt <<"\t,\t" << mvKeys2[newGood_matches[i-1].trainIdx].pt << endl;
             newGood_matches.erase(newGood_matches.begin()+i-1);
@@ -157,7 +157,7 @@ vector<DMatch> computeDTMunit(const vector<DMatch> &initGood_matches ,const vect
  * @param mDes1_new
  * @param mDes2_new
  */
-void updateKey(int sizeofLevel, const vector<DMatch> &good_matches, const vector<cv::KeyPoint> &mvKeys1, const vector<cv::KeyPoint> &mvKeys2, const cv::Mat &mDes1, const cv::Mat &mDes2,
+void updateKey(const vector<DMatch> &good_matches, const vector<cv::KeyPoint> &mvKeys1, const vector<cv::KeyPoint> &mvKeys2, const cv::Mat &mDes1, const cv::Mat &mDes2,
                vector<cv::KeyPoint> &mvKeys1_new, vector<cv::KeyPoint> &mvKeys2_new, cv::Mat &mDes1_new, cv::Mat &mDes2_new)
 {
     //   cv::Mat中没有删除某一列或者行的函数
@@ -181,9 +181,9 @@ void updateKey(int sizeofLevel, const vector<DMatch> &good_matches, const vector
     int dele_temp_2=0;
     int dele_temp_count1=0;
     int dele_temp_count2=0;
-    for (int i = 0; i < sizeofLevel; ++i)
+    for (int i = 0; i < mvKeys1.size(); ++i)
     {
-        if(i == *(order1.begin()+dele_temp_count1))
+        if(i == *(order1.begin()+dele_temp_count1))     // 如果与order中的序号相同，则跳过该点
             dele_temp_count1++;
         else
         {

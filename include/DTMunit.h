@@ -26,7 +26,6 @@ using namespace std;
 using namespace cv;
 using namespace ORB_SLAM2;
 
-#define m_max_value 5
 #define sizeofEdgeMatrix 500
 /**
  * @brief 构建DTM的基本函数
@@ -35,7 +34,7 @@ using namespace ORB_SLAM2;
  * @param feature
  * @return newGood_matches
  */
-vector<DMatch> computeDTMunit(const vector<DMatch> &initGood_matches ,const vector<cv::KeyPoint> &mvKeys1,const vector<cv::KeyPoint> &mvKeys2, cv::Mat &feature1, cv::Mat &feature2 );
+vector<DMatch> computeDTMunit(const int threshold,const vector<DMatch> &initGood_matches ,const vector<cv::KeyPoint> &mvKeys1,const vector<cv::KeyPoint> &mvKeys2, cv::Mat &feature1, cv::Mat &feature2 );
 
 
 /**
@@ -55,7 +54,7 @@ vector<DMatch> computeDTMunit(const vector<DMatch> &initGood_matches ,const vect
  * @param mDes1_new
  * @param mDes2_new
  */
-void updateKey(int sizeofLevel, const vector<DMatch> &good_matches, const vector<cv::KeyPoint> &mvKeys1, const vector<cv::KeyPoint> &mvKeys2, const cv::Mat &mDes1, const cv::Mat &mDes2,
+void updateKey(const vector<DMatch> &good_matches, const vector<cv::KeyPoint> &mvKeys1, const vector<cv::KeyPoint> &mvKeys2, const cv::Mat &mDes1, const cv::Mat &mDes2,
                vector<cv::KeyPoint> &mvKeys1_new, vector<cv::KeyPoint> &mvKeys2_new, cv::Mat &mDes1_new, cv::Mat &mDes2_new);
 
  /**
