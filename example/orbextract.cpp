@@ -129,15 +129,15 @@ int main()
     /***************  构建第二组 DT 网络  ******************************/
     vector<DMatch> new_matches2( computeDTMunit(5,good_matches2,mvKeys1_new1,mvKeys2_new1,debugThree,debugFour) );
     /***************  剔除 good_matchs 中的点  *********************/
-    vector<cv::KeyPoint> mvKeys1_new2,mvKeys2_new2;
-    temp = (int)(mvKeys1_new1.size() - new_matches2.size());
-    cv::Mat mDes1_new2(temp,32,CV_8U);   // 严格注意type  因为ORB对应的描述子是 8U，使用 32F时，会导致BFMatch出错 (吃了大亏。。。)
-    cv::Mat mDes2_new2(temp,32,CV_8U);
-    updateKey( new_matches2,mvKeys1_new1,mvKeys2_new1,mDes1_new,mDes2_new,mvKeys1_new2,mvKeys2_new2,mDes1_new2,mDes2_new2 );
-    /***************  第三次特征匹配 ******************/
-    vector<DMatch> good_matches3( BFmatchFunc(mDes1_new2,mDes2_new2,75) );   //d_max_vaule_two   60
-    /***************  构建第三组 DT 网络  ******************************/
-    vector<DMatch> new_matches3( computeDTMunit(5,good_matches3,mvKeys1_new2,mvKeys2_new2,debugFive,debugSix) );
+//    vector<cv::KeyPoint> mvKeys1_new2,mvKeys2_new2;
+//    temp = (int)(mvKeys1_new1.size() - new_matches2.size());
+//    cv::Mat mDes1_new2(temp,32,CV_8U);   // 严格注意type  因为ORB对应的描述子是 8U，使用 32F时，会导致BFMatch出错 (吃了大亏。。。)
+//    cv::Mat mDes2_new2(temp,32,CV_8U);
+//    updateKey( new_matches2,mvKeys1_new1,mvKeys2_new1,mDes1_new,mDes2_new,mvKeys1_new2,mvKeys2_new2,mDes1_new2,mDes2_new2 );
+//    /***************  第三次特征匹配 ******************/
+//    vector<DMatch> good_matches3( BFmatchFunc(mDes1_new2,mDes2_new2,75) );   //d_max_vaule_two   60
+//    /***************  构建第三组 DT 网络  ******************************/
+//    vector<DMatch> new_matches3( computeDTMunit(5,good_matches3,mvKeys1_new2,mvKeys2_new2,debugFive,debugSix) );
 
     /****************************************/
     cout << "finish!" << endl;
