@@ -13,7 +13,7 @@ public:
 
     // Constructors  构造函数
     Vector2():x(0), y(0){}
-    Vector2(T _x, T _y): x(_x), y(_y){}
+    Vector2(T _x, T _y): x(_x), y(_y){}     // 拷贝构造
     Vector2(const Vector2 &v): x(v.x), y(v.y),index(v.index){}     // 拷贝构造
 
     Vector2(T _x, T _y, T _index): x(_x), y(_y),index(_index){}
