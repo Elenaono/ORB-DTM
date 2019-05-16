@@ -277,3 +277,53 @@ vector<DMatch> BFmatchFunc(const cv::Mat &mDes1, const cv::Mat &mDes2, int thres
 }
 
 
+/**
+ * @brief 封装成函数
+ *
+ * 输入：debugOne,mvKeys1,debugTwo,mvKeys2,control_matches
+ * 输出：筛选后的匹配数目
+ */
+void UsingRansac(const cv::Mat &feature1, const cv::Mat &feature2,const vector<cv::KeyPoint> &mvKeys1, const vector<cv::KeyPoint> &mvKeys2,const vector<DMatch> &control_matches)
+{
+    /***************  RANSAC 实验对照组  ******************************/
+//    Mat beforeOpt;
+//    cv::drawMatches(feature1,mvKeys1,feature2,mvKeys2,control_matches,beforeOpt);
+//    imshow("before optimization",beforeOpt);
+//    waitKey(0);
+
+//    保存匹配对序号
+    vector<int> queryIdxs( control_matches.size() ), trainIdxs( control_matches.size() );
+    for( size_t i = 0; i < control_matches.size(); i++ )
+    {
+        queryIdxs[i] = control_matches[i].queryIdx;
+        trainIdxs[i] = control_matches[i].trainIdx;
+    }
+
+    Mat H12;   //变换矩阵
+
+    vector<Point2f> CGpoints1; KeyPoint::convert(mvKeys1, CGpoints1, queryIdxs);
+    vector<Point2f> CGpoints2; KeyPoint::convert(mvKeys2, CGpoints2, trainIdxs);
+    int ransacReprojThreshold = 5;  //拒绝阈值
+
+
+    H12 = findHomography( Mat(CGpoints1), Mat(CGpoints2), CV_RANSAC, ransacReprojThreshold );
+    vector<char> matchesMask( control_matches.size(), 0 );
+    Mat points1t;
+    perspectiveTransform(Mat(CGpoints1), points1t, H12);
+    int count = 0;
+    for( size_t i1 = 0; i1 < CGpoints1.size(); i1++ )  //保存‘内点’
+    {
+        if( norm(CGpoints2[i1] - points1t.at<Point2f>((int)i1,0)) <= ransacReprojThreshold ) //给内点做标记
+        {
+            count++;
+            matchesMask[i1] = 1;
+        }
+    }
+    cout << "size of control-group matches: " << count << endl;
+
+    Mat afterOpt;   //滤除‘外点’后
+    drawMatches(feature1,mvKeys1,feature2,mvKeys2,control_matches,afterOpt,Scalar(0,255,0),Scalar::all(-1),matchesMask);
+    imshow("control group",afterOpt);
+    waitKey(0);
+//    cout << "Completed in Func!" << endl;
+}

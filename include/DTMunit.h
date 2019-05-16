@@ -65,4 +65,16 @@ void updateKey(const vector<DMatch> &good_matches, const vector<cv::KeyPoint> &m
   */
 vector<DMatch> BFmatchFunc(const cv::Mat &mDes1, const cv::Mat &mDes2, int threshold);
 
+/**
+ * @brief 封装成函数
+ *
+ * 输入：debugOne,mvKeys1,debugTwo,mvKeys2,control_matches
+ * 输出：筛选后的匹配数目
+ */
+void UsingRansac(const cv::Mat &feature1, const cv::Mat &feature2,const vector<cv::KeyPoint> &mvKeys1, const vector<cv::KeyPoint> &mvKeys2,const vector<DMatch> &control_matches);
+
+
+
+
+
 #endif //ORB_DTM_DTMUNIT_H
