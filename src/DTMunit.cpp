@@ -17,7 +17,7 @@ vector<DMatch> computeDTMunit(const int threshold,const vector<DMatch> &initGood
     Mat feature3 = feature1.clone();
     Mat feature4 = feature2.clone();
     ///delaunay one
-    cout << "DT one:" << endl;
+//    cout << "DT one:" << endl;
     vector<Vector2<float > > points1;
     for(const auto &p:initGood_matches)
     {
@@ -27,7 +27,7 @@ vector<DMatch> computeDTMunit(const int threshold,const vector<DMatch> &initGood
     Delaunay<float> triangulation1;
     const std::vector<Triangle<float> > triangles1 = triangulation1.triangulate(points1);  //逐点插入法
     triangulation1.computeEdgeMatrix();
-    std::cout << "\t\t" <<triangles1.size() << " triangles generated"<<endl;
+//    std::cout << "\t\t" <<triangles1.size() << " triangles generated"<<endl;
     const std::vector<Edge<float> > edges1 = triangulation1.getEdges();
 
     for(const auto &e : edges1)
@@ -36,7 +36,7 @@ vector<DMatch> computeDTMunit(const int threshold,const vector<DMatch> &initGood
     }
 
     ///delaunay two
-    cout << "DT two:" << endl;
+//    cout << "DT two:" << endl;
     vector<Vector2<float > > points2;
     for(const auto &p:initGood_matches)
     {
@@ -46,7 +46,7 @@ vector<DMatch> computeDTMunit(const int threshold,const vector<DMatch> &initGood
     Delaunay<float> triangulation2;
     const std::vector<Triangle<float> > triangles2 = triangulation2.triangulate(points2);  //逐点插入法
     triangulation2.computeEdgeMatrix();
-    std::cout << "\t\t" <<triangles2.size() << " triangles generated"<<endl;
+//    std::cout << "\t\t" <<triangles2.size() << " triangles generated"<<endl;
     const std::vector<Edge<float> > edges2 = triangulation2.getEdges();
 
     for(const auto &e : edges2)
@@ -55,15 +55,15 @@ vector<DMatch> computeDTMunit(const int threshold,const vector<DMatch> &initGood
     }
 
     /**************** 显示匹配结果与初始DT网络 ******************/
-    cout << "\t匹配:" << endl;
-    cout << "\t\tmatch:" << initGood_matches.size()<<endl;
-    Mat beforeOpt;
-    cv::drawMatches(feature1,mvKeys1,feature2,mvKeys2,initGood_matches,beforeOpt);
-    imshow("before optimization",beforeOpt);
-    waitKey(0);
+//    cout << "\t匹配:" << endl;
+//    cout << "\t\tmatch:" << initGood_matches.size()<<endl;
+//    Mat beforeOpt;
+//    cv::drawMatches(feature1,mvKeys1,feature2,mvKeys2,initGood_matches,beforeOpt);
+//    imshow("before optimization",beforeOpt);
+//    waitKey(0);
 
 /*******************  构建边矩阵，并计算相似度(范数)，进行DT网络的优化  *********************/
-    cout << "\n计算DTM的相关信息：" << endl;
+//    cout << "\n计算DTM的相关信息：" << endl;
     Eigen::MatrixXd::Index maxRow,maxCol;
     Eigen::MatrixXd edgeMatrix = Eigen::MatrixXd::Zero(sizeofEdgeMatrix,sizeofEdgeMatrix);  //computeEdgeMatrix() 在此处也修改了 20,20 ，需要同步修改，后期改进此处
     edgeMatrix = triangulation1.getEdgeMatrix() - triangulation2.getEdgeMatrix();
@@ -82,21 +82,20 @@ vector<DMatch> computeDTMunit(const int threshold,const vector<DMatch> &initGood
 
     // 通过DT网络的边矩阵之差的范数，删除列和较大的候选外点集
     vector<DMatch> newGood_matches(initGood_matches);
-    cout << "\nold size:\t" << newGood_matches.size()<<endl;
+//    cout << "\nold size:\t" << newGood_matches.size()<<endl;
     for(int i = sizeofEdgeMatrix;i != 0 ;i--)
     {
         if((edgeMatrix.cwiseAbs().colwise().sum())(0,i-1) >= threshold )
         {
-            cout << (edgeMatrix.cwiseAbs().colwise().sum())(0,i-1) << "\t,\t" << mvKeys1[newGood_matches[i-1].queryIdx].pt <<"\t,\t" << mvKeys2[newGood_matches[i-1].trainIdx].pt << endl;
+//            cout << (edgeMatrix.cwiseAbs().colwise().sum())(0,i-1) << "\t,\t" << mvKeys1[newGood_matches[i-1].queryIdx].pt <<"\t,\t" << mvKeys2[newGood_matches[i-1].trainIdx].pt << endl;
             newGood_matches.erase(newGood_matches.begin()+i-1);
         }
     }
-    cout << "new size:\t" << newGood_matches.size()<<endl;
-
+//    cout << "new size:\t" << newGood_matches.size()<<endl;
 
     /************ 显示优化后的DT网络 ****************/
     ///delaunay three
-    cout << "\tDT three:" << endl;
+//    cout << "\tDT three:" << endl;
     std::vector<Vector2<float> > points3;
     for(const auto &g:newGood_matches)
     {
@@ -105,7 +104,7 @@ vector<DMatch> computeDTMunit(const int threshold,const vector<DMatch> &initGood
     Delaunay<float> triangulation3;
     const std::vector<Triangle<float> > triangles3 = triangulation3.triangulate(points3);  //逐点插入法
     triangulation3.computeEdgeMatrix();
-    std::cout << "\t\t" << triangles3.size() << " triangles generated"<<endl;
+//    std::cout << "\t\t" << triangles3.size() << " triangles generated"<<endl;
     const std::vector<Edge<float> > edges3 = triangulation3.getEdges();
     for(const auto &e : edges3)
     {
@@ -113,7 +112,7 @@ vector<DMatch> computeDTMunit(const int threshold,const vector<DMatch> &initGood
     }
 
     ///delaunay four
-    cout << "\tDT four:" << endl;
+//    cout << "\tDT four:" << endl;
     std::vector<Vector2<float> > points4;
     for(const auto &g:newGood_matches)
     {
@@ -123,7 +122,7 @@ vector<DMatch> computeDTMunit(const int threshold,const vector<DMatch> &initGood
     Delaunay<float> triangulation4;
     const std::vector<Triangle<float> > triangles4 = triangulation4.triangulate(points4);  //逐点插入法
     triangulation4.computeEdgeMatrix();
-    std::cout << "\t\t" << triangles4.size() << " triangles generated"<<endl;
+//    std::cout << "\t\t" << triangles4.size() << " triangles generated"<<endl;
     const std::vector<Edge<float> > edges4 = triangulation4.getEdges();
 
     for(const auto &e : edges4)
@@ -136,7 +135,7 @@ vector<DMatch> computeDTMunit(const int threshold,const vector<DMatch> &initGood
     imshow("after optimization",afterOpt);
     waitKey(0);
     /***********************************************/
-    cout << "Finished in function!!!" << endl;
+//    cout << "Finished in function!!!" << endl;
     return newGood_matches;
 }
 
@@ -166,7 +165,7 @@ void updateKey(const vector<DMatch> &good_matches, const vector<cv::KeyPoint> &m
     //   注意：由于删除的是列，而转换成vector后操作的是行，因此可以对Mat进行转置后，再进行转换操作，即Mat.t()
     //   在循环外边完成Mat到vector的转换工作，进行循环操作并退出后，再进行转换回来
     vector<int> order1,order2;
-    cout << "Size of goodmatchs:  " << good_matches.size() << endl;
+//    cout << "Size of goodmatchs:  " << good_matches.size() << endl;
     // 更新特征点
     for(const auto &g:good_matches)
     {
@@ -202,10 +201,10 @@ void updateKey(const vector<DMatch> &good_matches, const vector<cv::KeyPoint> &m
         }
 
     }
-    cout << "Sizes of mvKeys1_new: \t" << mvKeys1_new.size() << endl;
-    cout << "Sizes of mDes1_new:\t\t" << mDes1_new.size << endl;
-    cout << "Sizes of mvKeys2_new: \t" << mvKeys2_new.size() << endl;
-    cout << "Sizes of mDes2_new:\t\t" << mDes2_new.size << endl;
+//    cout << "Sizes of mvKeys1_new: \t" << mvKeys1_new.size() << endl;
+//    cout << "Sizes of mDes1_new:\t\t" << mDes1_new.size << endl;
+//    cout << "Sizes of mvKeys2_new: \t" << mvKeys2_new.size() << endl;
+//    cout << "Sizes of mDes2_new:\t\t" << mDes2_new.size << endl;
 
 }
 
@@ -231,7 +230,7 @@ inline bool cmp2(const DMatch first,const DMatch second)
  */
 vector<DMatch> BFmatchFunc(const cv::Mat &mDes1, const cv::Mat &mDes2, int threshold)
 {
-    cout << "\n显示第一次特征匹配的基本信息：" << endl;
+//    cout << "\n显示第一次特征匹配的基本信息：" << endl;
     vector<DMatch> matches,good_matches;
     BFMatcher matcher (NORM_HAMMING);
     matcher.match(mDes1,mDes2,matches);
@@ -248,8 +247,8 @@ vector<DMatch> BFmatchFunc(const cv::Mat &mDes1, const cv::Mat &mDes2, int thres
             max_dist = dist;
     }
 
-    cout << "\tmin_dist:" << min_dist << endl;
-    cout << "\tmax_dist:" << max_dist << endl;
+//    cout << "\tmin_dist:" << min_dist << endl;
+//    cout << "\tmax_dist:" << max_dist << endl;
 
     //筛选匹配
     int temp=0;
@@ -283,7 +282,7 @@ vector<DMatch> BFmatchFunc(const cv::Mat &mDes1, const cv::Mat &mDes2, int thres
  * 输入：debugOne,mvKeys1,debugTwo,mvKeys2,control_matches
  * 输出：筛选后的匹配数目
  */
-void UsingRansac(const cv::Mat &feature1, const cv::Mat &feature2,const vector<cv::KeyPoint> &mvKeys1, const vector<cv::KeyPoint> &mvKeys2,const vector<DMatch> &control_matches)
+void UsingRansac(const int threshold_value, const cv::Mat &feature1, const cv::Mat &feature2,const vector<cv::KeyPoint> &mvKeys1, const vector<cv::KeyPoint> &mvKeys2,const vector<DMatch> &control_matches)
 {
     /***************  RANSAC 实验对照组  ******************************/
 //    Mat beforeOpt;

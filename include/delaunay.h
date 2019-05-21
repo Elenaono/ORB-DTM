@@ -247,7 +247,7 @@ public:
             edgeMatrix(m,n) = 1;
             edgeMatrix(n,m) = 1;
         }
-        std::cout << "\t\tSizes of EdgeMatrix: " << count << std::endl;
+//        std::cout << "\t\tSizes of EdgeMatrix: " << count << std::endl;
     }
 
     const std::vector<TriangleType>& getTriangles() const { return _triangles; }

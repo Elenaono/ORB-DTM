@@ -71,7 +71,7 @@ vector<DMatch> BFmatchFunc(const cv::Mat &mDes1, const cv::Mat &mDes2, int thres
  * 输入：debugOne,mvKeys1,debugTwo,mvKeys2,control_matches
  * 输出：筛选后的匹配数目
  */
-void UsingRansac(const cv::Mat &feature1, const cv::Mat &feature2,const vector<cv::KeyPoint> &mvKeys1, const vector<cv::KeyPoint> &mvKeys2,const vector<DMatch> &control_matches);
+void UsingRansac(const int threshold_value,const cv::Mat &feature1, const cv::Mat &feature2,const vector<cv::KeyPoint> &mvKeys1, const vector<cv::KeyPoint> &mvKeys2,const vector<DMatch> &control_matches);
 
 
 

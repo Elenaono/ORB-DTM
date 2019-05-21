@@ -20,10 +20,13 @@ using namespace std;
 using namespace cv;
 using namespace ORB_SLAM2;
 
-#define d_max_vaule 50  //35    55
+#define d_max_vaule 50
 #define d_max_vaule_two 60
-#define m_max_value 5
+#define m_max_value 7
+#define m_max_value_two 6
 
+#define d_ransac_value 75
+#define threshold_value 5
 /**
  * @brief DTM
  * 1.分别对两幅图像进行特征提取；
@@ -68,7 +71,7 @@ int main()
     ORBextractor *orb1 = new ORBextractor(nFeatures,fScaleFactor,nLevels,fIniThFAST,fMinThFAST);
     (*orb1)(first_image,cv::Mat(),mvKeys1,mDescriptors1);
 
-    orb1->myprint("\tpicture1");
+//    orb1->myprint("\tpicture1");
     mvImageShow1 = orb1->GetImagePyramid();   //获取图像金字塔
 
     mnFeaturesPerLevel1 = orb1->GetmnFeaturesPerLevel();  //获取每层金字塔的特征点数量
@@ -77,7 +80,7 @@ int main()
     mvKeys1 = mvvKeypoints1[level];
     mDes1 = mDescriptors1.rowRange(0,mnFeaturesPerLevel1[level]).clone();
 
-    cout <<"\t\tKeyPoints:"<<mnFeaturesPerLevel1[level]<<endl;
+//    cout <<"\t\tKeyPoints:"<<mnFeaturesPerLevel1[level]<<endl;
     cv::drawKeypoints(mvImageShow1[level], mvKeys1, feature1, cv::Scalar::all(-1),
                       cv::DrawMatchesFlags::DEFAULT);//DEFAULT  DRAW_OVER_OUTIMG     DRAW_RICH_KEYPOINTS
 
@@ -94,7 +97,7 @@ int main()
     ORBextractor *orb2 = new ORBextractor(nFeatures,fScaleFactor,nLevels,fIniThFAST,fMinThFAST);
     (*orb2)(second_image,cv::Mat(),mvKeys2,mDescriptors2);
 
-    orb2->myprint("\tpicture2");
+//    orb2->myprint("\tpicture2");
     mvImageShow2 = orb2->GetImagePyramid();   //获取图像金字塔
 
     mnFeaturesPerLevel2 = orb2->GetmnFeaturesPerLevel();  //获取每层金字塔的特征点数量
@@ -103,7 +106,7 @@ int main()
     mvKeys2 = mvvKeypoints2[level];
     mDes2 = mDescriptors2.rowRange(0,mnFeaturesPerLevel2[level]).clone();
 
-    cout <<"\t\tKeyPoints:"<<mnFeaturesPerLevel2[level]<<endl;
+//    cout <<"\t\tKeyPoints:"<<mnFeaturesPerLevel2[level]<<endl;
     cv::drawKeypoints(mvImageShow2[level], mvKeys2, feature2, cv::Scalar::all(-1),
                       cv::DrawMatchesFlags::DEFAULT);//DEFAULT  DRAW_OVER_OUTIMG     DRAW_RICH_KEYPOINTS
 
@@ -115,9 +118,10 @@ int main()
     Mat debugFive  = feature1.clone();
     Mat debugSix   = feature2.clone();
     /***************  第一次特征匹配      *************/
-    vector<DMatch> good_matches( BFmatchFunc(mDes1,mDes2,45) );    //d_max_vaule   50
+    vector<DMatch> good_matches( BFmatchFunc(mDes1,mDes2,d_max_vaule) );    //d_max_vaule   50
     /***************  构建第一组 DT 网络  ******************************/
-    vector<DMatch> new_matches( computeDTMunit(5,good_matches,mvKeys1,mvKeys2,debugOne,debugTwo) );
+    vector<DMatch> new_matches( computeDTMunit(m_max_value,good_matches,mvKeys1,mvKeys2,debugOne,debugTwo) );   //5
+    cout <<"size one:\t" << new_matches.size() << endl;
     /***************  剔除 good_matchs 中的点  *********************/
     vector<cv::KeyPoint> mvKeys1_new1,mvKeys2_new1;
     temp = (int)(mvKeys1.size() - new_matches.size());
@@ -125,16 +129,16 @@ int main()
     cv::Mat mDes2_new(temp,32,CV_8U);
     updateKey( new_matches,mvKeys1,mvKeys2,mDes1,mDes2,mvKeys1_new1,mvKeys2_new1,mDes1_new,mDes2_new );
     /***************  第二次特征匹配 ******************/
-    vector<DMatch> good_matches2( BFmatchFunc(mDes1_new,mDes2_new,60) );   //d_max_vaule_two   60
+    vector<DMatch> good_matches2( BFmatchFunc(mDes1_new,mDes2_new,d_max_vaule_two) );   //d_max_vaule_two   60
     /***************  构建第二组 DT 网络  ******************************/
-    vector<DMatch> new_matches2( computeDTMunit(5,good_matches2,mvKeys1_new1,mvKeys2_new1,debugThree,debugFour) );
-
-
+    vector<DMatch> new_matches2( computeDTMunit(m_max_value_two,good_matches2,mvKeys1_new1,mvKeys2_new1,debugThree,debugFour) );  //5
+    cout <<"size two:\t" << new_matches2.size() << endl;
+    cout <<"summation:\t" << new_matches.size() + new_matches2.size()<< endl;
     /***************  RANSAC 实验对照组  ******************************/
     cout << "\n采用RANSAC作为control group的实验结果：" << endl;
 
-    vector<DMatch> control_matches( BFmatchFunc(mDes1,mDes2,75) );
-    UsingRansac(feature1,feature2,mvKeys1,mvKeys2,control_matches);
+    vector<DMatch> control_matches( BFmatchFunc(mDes1,mDes2,d_ransac_value) );
+    UsingRansac(threshold_value,feature1,feature2,mvKeys1,mvKeys2,control_matches);
     /****************************************/
     cout << "finish!" << endl;
     return 0;
