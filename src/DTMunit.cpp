@@ -180,7 +180,7 @@ void updateKey(const vector<DMatch> &good_matches, const vector<cv::KeyPoint> &m
     int dele_temp_2=0;
     int dele_temp_count1=0;
     int dele_temp_count2=0;
-    for (int i = 0; i < mvKeys1.size(); ++i)
+    for (int i = 0; i < mvKeys1.size()-1; ++i)
     {
         if(i == *(order1.begin()+dele_temp_count1))     // 如果与order中的序号相同，则跳过该点
             dele_temp_count1++;
