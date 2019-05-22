@@ -20,8 +20,8 @@ using namespace std;
 using namespace cv;
 using namespace ORB_SLAM2;
 
-#define d_max_vaule 45
-#define d_max_vaule_two 60
+#define d_max_vaule 50
+#define d_max_vaule_two 65
 #define m_max_value 5
 #define m_max_value_two 5
 
@@ -45,10 +45,10 @@ int main()
 {
 //    struct timespec time1 = {0, 0};
 //    struct timespec time2 = {0, 0};
-    string file1 = "./data/desk1.png";
-    string file2 = "./data/desk2.png";
-//    string file1 = "./data/test5.png";
-//    string file2 = "./data/test6.png";
+//    string file1 = "./data/desk1.png";
+//    string file2 = "./data/desk2.png";
+    string file1 = "./data/test2.png";
+    string file2 = "./data/test6.png";
     /**************** 配置信息 ******************/
     int nFeatures =1000;        // 1000
     float fScaleFactor =1.2;    // 1.2

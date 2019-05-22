@@ -14,6 +14,8 @@
  */
 vector<DMatch> computeDTMunit(const int threshold,const vector<DMatch> &initGood_matches, const vector<cv::KeyPoint> &mvKeys1, const vector<cv::KeyPoint> &mvKeys2, cv::Mat &feature1, cv::Mat &feature2 )
 {
+    if (initGood_matches.size()==0)
+        return initGood_matches;
     Mat feature3 = feature1.clone();
     Mat feature4 = feature2.clone();
     ///delaunay one
@@ -94,8 +96,9 @@ vector<DMatch> computeDTMunit(const int threshold,const vector<DMatch> &initGood
 //    cout << "new size:\t" << newGood_matches.size()<<endl;
 
     /************ 显示优化后的DT网络 ****************/
+    if (newGood_matches.size()==0)
+        return newGood_matches;
     ///delaunay three
-//    cout << "\tDT three:" << endl;
     std::vector<Vector2<float> > points3;
     for(const auto &g:newGood_matches)
     {
@@ -180,7 +183,7 @@ void updateKey(const vector<DMatch> &good_matches, const vector<cv::KeyPoint> &m
     int dele_temp_2=0;
     int dele_temp_count1=0;
     int dele_temp_count2=0;
-    for (int i = 0; i < mvKeys1.size()-1; ++i)
+    for (int i = 0; i < 217; ++i)  //mvKeys1.size()
     {
         if(i == *(order1.begin()+dele_temp_count1))     // 如果与order中的序号相同，则跳过该点
             dele_temp_count1++;
