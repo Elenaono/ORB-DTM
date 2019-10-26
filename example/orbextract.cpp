@@ -25,8 +25,8 @@ using namespace ORB_SLAM2;
 #define m_max_value 5
 #define m_max_value_two 5
 
-#define d_ransac_value 75
-#define threshold_value 10
+#define d_ransac_value 80
+#define threshold_value 15
 /**
  * @brief DTM
  * 1.分别对两幅图像进行特征提取；
@@ -45,10 +45,10 @@ int main()
 {
 //    struct timespec time1 = {0, 0};
 //    struct timespec time2 = {0, 0};
-//    string file1 = "./data/desk1.png";
-//    string file2 = "./data/desk2.png";
-    string file1 = "./data/test2.png";
-    string file2 = "./data/test6.png";
+    string file1 = "./data/desk1.png";
+    string file2 = "./data/desk2.png";
+//    string file1 = "./data/test2.png";
+//    string file2 = "./data/test6.png";
     /**************** 配置信息 ******************/
     int nFeatures =1000;        // 1000
     float fScaleFactor =1.2;    // 1.2
@@ -144,6 +144,6 @@ int main()
 //    clock_gettime(CLOCK_REALTIME, &time2);
 //    cout << "time passed is: " << (time2.tv_sec - time1.tv_sec)*1000 + (time2.tv_nsec - time1.tv_nsec)/1000000 << "ms" << endl;
     /****************************************/
-    cout << "finish!" << endl;
+    cout << "\nmain end, see you...";
     return 0;
 }

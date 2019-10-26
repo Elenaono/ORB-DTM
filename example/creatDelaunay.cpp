@@ -21,6 +21,16 @@
 using namespace std;
 using namespace cv;
 // rename
+/**
+ * @brief
+ * @remark
+ *          输入参数：二维vector
+ *          Delaunay >> Triangle >> Edge >> Vertex
+ * @return
+ */
+
+
+
 int main()
 {
     /************************** create delaunay triangulation one **********************************/
@@ -101,7 +111,7 @@ int main()
 
     /*****************************************/
 //    waitKey(0);
-    cout << "\nfinish!" << endl;
+    cout << "\nmain end, see you...";
     return 0;
 }
 

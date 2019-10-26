@@ -51,7 +51,7 @@ template <>
 inline double Vector2<double>::dist(const Vector2<double> &v) const { return hypotf(x - v.x, y - v.y);}
 
 template<typename T>
-std::ostream &operator << (std::ostream &str, Vector2<T> const &point)
+std::ostream& operator << (std::ostream &str, Vector2<T> const &point)
 {
     return str << "Point x: " << point.x << " y: " << point.y << " index: " << point.index;
 }

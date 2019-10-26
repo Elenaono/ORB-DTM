@@ -14,7 +14,7 @@
  */
 vector<DMatch> computeDTMunit(const int threshold,const vector<DMatch> &initGood_matches, const vector<cv::KeyPoint> &mvKeys1, const vector<cv::KeyPoint> &mvKeys2, cv::Mat &feature1, cv::Mat &feature2 )
 {
-    if (initGood_matches.size()==0)
+    if (initGood_matches.empty())
         return initGood_matches;
     Mat feature3 = feature1.clone();
     Mat feature4 = feature2.clone();
@@ -70,16 +70,16 @@ vector<DMatch> computeDTMunit(const int threshold,const vector<DMatch> &initGood
     Eigen::MatrixXd edgeMatrix = Eigen::MatrixXd::Zero(sizeofEdgeMatrix,sizeofEdgeMatrix);  //computeEdgeMatrix() 在此处也修改了 20,20 ，需要同步修改，后期改进此处
     edgeMatrix = triangulation1.getEdgeMatrix() - triangulation2.getEdgeMatrix();
     //    double value =0;
-    //    value = edgeMatrix.norm();
+    //    value = edgeMatrix_.norm();
     //    cout << "\tvalue: " << value <<  endl;      // 相似度
 
     edgeMatrix.cwiseAbs().colwise().sum().maxCoeff(&maxRow,&maxCol);    // 边矩阵.绝对值.列.和.最大值(行序号,列序号)
 
 //    cout << "提取候选外点：\t"  << maxCol << endl;
-//    cout << "显示sum:\n" << edgeMatrix.cwiseAbs().colwise().sum() << endl;
-//    cout << "计算列和：\n" << edgeMatrix.cwiseAbs().colwise().sum()<< endl;
-//    cout << "显示边矩阵之差：\n"<< edgeMatrix.cwiseAbs().col(maxCol).transpose() << endl;
-//    cout << "二者之差：\n" << edgeMatrix.cwiseAbs().colwise().sum() - edgeMatrix.cwiseAbs().col(maxCol).transpose()<< endl;
+//    cout << "显示sum:\n" << edgeMatrix_.cwiseAbs().colwise().sum() << endl;
+//    cout << "计算列和：\n" << edgeMatrix_.cwiseAbs().colwise().sum()<< endl;
+//    cout << "显示边矩阵之差：\n"<< edgeMatrix_.cwiseAbs().col(maxCol).transpose() << endl;
+//    cout << "二者之差：\n" << edgeMatrix_.cwiseAbs().colwise().sum() - edgeMatrix_.cwiseAbs().col(maxCol).transpose()<< endl;
 //    cout << "候选外点：" << mvKeys2[good_matches[maxCol].trainIdx].pt << endl;
 
     // 通过DT网络的边矩阵之差的范数，删除列和较大的候选外点集
@@ -89,14 +89,14 @@ vector<DMatch> computeDTMunit(const int threshold,const vector<DMatch> &initGood
     {
         if((edgeMatrix.cwiseAbs().colwise().sum())(0,i-1) >= threshold )
         {
-//            cout << (edgeMatrix.cwiseAbs().colwise().sum())(0,i-1) << "\t,\t" << mvKeys1[newGood_matches[i-1].queryIdx].pt <<"\t,\t" << mvKeys2[newGood_matches[i-1].trainIdx].pt << endl;
+//            cout << (edgeMatrix_.cwiseAbs().colwise().sum())(0,i-1) << "\t,\t" << mvKeys1[newGood_matches[i-1].queryIdx].pt <<"\t,\t" << mvKeys2[newGood_matches[i-1].trainIdx].pt << endl;
             newGood_matches.erase(newGood_matches.begin()+i-1);
         }
     }
 //    cout << "new size:\t" << newGood_matches.size()<<endl;
 
     /************ 显示优化后的DT网络 ****************/
-    if (newGood_matches.size()==0)
+    if (newGood_matches.empty())
         return newGood_matches;
     ///delaunay three
     std::vector<Vector2<float> > points3;
@@ -133,10 +133,10 @@ vector<DMatch> computeDTMunit(const int threshold,const vector<DMatch> &initGood
         line(feature4, Point(e.p1.x, e.p1.y), Point(e.p2.x, e.p2.y), Scalar(0, 0, 255), 1);
     }
 
-    Mat afterOpt;
-    cv::drawMatches(feature3,mvKeys1,feature4,mvKeys2,newGood_matches,afterOpt);
-    imshow("after optimization",afterOpt);
-    waitKey(0);
+//    Mat afterOpt;
+//    cv::drawMatches(feature3,mvKeys1,feature4,mvKeys2,newGood_matches,afterOpt);
+//    imshow("after optimization",afterOpt);
+//    waitKey(0);
     /***********************************************/
 //    cout << "Finished in function!!!" << endl;
     return newGood_matches;
@@ -323,9 +323,9 @@ void UsingRansac(const int threshold_value, const cv::Mat &feature1, const cv::M
     }
     cout << "size of control-group matches: " << count << endl;
 
-    Mat afterOpt;   //滤除‘外点’后
-    drawMatches(feature1,mvKeys1,feature2,mvKeys2,control_matches,afterOpt,Scalar(0,255,0),Scalar::all(-1),matchesMask);
-    imshow("control group",afterOpt);
-    waitKey(0);
+//    Mat afterOpt;   //滤除‘外点’后
+//    drawMatches(feature1,mvKeys1,feature2,mvKeys2,control_matches,afterOpt,Scalar(0,255,0),Scalar::all(-1),matchesMask);
+//    imshow("control group",afterOpt);
+//    waitKey(0);
 //    cout << "Completed in Func!" << endl;
 }
