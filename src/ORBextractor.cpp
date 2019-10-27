@@ -599,7 +599,6 @@ namespace ORB_SLAM2
      * @param level
      * @return vResultKeys
      */
-
     vector<cv::KeyPoint> ORBextractor::DistributeOctTree(const vector<cv::KeyPoint>& vToDistributeKeys, const int &minX,
                                                          const int &maxX, const int &minY, const int &maxY, const int &N, const int &level)
     {
@@ -1160,6 +1159,10 @@ namespace ORB_SLAM2
             computeOrbDescriptor(keypoints[i], image, &pattern[0], descriptors.ptr((int)i));
     }
 
+    // Compute the ORB features and descriptors on an image.
+    // ORB are dispersed on the image using an octree.  八叉树
+    // Mask is ignored in the current implementation.
+    // 重载了()运算符，作为提取器的对外接口
     void ORBextractor::operator()( InputArray _image, InputArray _mask, vector<KeyPoint>& _keypoints,
                                    OutputArray _descriptors)
     {
@@ -1177,7 +1180,7 @@ namespace ORB_SLAM2
         // 计算每层图像的兴趣点
         // 计算关键点并生成四叉树
         vector < vector<KeyPoint> > allKeypoints;
-        ComputeKeyPointsOctTree(allKeypoints);      //???
+        ComputeKeyPointsOctTree(allKeypoints);      //
         //ComputeKeyPointsOld(allKeypoints);
 
         /*******************  计算描述子  **************************/
@@ -1235,7 +1238,7 @@ namespace ORB_SLAM2
  * 构建图像金字塔
  * @param image 输入图像
  */
-    void ORBextractor::ComputePyramid(cv::Mat image)
+    void ORBextractor::ComputePyramid(const cv::Mat& image)
     {
         for (int level = 0; level < nlevels; ++level)
         {
@@ -1268,7 +1271,7 @@ namespace ORB_SLAM2
 
     }
 /*****************  自己的函数  **************************/
-    void ORBextractor::myprint(string content)
+    void ORBextractor::myprint(const string& content)
     {
         cout << content << endl;
     }

@@ -11,7 +11,7 @@
 #include <opencv2/highgui.hpp>
 
 #include "include/ORBextractor.h"
-#include "include/vector2.h"
+#include "include/Vertex.h"
 #include "include/triangle.h"
 #include "include/delaunay.h"
 #include "include/DTMunit.h"
@@ -122,18 +122,19 @@ int main()
     /***************  第一次特征匹配      *************/
     vector<DMatch> good_matches( BFmatchFunc(mDes1,mDes2,d_max_vaule) );    //d_max_vaule   50
     /***************  构建第一组 DT 网络  ******************************/
-    vector<DMatch> new_matches( computeDTMunit(m_max_value,good_matches,mvKeys1,mvKeys2,debugOne,debugTwo) );   //5
+    vector<DMatch> new_matches(ComputeDTMunit(m_max_value, good_matches, mvKeys1, mvKeys2, debugOne, debugTwo) );   //5
     cout <<"size one:\t" << new_matches.size() << endl;
     /***************  剔除 good_matchs 中的点  *********************/
     vector<cv::KeyPoint> mvKeys1_new1,mvKeys2_new1;
     temp = (int)(mvKeys1.size() - new_matches.size());
     cv::Mat mDes1_new(temp,32,CV_8U);   // 严格注意type  因为ORB对应的描述子是 8U，使用 32F时，会导致BFMatch出错 (吃了大亏。。。)
     cv::Mat mDes2_new(temp,32,CV_8U);
-    updateKey( new_matches,mvKeys1,mvKeys2,mDes1,mDes2,mvKeys1_new1,mvKeys2_new1,mDes1_new,mDes2_new );
+    UpdateKey(new_matches, mvKeys1, mvKeys2, mDes1, mDes2, mvKeys1_new1, mvKeys2_new1, mDes1_new, mDes2_new);
     /***************  第二次特征匹配 ******************/
     vector<DMatch> good_matches2( BFmatchFunc(mDes1_new,mDes2_new,d_max_vaule_two) );   //d_max_vaule_two   60
     /***************  构建第二组 DT 网络  ******************************/
-    vector<DMatch> new_matches2( computeDTMunit(m_max_value_two,good_matches2,mvKeys1_new1,mvKeys2_new1,debugThree,debugFour) );  //5
+    vector<DMatch> new_matches2(
+            ComputeDTMunit(m_max_value_two, good_matches2, mvKeys1_new1, mvKeys2_new1, debugThree, debugFour) );  //5
     cout <<"size two:\t" << new_matches2.size() << endl;
     cout <<"summation:\t" << new_matches.size() + new_matches2.size()<< endl;
     /***************  RANSAC 实验对照组  ******************************/

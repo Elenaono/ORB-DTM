@@ -1,29 +1,29 @@
 #ifndef H_EDGE
 #define H_EDGE
 
-#include "vector2.h"
-#include <math.h>
+#include "Vertex.h"
+#include <cmath>
 
 template <class T>
 class Edge
 {
 public:
+    using VertexType = Vertex<T>;  //相当于 typedef
 
-    using VertexType = Vector2<T>;  //相当于 typedef
-
-    //构造函数
     Edge(const VertexType &p1, const VertexType &p2) : p1(p1), p2(p2), isBad(false) {}
     Edge(const Edge &e) : p1(e.p1), p2(e.p2), isBad(false) {}
 
-    inline double computesideLength()
+    double ComputeSideLength()
     {
         sideLength = sqrt(  (p2.x-p1.x)*(p2.x-p1.x) + (p2.y-p1.y)*(p2.y-p1.y)  );
         return sideLength;
     }
 
+//    friend class Vertex<T>;
+
     VertexType p1;
     VertexType p2;
-    double sideLength;
+    double sideLength{0};
     bool isBad;
 };
 

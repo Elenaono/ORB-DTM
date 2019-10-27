@@ -12,7 +12,7 @@
 #include <Eigen/Core>
 #include <Eigen/Dense>
 
-#include "include/vector2.h"
+#include "include/Vertex.h"
 #include "include/triangle.h"
 #include "include/delaunay.h"
 #include "include/calculator.h"
@@ -36,22 +36,22 @@ int main()
     /************************** create delaunay triangulation one **********************************/
     cout << "构建第一个Delaunay网络:" << endl;
     /// 生成随机坐标point1
-    std::vector<Vector2<float> > points_one;
-    points_one.emplace_back(Vector2<float>(200,100,0));
-    points_one.emplace_back(Vector2<float>(200,300,1));
-    points_one.emplace_back(Vector2<float>(100,220,2));
-    points_one.emplace_back(Vector2<float>(300,200,3));
-    points_one.emplace_back(Vector2<float>(80,80,4));
-    points_one.emplace_back(Vector2<float>(330,330,5));
+    std::vector<Vertex<float> > points_one;
+    points_one.emplace_back(Vertex<float>(200, 100, 0));
+    points_one.emplace_back(Vertex<float>(200, 300, 1));
+    points_one.emplace_back(Vertex<float>(100, 220, 2));
+    points_one.emplace_back(Vertex<float>(300, 200, 3));
+    points_one.emplace_back(Vertex<float>(80, 80, 4));
+    points_one.emplace_back(Vertex<float>(330, 330, 5));
 
-//    points_one.emplace_back(Vector2<float>(280,120));
+//    points_one.emplace_back(Vertex<float>(280,120));
 
     /// Delaunay 三角生成 net1
     Delaunay<float> triangulation_one;
-    std::vector<Triangle<float> > triangles_one = triangulation_one.triangulate(points_one);  //逐点插入法
-    std::vector<Edge<float> > edges_one = triangulation_one.getEdges();
-    std::vector<Vector2<float> > point_store = triangulation_one.getVertices();
-    triangulation_one.computeEdgeMatrix();
+    std::vector<Triangle<float> > triangles_one = triangulation_one.Triangulate(points_one);  //逐点插入法
+    std::vector<Edge<float> > edges_one = triangulation_one.GetEdges();
+    std::vector<Vertex<float> > point_store = triangulation_one.GetVertices();
+    triangulation_one.ComputeEdgeMatrix();
     // 显示
     std::cout << "Points_one : \t\t" << points_one.size() << std::endl;
     std::cout << "Triangles_one : \t" << triangles_one.size() << std::endl;
@@ -70,22 +70,22 @@ int main()
 
     cout << "\n构建第二个Delaunay网络:" << endl;
     /// 生成随机坐标point2
-    std::vector<Vector2<float> > points_two;
-    points_two.emplace_back(Vector2<float>(200,100,0));
-    points_two.emplace_back(Vector2<float>(200,300,1));
-    points_two.emplace_back(Vector2<float>(100,220,2));
-    points_two.emplace_back(Vector2<float>(300,200,3));
-    points_two.emplace_back(Vector2<float>(80,80,4));
-    points_two.emplace_back(Vector2<float>(330,330,5));
-    points_two.emplace_back(Vector2<float>(180,180,6));
+    std::vector<Vertex<float> > points_two;
+    points_two.emplace_back(Vertex<float>(200, 100, 0));
+    points_two.emplace_back(Vertex<float>(200, 300, 1));
+    points_two.emplace_back(Vertex<float>(100, 220, 2));
+    points_two.emplace_back(Vertex<float>(300, 200, 3));
+    points_two.emplace_back(Vertex<float>(80, 80, 4));
+    points_two.emplace_back(Vertex<float>(330, 330, 5));
+    points_two.emplace_back(Vertex<float>(180, 180, 6));
 
 
 
     /// Delaunay 三角生成 net2
     Delaunay<float> triangulation_two;
-    std::vector<Triangle<float> > triangles_two = triangulation_two.triangulate(points_two);  //逐点插入法
-    std::vector<Edge<float> > edges_two = triangulation_two.getEdges();
-    triangulation_two.computeEdgeMatrix();
+    std::vector<Triangle<float> > triangles_two = triangulation_two.Triangulate(points_two);  //逐点插入法
+    std::vector<Edge<float> > edges_two = triangulation_two.GetEdges();
+    triangulation_two.ComputeEdgeMatrix();
     // 显示
     std::cout << "Points_two : \t\t" << points_two.size() << std::endl;
     std::cout << "Triangles_two : \t" << triangles_two.size() << std::endl;
@@ -102,7 +102,7 @@ int main()
 
     /************************** compute edge matrix of DT nets **********************************/
     Eigen::MatrixXd edgeMatrix = Eigen::MatrixXd::Zero(500,500);  //Zero(20,20);
-    edgeMatrix = triangulation_one.getEdgeMatrix() - triangulation_two.getEdgeMatrix();
+    edgeMatrix = triangulation_one.GetEdgeMatrix() - triangulation_two.GetEdgeMatrix();
     double value =0;
     value = edgeMatrix.norm();
     cout << "\nvalue: " << value <<  endl;

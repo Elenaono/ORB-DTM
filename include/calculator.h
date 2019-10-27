@@ -5,7 +5,7 @@
 #ifndef ORB_DTM_CALCULATOR_H
 #define ORB_DTM_CALCULATOR_H
 
-#include "vector2.h"
+#include "Vertex.h"
 #include "edge.h"
 #include "triangle.h"
 #include "delaunay.h"
@@ -19,12 +19,12 @@ class Calculator
 public:
     using TriangleType = Triangle<T>;
     using EdgeType = Edge<T>;
-    using VertexType = Vector2<T>;
+    using VertexType = Vertex<T>;
 
-    void computesimilarityMatrix(const TriangleType & net1,const TriangleType & net2,double *similarityMatrix)
-    {
+//    void ComputeSimilarityMatrix(const TriangleType & net1,const TriangleType & net2,double *similarityMatrix)
+//    {
 //        n1.
-    }
+//    }
 
 
 public:

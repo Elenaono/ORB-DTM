@@ -12,7 +12,7 @@
  * @param feature2
  * @return newGood_matches
  */
-vector<DMatch> computeDTMunit(const int threshold,const vector<DMatch> &initGood_matches, const vector<cv::KeyPoint> &mvKeys1, const vector<cv::KeyPoint> &mvKeys2, cv::Mat &feature1, cv::Mat &feature2 )
+vector<DMatch> ComputeDTMunit(int threshold, const vector<DMatch> &initGood_matches, const vector<cv::KeyPoint> &mvKeys1, const vector<cv::KeyPoint> &mvKeys2, cv::Mat &feature1, cv::Mat &feature2 )
 {
     if (initGood_matches.empty())
         return initGood_matches;
@@ -20,17 +20,17 @@ vector<DMatch> computeDTMunit(const int threshold,const vector<DMatch> &initGood
     Mat feature4 = feature2.clone();
     ///delaunay one
 //    cout << "DT one:" << endl;
-    vector<Vector2<float > > points1;
+    vector<Vertex<float > > points1;
     for(const auto &p:initGood_matches)
     {
-        points1.emplace_back(Vector2<float>(mvKeys1[p.queryIdx].pt.x , mvKeys1[p.queryIdx].pt.y ,p.imgIdx ));
+        points1.emplace_back(Vertex<float>(mvKeys1[p.queryIdx].pt.x , mvKeys1[p.queryIdx].pt.y , p.imgIdx ));
     }
 
     Delaunay<float> triangulation1;
-    const std::vector<Triangle<float> > triangles1 = triangulation1.triangulate(points1);  //逐点插入法
-    triangulation1.computeEdgeMatrix();
+    const std::vector<Triangle<float> > triangles1 = triangulation1.Triangulate(points1);  //逐点插入法
+    triangulation1.ComputeEdgeMatrix();
 //    std::cout << "\t\t" <<triangles1.size() << " triangles generated"<<endl;
-    const std::vector<Edge<float> > edges1 = triangulation1.getEdges();
+    const std::vector<Edge<float> > edges1 = triangulation1.GetEdges();
 
     for(const auto &e : edges1)
     {
@@ -39,17 +39,17 @@ vector<DMatch> computeDTMunit(const int threshold,const vector<DMatch> &initGood
 
     ///delaunay two
 //    cout << "DT two:" << endl;
-    vector<Vector2<float > > points2;
+    vector<Vertex<float > > points2;
     for(const auto &p:initGood_matches)
     {
-        points2.emplace_back(Vector2<float>(mvKeys2[p.trainIdx].pt.x , mvKeys2[p.trainIdx].pt.y ,p.imgIdx ));
+        points2.emplace_back(Vertex<float>(mvKeys2[p.trainIdx].pt.x , mvKeys2[p.trainIdx].pt.y , p.imgIdx ));
     }
 
     Delaunay<float> triangulation2;
-    const std::vector<Triangle<float> > triangles2 = triangulation2.triangulate(points2);  //逐点插入法
-    triangulation2.computeEdgeMatrix();
+    const std::vector<Triangle<float> > triangles2 = triangulation2.Triangulate(points2);  //逐点插入法
+    triangulation2.ComputeEdgeMatrix();
 //    std::cout << "\t\t" <<triangles2.size() << " triangles generated"<<endl;
-    const std::vector<Edge<float> > edges2 = triangulation2.getEdges();
+    const std::vector<Edge<float> > edges2 = triangulation2.GetEdges();
 
     for(const auto &e : edges2)
     {
@@ -67,8 +67,8 @@ vector<DMatch> computeDTMunit(const int threshold,const vector<DMatch> &initGood
 /*******************  构建边矩阵，并计算相似度(范数)，进行DT网络的优化  *********************/
 //    cout << "\n计算DTM的相关信息：" << endl;
     Eigen::MatrixXd::Index maxRow,maxCol;
-    Eigen::MatrixXd edgeMatrix = Eigen::MatrixXd::Zero(sizeofEdgeMatrix,sizeofEdgeMatrix);  //computeEdgeMatrix() 在此处也修改了 20,20 ，需要同步修改，后期改进此处
-    edgeMatrix = triangulation1.getEdgeMatrix() - triangulation2.getEdgeMatrix();
+    Eigen::MatrixXd edgeMatrix = Eigen::MatrixXd::Zero(sizeofEdgeMatrix,sizeofEdgeMatrix);  //ComputeEdgeMatrix() 在此处也修改了 20,20 ，需要同步修改，后期改进此处
+    edgeMatrix = triangulation1.GetEdgeMatrix() - triangulation2.GetEdgeMatrix();
     //    double value =0;
     //    value = edgeMatrix_.norm();
     //    cout << "\tvalue: " << value <<  endl;      // 相似度
@@ -99,16 +99,16 @@ vector<DMatch> computeDTMunit(const int threshold,const vector<DMatch> &initGood
     if (newGood_matches.empty())
         return newGood_matches;
     ///delaunay three
-    std::vector<Vector2<float> > points3;
+    std::vector<Vertex<float> > points3;
     for(const auto &g:newGood_matches)
     {
-        points3.emplace_back(Vector2<float>(mvKeys1[g.queryIdx].pt.x , mvKeys1[g.queryIdx].pt.y ,g.imgIdx ));
+        points3.emplace_back(Vertex<float>(mvKeys1[g.queryIdx].pt.x , mvKeys1[g.queryIdx].pt.y , g.imgIdx ));
     }
     Delaunay<float> triangulation3;
-    const std::vector<Triangle<float> > triangles3 = triangulation3.triangulate(points3);  //逐点插入法
-    triangulation3.computeEdgeMatrix();
+    const std::vector<Triangle<float> > triangles3 = triangulation3.Triangulate(points3);  //逐点插入法
+    triangulation3.ComputeEdgeMatrix();
 //    std::cout << "\t\t" << triangles3.size() << " triangles generated"<<endl;
-    const std::vector<Edge<float> > edges3 = triangulation3.getEdges();
+    const std::vector<Edge<float> > edges3 = triangulation3.GetEdges();
     for(const auto &e : edges3)
     {
         line(feature3, Point(e.p1.x, e.p1.y), Point(e.p2.x, e.p2.y), Scalar(0, 0, 255), 1);
@@ -116,17 +116,17 @@ vector<DMatch> computeDTMunit(const int threshold,const vector<DMatch> &initGood
 
     ///delaunay four
 //    cout << "\tDT four:" << endl;
-    std::vector<Vector2<float> > points4;
+    std::vector<Vertex<float> > points4;
     for(const auto &g:newGood_matches)
     {
-        points4.emplace_back(Vector2<float>(mvKeys2[g.trainIdx].pt.x , mvKeys2[g.trainIdx].pt.y ,g.imgIdx ));
+        points4.emplace_back(Vertex<float>(mvKeys2[g.trainIdx].pt.x , mvKeys2[g.trainIdx].pt.y , g.imgIdx ));
     }
 
     Delaunay<float> triangulation4;
-    const std::vector<Triangle<float> > triangles4 = triangulation4.triangulate(points4);  //逐点插入法
-    triangulation4.computeEdgeMatrix();
+    const std::vector<Triangle<float> > triangles4 = triangulation4.Triangulate(points4);  //逐点插入法
+    triangulation4.ComputeEdgeMatrix();
 //    std::cout << "\t\t" << triangles4.size() << " triangles generated"<<endl;
-    const std::vector<Edge<float> > edges4 = triangulation4.getEdges();
+    const std::vector<Edge<float> > edges4 = triangulation4.GetEdges();
 
     for(const auto &e : edges4)
     {
@@ -159,7 +159,7 @@ vector<DMatch> computeDTMunit(const int threshold,const vector<DMatch> &initGood
  * @param mDes1_new
  * @param mDes2_new
  */
-void updateKey(const vector<DMatch> &good_matches, const vector<cv::KeyPoint> &mvKeys1, const vector<cv::KeyPoint> &mvKeys2, const cv::Mat &mDes1, const cv::Mat &mDes2,
+void UpdateKey(const vector<DMatch> &good_matches, const vector<cv::KeyPoint> &mvKeys1, const vector<cv::KeyPoint> &mvKeys2, const cv::Mat &mDes1, const cv::Mat &mDes2,
                vector<cv::KeyPoint> &mvKeys1_new, vector<cv::KeyPoint> &mvKeys2_new, cv::Mat &mDes1_new, cv::Mat &mDes2_new)
 {
     //   cv::Mat中没有删除某一列或者行的函数
