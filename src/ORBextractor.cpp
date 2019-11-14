@@ -1270,10 +1270,5 @@ namespace ORB_SLAM2
         }
 
     }
-/*****************  自己的函数  **************************/
-    void ORBextractor::myprint(const string& content)
-    {
-        cout << content << endl;
-    }
 
 } //namespace ORB_SLAM

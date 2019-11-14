@@ -4,8 +4,8 @@
 
 #include "computeSM.h"
 #include <cmath>
-#include <Eigen/Core>
-#include <Eigen/Dense>
+//#include <Eigen/Core>
+//#include <Eigen/Dense>
 
 const double PI = 3.1415926;
 const double Pa = 0.5;

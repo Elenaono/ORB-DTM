@@ -59,10 +59,11 @@ vector<DMatch> ComputeDTMunit(int threshold, const vector<DMatch> &initGood_matc
     /**************** 显示匹配结果与初始DT网络 ******************/
 //    cout << "\t匹配:" << endl;
 //    cout << "\t\tmatch:" << initGood_matches.size()<<endl;
-//    Mat beforeOpt;
-//    cv::drawMatches(feature1,mvKeys1,feature2,mvKeys2,initGood_matches,beforeOpt);
-//    imshow("before optimization",beforeOpt);
-//    waitKey(0);
+    Mat beforeOpt;
+    cv::drawMatches(feature1,mvKeys1,feature2,mvKeys2,initGood_matches,beforeOpt);
+    imshow("before optimization",beforeOpt);
+    imwrite("./figure/beforeDTM.png",beforeOpt);
+    waitKey(0);
 
 /*******************  构建边矩阵，并计算相似度(范数)，进行DT网络的优化  *********************/
 //    cout << "\n计算DTM的相关信息：" << endl;
@@ -133,10 +134,11 @@ vector<DMatch> ComputeDTMunit(int threshold, const vector<DMatch> &initGood_matc
         line(feature4, Point(e.p1.x, e.p1.y), Point(e.p2.x, e.p2.y), Scalar(0, 0, 255), 1);
     }
 
-//    Mat afterOpt;
-//    cv::drawMatches(feature3,mvKeys1,feature4,mvKeys2,newGood_matches,afterOpt);
-//    imshow("after optimization",afterOpt);
-//    waitKey(0);
+    Mat afterOpt;
+    cv::drawMatches(feature3,mvKeys1,feature4,mvKeys2,newGood_matches,afterOpt);
+    imshow("after optimization",afterOpt);
+    imwrite("./figure/DTM.png",afterOpt);
+    waitKey(0);
     /***********************************************/
 //    cout << "Finished in function!!!" << endl;
     return newGood_matches;
@@ -307,7 +309,6 @@ void UsingRansac(const int threshold_value, const cv::Mat &feature1, const cv::M
     vector<Point2f> CGpoints2; KeyPoint::convert(mvKeys2, CGpoints2, trainIdxs);
     int ransacReprojThreshold = 5;  //拒绝阈值
 
-
     H12 = findHomography( Mat(CGpoints1), Mat(CGpoints2), CV_RANSAC, ransacReprojThreshold );
     vector<char> matchesMask( control_matches.size(), 0 );
     Mat points1t;
@@ -323,9 +324,10 @@ void UsingRansac(const int threshold_value, const cv::Mat &feature1, const cv::M
     }
     cout << "size of control-group matches: " << count << endl;
 
-//    Mat afterOpt;   //滤除‘外点’后
-//    drawMatches(feature1,mvKeys1,feature2,mvKeys2,control_matches,afterOpt,Scalar(0,255,0),Scalar::all(-1),matchesMask);
-//    imshow("control group",afterOpt);
-//    waitKey(0);
+    Mat afterOpt;   //滤除‘外点’后
+    drawMatches(feature1,mvKeys1,feature2,mvKeys2,control_matches,afterOpt,Scalar(0,255,0),Scalar::all(-1),matchesMask);
+    imshow("control group",afterOpt);
+    imwrite("./figure/RANSAC.png",afterOpt);
+    waitKey(0);
 //    cout << "Completed in Func!" << endl;
 }

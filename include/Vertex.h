@@ -37,9 +37,10 @@ public:
         return x * x + y * y;
     }
 
-//    friend double Edge::ComputeSideLength();
+//    friend double Edge<T>::ComputeSideLength();
+//    friend class Edge<T>;
 
-private:
+//private:
     T x;
     T y;
     T index;

@@ -40,24 +40,25 @@ using namespace ORB_SLAM2;
  *
  */
 
-// 主函数
+/// 主函数
 int main()
 {
-//    struct timespec time1 = {0, 0};
+
+//    struct timespec time1 = {0, 0};       // 用于计时
 //    struct timespec time2 = {0, 0};
     string file1 = "./data/desk1.png";
     string file2 = "./data/desk2.png";
-//    string file1 = "./data/test2.png";
-//    string file2 = "./data/test6.png";
-    /**************** 配置信息 ******************/
-    int nFeatures =1000;        // 1000
-    float fScaleFactor =1.2;    // 1.2
-    int nLevels =8;             // 8
-    int fIniThFAST =20;         // 20
-    int fMinThFAST =8;          // 8
 
-    int level = 0;
-    int temp=0;
+//    string file1 = "./data/flag1.png";
+//    string file2 = "./data/flag2.png";
+    /**************** 配置信息 ******************/
+    int nFeatures =1000;        // 特征点数量
+    float fScaleFactor =1.2;    // 图像金字塔的缩放尺度
+    int nLevels =8;             // 金字塔层数
+    int fIniThFAST =18;         // 提取FAST角点的阈值  两个阈值进行选择
+    int fMinThFAST =8;
+
+    int level = 0;      // 特定层数得到的源图像
 
     cout << "显示特征提取的基本信息：" << endl;
     /**************** 图片一：初始化信息 *********************/
@@ -70,10 +71,9 @@ int main()
     vector<vector<cv::KeyPoint>> mvvKeypoints1;  //每层的特征点
     cv::Mat mDes1;
     /**************** 图片一：提取特征点信息 ******************/
-    ORBextractor *orb1 = new ORBextractor(nFeatures,fScaleFactor,nLevels,fIniThFAST,fMinThFAST);
+    auto *orb1 = new ORBextractor(nFeatures,fScaleFactor,nLevels,fIniThFAST,fMinThFAST);
     (*orb1)(first_image,cv::Mat(),mvKeys1,mDescriptors1);
 
-//    orb1->myprint("\tpicture1");
     mvImageShow1 = orb1->GetImagePyramid();   //获取图像金字塔
 
     mnFeaturesPerLevel1 = orb1->GetmnFeaturesPerLevel();  //获取每层金字塔的特征点数量
@@ -99,7 +99,6 @@ int main()
     ORBextractor *orb2 = new ORBextractor(nFeatures,fScaleFactor,nLevels,fIniThFAST,fMinThFAST);
     (*orb2)(second_image,cv::Mat(),mvKeys2,mDescriptors2);
 
-//    orb2->myprint("\tpicture2");
     mvImageShow2 = orb2->GetImagePyramid();   //获取图像金字塔
 
     mnFeaturesPerLevel2 = orb2->GetmnFeaturesPerLevel();  //获取每层金字塔的特征点数量
@@ -115,28 +114,28 @@ int main()
     /***************  克隆图片  ******************/
     Mat debugOne   = feature1.clone();
     Mat debugTwo   = feature2.clone();
-    Mat debugThree = feature1.clone();
-    Mat debugFour  = feature2.clone();
-    Mat debugFive  = feature1.clone();
-    Mat debugSix   = feature2.clone();
+//    Mat debugThree = feature1.clone();
+//    Mat debugFour  = feature2.clone();
+//    Mat debugFive  = feature1.clone();
+//    Mat debugSix   = feature2.clone();
     /***************  第一次特征匹配      *************/
     vector<DMatch> good_matches( BFmatchFunc(mDes1,mDes2,d_max_vaule) );    //d_max_vaule   50
     /***************  构建第一组 DT 网络  ******************************/
     vector<DMatch> new_matches(ComputeDTMunit(m_max_value, good_matches, mvKeys1, mvKeys2, debugOne, debugTwo) );   //5
     cout <<"size one:\t" << new_matches.size() << endl;
     /***************  剔除 good_matchs 中的点  *********************/
-    vector<cv::KeyPoint> mvKeys1_new1,mvKeys2_new1;
-    temp = (int)(mvKeys1.size() - new_matches.size());
-    cv::Mat mDes1_new(temp,32,CV_8U);   // 严格注意type  因为ORB对应的描述子是 8U，使用 32F时，会导致BFMatch出错 (吃了大亏。。。)
-    cv::Mat mDes2_new(temp,32,CV_8U);
-    UpdateKey(new_matches, mvKeys1, mvKeys2, mDes1, mDes2, mvKeys1_new1, mvKeys2_new1, mDes1_new, mDes2_new);
+//    vector<cv::KeyPoint> mvKeys1_new1,mvKeys2_new1;
+//    temp = (int)(mvKeys1.size() - new_matches.size());
+//    cv::Mat mDes1_new(temp,32,CV_8U);   // 严格注意type  因为ORB对应的描述子是 8U，使用 32F时，会导致BFMatch出错 (吃了大亏。。。)
+//    cv::Mat mDes2_new(temp,32,CV_8U);
+//    UpdateKey(new_matches, mvKeys1, mvKeys2, mDes1, mDes2, mvKeys1_new1, mvKeys2_new1, mDes1_new, mDes2_new);
     /***************  第二次特征匹配 ******************/
-    vector<DMatch> good_matches2( BFmatchFunc(mDes1_new,mDes2_new,d_max_vaule_two) );   //d_max_vaule_two   60
+//    vector<DMatch> good_matches2( BFmatchFunc(mDes1_new,mDes2_new,d_max_vaule_two) );   //d_max_vaule_two   60
     /***************  构建第二组 DT 网络  ******************************/
-    vector<DMatch> new_matches2(
-            ComputeDTMunit(m_max_value_two, good_matches2, mvKeys1_new1, mvKeys2_new1, debugThree, debugFour) );  //5
-    cout <<"size two:\t" << new_matches2.size() << endl;
-    cout <<"summation:\t" << new_matches.size() + new_matches2.size()<< endl;
+//    vector<DMatch> new_matches2(
+//            ComputeDTMunit(m_max_value_two, good_matches2, mvKeys1_new1, mvKeys2_new1, debugThree, debugFour) );  //5
+//    cout <<"size two:\t" << new_matches2.size() << endl;
+//    cout <<"summation:\t" << new_matches.size() + new_matches2.size()<< endl;
     /***************  RANSAC 实验对照组  ******************************/
     cout << "\n采用RANSAC作为control group的实验结果：" << endl;
 //    clock_gettime(CLOCK_REALTIME, &time1);

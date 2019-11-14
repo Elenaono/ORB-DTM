@@ -84,7 +84,6 @@ namespace ORB_SLAM2
 
     public:     //my functions
         std::vector<std::vector<cv::KeyPoint> > mvvKeypoints;
-        static void myprint(const std::string& content);
         std::vector<cv::Mat> inline GetImagePyramid() { return mvImagePyramid; }
         std::vector<int> inline GetmnFeaturesPerLevel() { return mnFeaturesPerLevel; }
         std::vector<std::vector<cv::KeyPoint> > inline GetmvvKeypoints() { return mvvKeypoints; }
