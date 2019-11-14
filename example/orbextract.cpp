@@ -21,23 +21,15 @@ using namespace cv;
 using namespace ORB_SLAM2;
 
 #define d_max_vaule 50
-#define d_max_vaule_two 65
 #define m_max_value 5
-#define m_max_value_two 5
 
 #define d_ransac_value 80
 #define threshold_value 15
 /**
  * @brief DTM
  * 1.分别对两幅图像进行特征提取；
- * 2.进行第一次特征匹配；
+ * 2.进行特征匹配；
  * 3.对第一次匹配的good_matches进行构建DT网络；
- * 4.对剩余的KeyPoints进行第二次特征匹配（更高阈值）；
- *
- * 在3.-4.之间，应进行DTM的优化，可能包括：（待完成）
- *      1.计算边矩阵，进行外点筛选，不断剔除外点、计算新的边矩阵，迭代；
- *      2.根据三角形相似函数，计算相似度，来剔除三角形/保留最优三角形；
- *
  */
 
 /// 主函数
@@ -111,31 +103,14 @@ int main()
     cv::drawKeypoints(mvImageShow2[level], mvKeys2, feature2, cv::Scalar::all(-1),
                       cv::DrawMatchesFlags::DEFAULT);//DEFAULT  DRAW_OVER_OUTIMG     DRAW_RICH_KEYPOINTS
 
-    /***************  克隆图片  ******************/
+    /***************   克隆图片   ******************/
     Mat debugOne   = feature1.clone();
     Mat debugTwo   = feature2.clone();
-//    Mat debugThree = feature1.clone();
-//    Mat debugFour  = feature2.clone();
-//    Mat debugFive  = feature1.clone();
-//    Mat debugSix   = feature2.clone();
-    /***************  第一次特征匹配      *************/
+    /***************   特征匹配   *************/
     vector<DMatch> good_matches( BFmatchFunc(mDes1,mDes2,d_max_vaule) );    //d_max_vaule   50
-    /***************  构建第一组 DT 网络  ******************************/
+    /***************  构建DT网络  ******************************/
     vector<DMatch> new_matches(ComputeDTMunit(m_max_value, good_matches, mvKeys1, mvKeys2, debugOne, debugTwo) );   //5
     cout <<"size one:\t" << new_matches.size() << endl;
-    /***************  剔除 good_matchs 中的点  *********************/
-//    vector<cv::KeyPoint> mvKeys1_new1,mvKeys2_new1;
-//    temp = (int)(mvKeys1.size() - new_matches.size());
-//    cv::Mat mDes1_new(temp,32,CV_8U);   // 严格注意type  因为ORB对应的描述子是 8U，使用 32F时，会导致BFMatch出错 (吃了大亏。。。)
-//    cv::Mat mDes2_new(temp,32,CV_8U);
-//    UpdateKey(new_matches, mvKeys1, mvKeys2, mDes1, mDes2, mvKeys1_new1, mvKeys2_new1, mDes1_new, mDes2_new);
-    /***************  第二次特征匹配 ******************/
-//    vector<DMatch> good_matches2( BFmatchFunc(mDes1_new,mDes2_new,d_max_vaule_two) );   //d_max_vaule_two   60
-    /***************  构建第二组 DT 网络  ******************************/
-//    vector<DMatch> new_matches2(
-//            ComputeDTMunit(m_max_value_two, good_matches2, mvKeys1_new1, mvKeys2_new1, debugThree, debugFour) );  //5
-//    cout <<"size two:\t" << new_matches2.size() << endl;
-//    cout <<"summation:\t" << new_matches.size() + new_matches2.size()<< endl;
     /***************  RANSAC 实验对照组  ******************************/
     cout << "\n采用RANSAC作为control group的实验结果：" << endl;
 //    clock_gettime(CLOCK_REALTIME, &time1);

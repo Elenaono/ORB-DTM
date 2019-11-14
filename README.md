@@ -2,7 +2,7 @@
 Feature Matching based on ORB and Delaunay Triangulation Matching
 
 ## 原理与思路
-
+对初始的orb匹配点对构建Delaunay三角网络,分别构建两帧图像的Delaunay三角网络的边矩阵,通过计算边矩阵的差异,使用三角约束,进行误匹配点对的剔除工作
 
 ## 代码框架
 + include
@@ -19,7 +19,9 @@ Feature Matching based on ORB and Delaunay Triangulation Matching
 + example
     + orbextract.cpp : 对初始匹配的特征点对构建Delaunay三角网络,通过三角约束,进行误匹配剔除
 ## 编译环境
-
++ 使用C++进行项目开发,使用Cmake构建项目
++ 需要的库:Opencv3,Eigen3
++ 本人开发环境为Ubuntu系统,
 ## 运行结果
 初始匹配
 ![](./figure/beforeDTM.png)
@@ -27,4 +29,5 @@ Feature Matching based on ORB and Delaunay Triangulation Matching
 ![](./figure/DTM.png)
 
 ## 联系方式
+如果你对本项目感兴趣,对代码细节有疑惑,或者对利用三角约束进行图像配准感兴趣,请联系我进行交流
 Email:luzhaozhang@foxmail.com
