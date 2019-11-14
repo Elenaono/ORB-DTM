@@ -20,8 +20,8 @@ using namespace std;
 using namespace cv;
 using namespace ORB_SLAM2;
 
-#define d_max_vaule 50
-#define m_max_value 5
+#define d_max_value 50      // 暴力匹配的阈值
+#define m_max_value 5       // DTM边矩阵相似度阈值
 
 #define d_ransac_value 80
 #define threshold_value 15
@@ -107,7 +107,7 @@ int main()
     Mat debugOne   = feature1.clone();
     Mat debugTwo   = feature2.clone();
     /***************   特征匹配   *************/
-    vector<DMatch> good_matches( BFmatchFunc(mDes1,mDes2,d_max_vaule) );    //d_max_vaule   50
+    vector<DMatch> good_matches( BFmatchFunc(mDes1,mDes2,d_max_value) );
     /***************  构建DT网络  ******************************/
     vector<DMatch> new_matches(ComputeDTMunit(m_max_value, good_matches, mvKeys1, mvKeys2, debugOne, debugTwo) );   //5
     cout <<"size one:\t" << new_matches.size() << endl;
