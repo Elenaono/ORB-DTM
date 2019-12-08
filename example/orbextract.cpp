@@ -9,6 +9,8 @@
 #include <opencv2/core/core.hpp>
 #include <opencv2/features2d.hpp>
 #include <opencv2/highgui.hpp>
+#include <opencv2/xfeatures2d.hpp>
+#include <opencv2/xfeatures2d/nonfree.hpp>
 
 #include "include/ORBextractor.h"
 #include "include/Vertex.h"
@@ -53,6 +55,8 @@ int main()
     int level = 0;      // 特定层数得到的源图像
 
     cout << "显示特征提取的基本信息：" << endl;
+    Ptr<Feature2D>f1d=xfeatures2d::SIFT::create();
+
     /**************** 图片一：初始化信息 *********************/
     cv::Mat first_image = cv::imread(file1, 0);    // load grayscale image 灰度图
     cv::Mat feature1;
@@ -62,6 +66,8 @@ int main()
     vector<int> mnFeaturesPerLevel1;     //金字塔每层的特征点数量
     vector<vector<cv::KeyPoint>> mvvKeypoints1;  //每层的特征点
     cv::Mat mDes1;
+    cv::Mat descriptor_1;
+
     /**************** 图片一：提取特征点信息 ******************/
     auto *orb1 = new ORBextractor(nFeatures,fScaleFactor,nLevels,fIniThFAST,fMinThFAST);
     (*orb1)(first_image,cv::Mat(),mvKeys1,mDescriptors1);
@@ -72,14 +78,18 @@ int main()
 
     mvvKeypoints1 = orb1->GetmvvKeypoints();
     mvKeys1 = mvvKeypoints1[level];
-    mDes1 = mDescriptors1.rowRange(0,mnFeaturesPerLevel1[level]).clone();
+    //mDes1 = mDescriptors1.rowRange(0,mnFeaturesPerLevel1[level]).clone();
 
-//    cout <<"\t\tKeyPoints:"<<mnFeaturesPerLevel1[level]<<endl;
+    f1d->compute(first_image,mvKeys1,descriptor_1);
+    cout <<"\t\tKeyPoints:"<<mnFeaturesPerLevel1[level]<<endl;
     cv::drawKeypoints(mvImageShow1[level], mvKeys1, feature1, cv::Scalar::all(-1),
                       cv::DrawMatchesFlags::DEFAULT);//DEFAULT  DRAW_OVER_OUTIMG     DRAW_RICH_KEYPOINTS
 
+
     /**************** 图片二：初始化信息 *********************/
-    cv::Mat second_image = cv::imread(file2, 0);    // load grayscale image 灰度图
+    cv::Mat second_image = cv::imread(file2, 0);
+    // load grayscale image 灰度图
+
     cv::Mat feature2;
     std::vector<cv::Mat> mvImageShow2;   //图像金字塔
     vector<cv::KeyPoint> mvKeys2;        //一维特征点
@@ -87,6 +97,7 @@ int main()
     vector<int> mnFeaturesPerLevel2;     //金字塔每层的特征点数量
     vector<vector<cv::KeyPoint>> mvvKeypoints2;  //每层的特征点
     cv::Mat mDes2;
+    cv::Mat descriptor_2;
     /**************** 图片二：提取特征点信息 ******************/
     ORBextractor *orb2 = new ORBextractor(nFeatures,fScaleFactor,nLevels,fIniThFAST,fMinThFAST);
     (*orb2)(second_image,cv::Mat(),mvKeys2,mDescriptors2);
@@ -97,28 +108,57 @@ int main()
 
     mvvKeypoints2 = orb2->GetmvvKeypoints();
     mvKeys2 = mvvKeypoints2[level];
-    mDes2 = mDescriptors2.rowRange(0,mnFeaturesPerLevel2[level]).clone();
+    //mDes2 = mDescriptors2.rowRange(0,mnFeaturesPerLevel2[level]).clone();
 
-//    cout <<"\t\tKeyPoints:"<<mnFeaturesPerLevel2[level]<<endl;
-    cv::drawKeypoints(mvImageShow2[level], mvKeys2, feature2, cv::Scalar::all(-1),
-                      cv::DrawMatchesFlags::DEFAULT);//DEFAULT  DRAW_OVER_OUTIMG     DRAW_RICH_KEYPOINTS
+    f1d->compute(second_image,mvKeys2,descriptor_2);
+
+
+   cv::drawKeypoints(mvImageShow2[level], mvKeys2, feature2, cv::Scalar::all(-1),
+                     cv::DrawMatchesFlags::DEFAULT);//DEFAULT  DRAW_OVER_OUTIMG     DRAW_RICH_KEYPOINTS
+
 
     /***************   克隆图片   ******************/
     Mat debugOne   = feature1.clone();
     Mat debugTwo   = feature2.clone();
     /***************   特征匹配   *************/
-    vector<DMatch> good_matches( BFmatchFunc(mDes1,mDes2,d_max_value) );
+
+    //vector<DMatch> good_matches( BFmatchFunc(mDes1,mDes2,d_max_value) );
+    vector<DMatch> good_matches( BFmatchFunc(descriptor_1,descriptor_2,d_max_value) );
     /***************  构建DT网络  ******************************/
     vector<DMatch> new_matches(ComputeDTMunit(m_max_value, good_matches, mvKeys1, mvKeys2, debugOne, debugTwo) );   //5
     cout <<"size one:\t" << new_matches.size() << endl;
+    //输出到txt
+    std::vector<KeyPoint> goodkeypoint1;
+    std::vector<KeyPoint> goodkeypoint2;
+    for (int i = 0; i <new_matches.size() ; ++i) {
+        goodkeypoint1.push_back(mvKeys1[new_matches[i].queryIdx]);
+        goodkeypoint2.push_back(mvKeys2[new_matches[i].trainIdx]);
+
+    }
+    fstream outputFile1;
+    outputFile1.open("keypoint1.txt",std::ios::out);
+    for (int i = 0; i < goodkeypoint1.size(); ++i)
+        outputFile1<<goodkeypoint1[i].pt.x<<" "<<goodkeypoint1[i].pt.y<<endl;
+    outputFile1.close();
+
+    fstream outputFile2;
+    outputFile2.open("keypoint2.txt",std::ios::out);
+    for (int i = 0; i < goodkeypoint2.size(); ++i)
+        outputFile2<<goodkeypoint2[i].pt.x<<" "<<goodkeypoint2[i].pt.y<<endl;
+    outputFile2.close();
+
+
     /***************  RANSAC 实验对照组  ******************************/
     cout << "\n采用RANSAC作为control group的实验结果：" << endl;
 //    clock_gettime(CLOCK_REALTIME, &time1);
-    vector<DMatch> control_matches( BFmatchFunc(mDes1,mDes2,d_ransac_value) );
-    UsingRansac(threshold_value,feature1,feature2,mvKeys1,mvKeys2,control_matches);
+   //vector<DMatch> control_matches( BFmatchFunc(mDes1,mDes2,d_ransac_value) );
+    vector<DMatch> control_matches( BFmatchFunc(descriptor_1,descriptor_2,d_ransac_value) );
+   UsingRansac(threshold_value,feature1,feature2,mvKeys1,mvKeys2,control_matches);
+
 //    clock_gettime(CLOCK_REALTIME, &time2);
 //    cout << "time passed is: " << (time2.tv_sec - time1.tv_sec)*1000 + (time2.tv_nsec - time1.tv_nsec)/1000000 << "ms" << endl;
     /****************************************/
     cout << "\nmain end, see you...";
+    waitKey(0);
     return 0;
 }

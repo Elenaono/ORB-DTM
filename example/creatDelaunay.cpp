@@ -15,7 +15,7 @@
 #include "include/Vertex.h"
 #include "include/triangle.h"
 #include "include/delaunay.h"
-#include "include/calculator.h"
+//#include "include/calculator.h"
 #include "include/computeSM.h"
 
 using namespace std;

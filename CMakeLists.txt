@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.13)
+cmake_minimum_required(VERSION 2.8)
 project(ORB-DTM)
 
 set( CMAKE_BUILD_TYPE "Debug" )
@@ -27,7 +27,7 @@ set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR}/lib)
 add_library(${PROJECT_NAME} SHARED
         src/ORBextractor.cpp
         src/computeSM.cpp
-        src/DTMunit.cpp)
+        src/DTMunit.cpp include/dataimg.h)
 
 target_link_libraries(${PROJECT_NAME}
         ${OpenCV_LIBS}
